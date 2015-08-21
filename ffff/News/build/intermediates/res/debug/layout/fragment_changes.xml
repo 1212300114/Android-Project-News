@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/change_background"
+    android:paddingTop="5dp" >
+
+    <include
+        android:id="@+id/title"
+        layout="@layout/title" />
+
+    <ScrollView
+        android:id="@+id/view"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title"
+        android:padding="10dp" >
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp" >
+
+            <Button
+                android:id="@+id/btnKM"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:background="@drawable/change_gezi"
+                android:text="昆明市" />
+
+            <Button
+                android:id="@+id/btnZT"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_toRightOf="@+id/btnKM"
+                android:background="@drawable/change_gezi"
+                android:text="昭通市" />
+
+            <Button
+                android:id="@+id/btnYX"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_below="@+id/btnKM"
+                android:layout_toRightOf="@+id/btnKM"
+                android:background="@drawable/change_gezi"
+                android:text="玉溪市" />
+
+            <Button
+                android:id="@+id/btnQJ"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/btnKM"
+                android:background="@drawable/change_gezi"
+                android:text="曲靖市" />
+
+            <Button
+                android:id="@+id/btnCX"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_below="@+id/btnYX"
+                android:layout_toRightOf="@+id/btnKM"
+                android:background="@drawable/change_gezi"
+                android:text="楚雄市" />
+
+            <Button
+                android:id="@+id/btnBS"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/btnYX"
+                android:background="@drawable/change_gezi"
+                android:text="保山市" />
+
+            <Button
+                android:id="@+id/btnWS"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_below="@+id/btnBS"
+                android:layout_toRightOf="@+id/btnKM"
+                android:background="@drawable/change_gezi"
+                android:text="文山州" />
+
+            <Button
+                android:id="@+id/btnHH"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/btnBS"
+                android:background="@drawable/change_gezi"
+                android:text="红河州" />
+
+            <Button
+                android:id="@+id/btnPE"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/btnWS"
+                android:background="@drawable/change_gezi"
+                android:text="普洱市" />
+
+            <Button
+                android:id="@+id/btnXSPN"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_below="@+id/btnWS"
+                android:layout_toRightOf="@+id/btnKM"
+                android:background="@drawable/change_gezi"
+                android:text="西双版纳州" />
+
+            <Button
+                android:id="@+id/btnDL"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/btnPE"
+                android:background="@drawable/change_gezi"
+                android:text="大理州" />
+
+            <Button
+                android:id="@+id/btnDH"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_below="@+id/btnPE"
+                android:layout_toRightOf="@+id/btnKM"
+                android:background="@drawable/change_gezi"
+                android:text="德宏州" />
+
+            <Button
+                android:id="@+id/btnLJ"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/btnDL"
+                android:background="@drawable/change_gezi"
+                android:text="丽江市" />
+
+            <Button
+                android:id="@+id/btnNJ"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_below="@+id/btnDL"
+                android:layout_toRightOf="@+id/btnKM"
+                android:background="@drawable/change_gezi"
+                android:text="怒江州" />
+
+            <Button
+                android:id="@+id/btnDQ"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/btnLJ"
+                android:background="@drawable/change_gezi"
+                android:text="迪庆州" />
+
+            <Button
+                android:id="@+id/btnLC"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_below="@+id/btnLJ"
+                android:layout_toRightOf="@+id/btnKM"
+                android:background="@drawable/change_gezi"
+                android:text="临沧市" />
+        </RelativeLayout>
+    </ScrollView>
+
+</RelativeLayout><!-- From: file:/C:/Users/123456/ffff/News/res/layout/fragment_changes.xml -->

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval" >
+    <corners android:radius="5dip"/>
+    <solid android:color="#aaffffff"/>
+</shape>
+<!-- From: file:/C:/Users/123456/ffff/News/res/drawable/dot_focused.xml -->

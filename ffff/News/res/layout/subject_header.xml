@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <ImageView
+        android:id="@+id/ivSubjectTitleImage"
+        android:layout_width="fill_parent"
+        android:layout_height="200dp"
+        android:background="@drawable/jinping"
+        android:scaleType="fitXY" />
+
+    <ImageView
+        android:id="@+id/lineFirst"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ivSubjectTitleImage"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/fenge" />
+
+    <ImageView
+        android:id="@+id/lineSecond"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lineFirst"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="2dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/fenge" />
+
+    <TextView
+        android:id="@+id/tvZhaiYao"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lineSecond"
+        android:padding="5dp"
+        android:text="法定代发大师大师的撒大大大大大企鹅企鹅是发放的方法取得的撒旦撒大大大撒" />
+
+    <ImageView
+        android:id="@+id/lineThird"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvZhaiYao"
+        android:layout_centerHorizontal="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/fenge" />
+
+    <ImageView
+        android:id="@+id/lineForth"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lineThird"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="2dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/fenge" />
+
+</RelativeLayout>
