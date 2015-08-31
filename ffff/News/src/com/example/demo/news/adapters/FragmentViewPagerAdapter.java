@@ -7,52 +7,50 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 public class FragmentViewPagerAdapter extends FragmentPagerAdapter {
-	// Ö÷fragmentÁ¦·ÅÖÃµÄViewPagerµÄfragmentĞÍpageradapter
-	// ¿ÉÒÔ½«Ğí¶àfragment·ÅÔÚÒ»¸öViewPagerÀïÃæ´ïµ½×óÓÒ»¬¶¯½øÈë²»Í¬µÄ¿É²Ù×÷½çÃæµÄĞ§¹û
-	// ÕâÀïÒòÎªÒªÓÃµ½ViewPagerIndicatorËùÒÔ±ØĞëÒªÖØĞ´getpagetitle·½·¨ÒòÎªindicatorÊÇÍ¨¹ıÕâ¸ö·½·¨À´»ñÈ¡ÄÚÈİµÄ
-	private ArrayList<Fragment> fragments;
-	private String[] titles = new String[] { "Ê×Ò³", "ÒªÎÅ", "µ³·ç", "Éó²é", "Ñ²ÊÓ",
-			"Í¼ÎÅ", "×¨Ìâ" };
+    //æ ç›®viewpagerçš„é€‚é…å™¨ é‡Œé¢çš„gettitleæ–¹æ³•è¿”å›ç»™viewpagerindicatorå¯¼èˆªæ æ ‡é¢˜
+    private ArrayList<Fragment> fragments;
+    private String[] titles = new String[]{"é¦–é¡µ", "è¦é—»", "å®¡æŸ¥", "å…šé£", "å·¡è§†",
+            "å›¾é—»", "ä¸“é¢˜"};
 
-	public ArrayList<Fragment> getFragments() {
-		return fragments;
-	}
+    public ArrayList<Fragment> getFragments() {
+        return fragments;
+    }
 
-	public void setTitles(String[] titles) {
-		this.titles = titles;
-	}
+    public void setTitles(String[] titles) {
+        this.titles = titles;
+    }
 
-	public void setFragments(ArrayList<Fragment> fragments) {
-		this.fragments = fragments;
-	}
+    public void setFragments(ArrayList<Fragment> fragments) {
+        this.fragments = fragments;
+    }
 
-	public FragmentViewPagerAdapter(FragmentManager fm) {
-		super(fm);
-		// TODO Auto-generated constructor stub
-	}
+    public FragmentViewPagerAdapter(FragmentManager fm) {
+        super(fm);
+        // TODO Auto-generated constructor stub
+    }
 
-	public FragmentViewPagerAdapter(FragmentManager fm,
-			ArrayList<Fragment> fragments) {
-		super(fm);
-		this.fragments = fragments;
-	}
+    public FragmentViewPagerAdapter(FragmentManager fm,
+                                    ArrayList<Fragment> fragments) {
+        super(fm);
+        this.fragments = fragments;
+    }
 
-	@Override
-	public CharSequence getPageTitle(int position) {
-		// TODO Auto-generated method stub
-		return titles[position % titles.length];
-	}
+    @Override
+    public CharSequence getPageTitle(int position) {
+        // TODO Auto-generated method stub
+        return titles[position % titles.length];
+    }
 
-	@Override
-	public Fragment getItem(int arg0) {
-		// TODO Auto-generated method stub
-		return fragments.get(arg0);
-	}
+    @Override
+    public Fragment getItem(int arg0) {
+        // TODO Auto-generated method stub
+        return fragments.get(arg0);
+    }
 
-	@Override
-	public int getCount() {
-		// TODO Auto-generated method stub
-		return fragments.size();
-	}
+    @Override
+    public int getCount() {
+        // TODO Auto-generated method stub
+        return fragments.size();
+    }
 
 }

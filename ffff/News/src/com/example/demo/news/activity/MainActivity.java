@@ -11,12 +11,18 @@ import com.example.demo.news.fragments.slidingmenu.left.FragmentMain;
 import com.example.demo.news.fragments.slidingmenu.left.FragmentMessageOpen;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Toast;
 
 public class MainActivity extends FragmentActivity {
     private SlidingMenu slidingMenu1, slidingMenu2;
@@ -26,6 +32,8 @@ public class MainActivity extends FragmentActivity {
     private FragmentDynamic fragmentDynamic;
     private FragmentLaw fragmentLaw;
     private FragmentAboutUs fragmentAboutUs;
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
 
     public SlidingMenu getSlidingMenu1() {
         return slidingMenu1;
@@ -40,8 +48,35 @@ public class MainActivity extends FragmentActivity {
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+    }
+
+    public static boolean isNetworkConnected(Context context) {
+        if (context != null) {
+            ConnectivityManager mConnectivityManager = (ConnectivityManager) context
+                    .getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
+            if (mNetworkInfo != null) {
+                return mNetworkInfo.isAvailable();
+            }
+        }
+        return false;
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        sharedPreferences = getSharedPreferences("settings", MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+
+        if (!isNetworkConnected(this)) {
+            editor.putBoolean("network", false);
+            Toast.makeText(this, "没有网络连接!", Toast.LENGTH_LONG).show();
+        } else {
+            editor.putBoolean("network", true);
+        }
+        editor.commit();
         setContentView(R.layout.main_activity);
 
         main = new FragmentMain();
@@ -49,7 +84,7 @@ public class MainActivity extends FragmentActivity {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, main).commit();
         }
-//初始化左侧栏的各个fragment
+        //初始化左侧栏的各个fragment
         fragmentMessageOpen = new FragmentMessageOpen();
         fragmentDynamic = new FragmentDynamic();
         fragmentLaw = new FragmentLaw();

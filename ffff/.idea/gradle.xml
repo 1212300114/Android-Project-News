@@ -6,7 +6,7 @@
         <option name="distributionType" value="LOCAL" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="gradleHome" value="E:/ide/gradle-2.6" />
-        <option name="gradleJvm" value="1.7" />
+        <option name="gradleJvm" value="1.8" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
@@ -14,6 +14,7 @@
             <option value="$PROJECT_DIR$/SlidingMenu" />
             <option value="$PROJECT_DIR$/SwipeMenuListView" />
             <option value="$PROJECT_DIR$/ViewPageIndicatorLibrary" />
+            <option value="$PROJECT_DIR$/WaterDropListView" />
             <option value="$PROJECT_DIR$/social_sdk_library_project" />
           </set>
         </option>

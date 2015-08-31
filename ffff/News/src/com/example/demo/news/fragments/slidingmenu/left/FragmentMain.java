@@ -1,25 +1,13 @@
 package com.example.demo.news.fragments.slidingmenu.left;
 
-import java.io.IOException;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
-
-import net.xinhuamm.d0403.R;
-
-import com.example.demo.news.activity.MainActivity;
-import com.example.demo.news.activity.MainActivity.MyOnTouchListener;
-import com.example.demo.news.adapters.FragmentViewPagerAdapter;
-import com.example.demo.news.databeans.indicator.IndicatorData;
-import com.example.demo.news.dataloaders.IndicatorLoader;
-import com.example.demo.news.fragments.main.FragmentAll;
-import com.example.demo.news.fragments.main.FragmentFirstPage;
-import com.example.demo.news.myviews.MyDialog;
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
-import com.viewpagerindicator.CirclePageIndicator;
-import com.viewpagerindicator.TabPageIndicator;
-
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Rect;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -28,10 +16,30 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+
+import com.example.demo.news.activity.MainActivity;
+import com.example.demo.news.activity.MainActivity.MyOnTouchListener;
+import com.example.demo.news.adapters.FragmentViewPagerAdapter;
+import com.example.demo.news.databasehelper.ListDataHelper;
+import com.example.demo.news.databeans.indicator.IndicatorData;
+import com.example.demo.news.dataloaders.IndicatorLoader;
+import com.example.demo.news.fragments.main.FragmentAll;
+import com.example.demo.news.fragments.main.FragmentFirstPage;
+import com.example.demo.news.myviews.MyDialog;
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+import com.viewpagerindicator.TabPageIndicator;
+
+import net.xinhuamm.d0403.R;
+
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Objects;
+import java.util.concurrent.ExecutionException;
 
 public class FragmentMain extends Fragment implements OnClickListener {
     private ViewPager viewPager;//显示各个栏目内容的viewpager
@@ -50,8 +58,28 @@ public class FragmentMain extends Fragment implements OnClickListener {
     private FragmentViewPagerAdapter adapter;// 栏目内容viewpager的适配器
     private FragmentFirstPage firstPage; // 首页栏目内容
     private AsyncTask<String, Void, IndicatorData> task;// 加载导航栏数据的task
+    private LinearLayout layout;
+    private ListDataHelper listDataHelper;
+    private static String TITLE = "栏目";
+    private SharedPreferences sharedPreferences;
+    private boolean network = false;
+    private String storedJson;
 
-    LinearLayout layout;
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        listDataHelper = new ListDataHelper(getActivity());
+        sharedPreferences = getActivity().getSharedPreferences("settings", Context.MODE_PRIVATE);
+        network = sharedPreferences.getBoolean("network", false);
+        SQLiteDatabase dbRead = listDataHelper.getReadableDatabase();
+        Cursor cursor = dbRead.query("listData", null, null, null, null, null, null);
+        while (cursor.moveToNext()) {
+            String name = cursor.getString(cursor.getColumnIndex("name"));
+            if (name.equals(TITLE)) {
+                storedJson = cursor.getString(cursor.getColumnIndex("json"));
+            }
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -78,19 +106,20 @@ public class FragmentMain extends Fragment implements OnClickListener {
         };
         task.execute();
         try {
-            if (task.get() == null) {
+            if (network) {
                 indicatorData = task.get();//获取到数据
+            } else {
             }
-        } catch (InterruptedException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
-        } catch (ExecutionException e1) {
+        } catch (InterruptedException | ExecutionException e1) {
             // TODO Auto-generated catch block
             e1.printStackTrace();
         }
+        if (!network) {
+            indicatorData = loader.getJSONDate(storedJson);
+        }
         root = inflater.inflate(R.layout.fragment_main, container, false);
         viewPager = (ViewPager) root.findViewById(R.id.pager);
-        fragments = new ArrayList<Fragment>();
+        fragments = new ArrayList<>();
         firstPage = new FragmentFirstPage();//初始化栏目数组为其添加内容首先将首页固定
         adapter = new FragmentViewPagerAdapter(getChildFragmentManager(),
                 fragments);
@@ -103,7 +132,10 @@ public class FragmentMain extends Fragment implements OnClickListener {
                         .getName();
                 String link = indicatorData.getData().getCate().get(i)
                         .getCate_link();
+                int classId = indicatorData.getData().getCate().get(i).getClass_id();
                 Bundle bundle = new Bundle();
+
+                bundle.putInt("classId", classId);
                 bundle.putString("name", name);
                 bundle.putString("link", link);//获取到各个栏目的列表数据的数据接口以及栏目的名字并且将名字传给导航栏
                 FragmentAll all = new FragmentAll();// 动态添加栏目
@@ -119,7 +151,6 @@ public class FragmentMain extends Fragment implements OnClickListener {
         indicator.setViewPager(viewPager);// 将导航栏与栏目内容绑定
         indicator.setCurrentItem(0);
         indicator.setOnPageChangeListener(new MyPageChangeListener());//设置栏目内容切换侦听器
-        final float density = getResources().getDisplayMetrics().density;
         showLeft = (ImageButton) root.findViewById(R.id.btnShowLeft);//初始化各个按钮的内容
         showLeft.setOnClickListener(this);
         showRight = (ImageButton) root.findViewById(R.id.btnShowRight);
@@ -268,10 +299,41 @@ public class FragmentMain extends Fragment implements OnClickListener {
     private IndicatorData getIndicatorDataResource() throws IOException {
         String JSON = loader
                 .readURL("http://api.jjjc.yn.gov.cn/jwapp/?service=Category.index");
-        IndicatorData data = loader.getJSONDate(JSON);
 
-        return data;
+        SQLiteDatabase database = listDataHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("name", TITLE);
+        values.put("json", JSON);
+        Cursor cursor = database.query("listData", null, null, null, null, null, null);
+        boolean flag = false;
+        while (cursor.moveToNext()) {
+            String name = cursor.getString(cursor.getColumnIndex("name"));
+            if (name.equals(TITLE)) {
+                flag = true;
+            }
+        }
+        if (flag) {
+            String sql = "DELETE FROM listData WHERE name ='" + TITLE + "'";
+            database.execSQL(sql);
+        }
 
+        database.insert("listData", null, values);
+        cursor.close();
+        database.close();
+        return loader.getJSONDate(JSON);
+
+    }
+
+    public static boolean isNetworkConnected(Context context) {
+        if (context != null) {
+            ConnectivityManager mConnectivityManager = (ConnectivityManager) context
+                    .getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
+            if (mNetworkInfo != null) {
+                return mNetworkInfo.isAvailable();
+            }
+        }
+        return false;
     }
 
 }

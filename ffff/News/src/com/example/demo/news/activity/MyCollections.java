@@ -26,6 +26,7 @@ import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.baoyz.swipemenulistview.SwipeMenuListView.OnMenuItemClickListener;
+import com.example.demo.news.databasehelper.DataBaseHelper;
 import com.example.demo.news.databeans.search.SearchData;
 import com.example.demo.news.dataloaders.SearchLoader;
 import com.google.gson.Gson;
@@ -48,7 +49,7 @@ public class MyCollections extends Activity {
 	ArrayList<String> titles = new ArrayList<>();
 	SearchData data;
 	private ArrayList<String> times = new ArrayList<>();
-	DataBase db;
+	DataBaseHelper db;
 	ArrayList<Integer> ids = new ArrayList<>();
 	String time;
 
@@ -66,7 +67,7 @@ public class MyCollections extends Activity {
 			map.put("icon", R.drawable.about_us_logo);
 			list.add(map);
 		}
-		db = new DataBase(this);
+		db = new DataBaseHelper(this);
 		SQLiteDatabase dbRead = db.getReadableDatabase();
 		Cursor c = dbRead.query("id", null, null, null, null, null, null);
 		collection = new ArrayList<>();

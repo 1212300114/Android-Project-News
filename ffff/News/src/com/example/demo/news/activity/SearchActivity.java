@@ -11,9 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.LayoutAnimationController;
-import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
@@ -21,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -69,9 +67,7 @@ public class SearchActivity extends Activity implements OnClickListener,
     private ArrayList<String> ListImageURL;
     private DisplayImageOptions options;
     private ImageLoader imageLoader;
-
-    private Animation animation;
-    private LayoutAnimationController controller;
+    private ProgressBar pb;
 
     // �������ݻ�ûʵ�־ͷ���2����ť��������
     @Override
@@ -86,7 +82,7 @@ public class SearchActivity extends Activity implements OnClickListener,
                 .showImageForEmptyUri(R.drawable.news_list_bg)
                 .showImageOnFail(R.drawable.news_list_bg).cacheInMemory(true)
                 .cacheOnDisk(true).build();
-
+        pb = (ProgressBar) findViewById(R.id.pb);
         mHandler = new Handler();
         back = (ImageButton) findViewById(R.id.btnBack);
         back.setOnClickListener(this);
@@ -100,11 +96,7 @@ public class SearchActivity extends Activity implements OnClickListener,
         lv.setVisibility(View.GONE);
         lv.setPullLoadEnable(true);
         lv.setPullRefreshEnable(true);
-        animation = new TranslateAnimation(-1000f, 0f, 0f, 0f);
-        animation.setDuration(500);
         // 1fΪ��ʱ
-        controller = new LayoutAnimationController(animation, 1f);
-        controller.setOrder(LayoutAnimationController.ORDER_NORMAL);
 
     }
 
@@ -133,7 +125,11 @@ public class SearchActivity extends Activity implements OnClickListener,
                 System.out.println(searchText);
                 if (searchText.equals("")) {
                     Toast.makeText(this, "请输入搜索内容", Toast.LENGTH_SHORT).show();
+                }else {
+
+                    pb.setVisibility(View.VISIBLE);
                 }
+                lv.setVisibility(View.GONE);
                 onRefresh();
 
                 break;
@@ -174,6 +170,7 @@ public class SearchActivity extends Activity implements OnClickListener,
                     if (data == null) {
                         Toast.makeText(SearchActivity.this, "查询无结果",
                                 Toast.LENGTH_SHORT).show();
+                        pb.setVisibility(View.GONE);
                     }
                 } catch (InterruptedException | ExecutionException e) {
                     // TODO Auto-generated catch block
@@ -181,17 +178,17 @@ public class SearchActivity extends Activity implements OnClickListener,
                 }
                 if (!searchText.equals("") && data != null) {
                     newsList = new ArrayList<>();
-                    newsList.removeAll(newsList);
+                    newsList.clear();
                     newsList = data.getData().getList();
                     ListImageURL = new ArrayList<>();
-                    ListImageURL.removeAll(ListImageURL);
+                    ListImageURL.clear();
                     for (int i = 0; i < data.getData().getList().size(); i++) {
                         ListImageURL.add(data.getData().getList().get(i)
                                 .getImage());
                     }
 
                     listTitles = new ArrayList<>();
-                    listTitles.removeAll(listTitles);
+                    listTitles.clear();
                     for (int i = 0; i < data.getData().getList().size(); i++) {
                         listTitles.add(data.getData().getList().get(i)
                                 .getTitle());
@@ -202,7 +199,7 @@ public class SearchActivity extends Activity implements OnClickListener,
 
                     adapter.notifyDataSetChanged();
                     lv.setVisibility(View.VISIBLE);
-                    lv.startAnimation(animation);
+                    pb.setVisibility(View.GONE);
                     lv.setOnItemClickListener(new OnItemClickListener() {
 
                         @Override
@@ -265,15 +262,11 @@ public class SearchActivity extends Activity implements OnClickListener,
                                 .getImage());
                     }
 
-                } catch (InterruptedException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
+                } catch (InterruptedException | ExecutionException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
 
-                lv.startAnimation(animation);
                 adapter.notifyDataSetChanged();
                 onLoad();
 

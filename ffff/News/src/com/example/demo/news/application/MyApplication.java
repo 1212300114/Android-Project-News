@@ -15,54 +15,54 @@ import android.app.Application;
 import android.content.Context;
 
 public class MyApplication extends Application {
-	private boolean get = false;
+    private boolean get = false;
 
-	public boolean isGet() {
-		return get;
-	}
+    public boolean isGet() {
+        return get;
+    }
 
-	public void setGet(boolean get) {
-		this.get = get;
-	}
+    public void setGet(boolean get) {
+        this.get = get;
+    }
 
-	@Override
-	public void onCreate() {
+    @Override
+    public void onCreate() {
 
-		super.onCreate();
-		initImageLoader(getApplicationContext());
+        super.onCreate();
+        initImageLoader(getApplicationContext());
 
-	}
+    }
 
-	public static void initImageLoader(Context context) {
-		// »º´æÎÄ¼þµÄÄ¿Â¼
-		File cacheDir = StorageUtils.getOwnCacheDirectory(context,
-				"universalimageloader/Cache");
-		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
-				context)
-				.memoryCacheExtraOptions(480, 800)
-				// max width, max height£¬¼´±£´æµÄÃ¿¸ö»º´æÎÄ¼þµÄ×î´ó³¤¿í
-				.threadPoolSize(3)
-				// Ïß³Ì³ØÄÚÏß³ÌµÄÊýÁ¿
-				.threadPriority(Thread.NORM_PRIORITY - 2)
-				.denyCacheImageMultipleSizesInMemory()
-				.diskCacheFileNameGenerator(new Md5FileNameGenerator())
-				// ½«±£´æµÄÊ±ºòµÄURIÃû³ÆÓÃMD5 ¼ÓÃÜ
-				.memoryCache(new UsingFreqLimitedMemoryCache(2 * 1024 * 1024))
-				.memoryCacheSize(2 * 1024 * 1024) // ÄÚ´æ»º´æµÄ×î´óÖµ
-				.diskCacheSize(50 * 1024 * 1024) // SD¿¨»º´æµÄ×î´óÖµ
-				.tasksProcessingOrder(QueueProcessingType.LIFO)
-				// ÓÉÔ­ÏÈµÄdiscCache -> diskCache
-				.diskCache(new UnlimitedDiscCache(cacheDir))// ×Ô¶¨Òå»º´æÂ·¾¶
-				.imageDownloader(
-						new BaseImageDownloader(context, 5 * 1000, 30 * 1000)) // connectTimeout
-																				// (5
-																				// s),
-																				// readTimeout
-																				// (30
-																				// s)³¬Ê±Ê±¼ä
-				.writeDebugLogs() // Remove for release app
-				.build();
-		// È«¾Ö³õÊ¼»¯´ËÅäÖÃ
-		ImageLoader.getInstance().init(config);
-	}
+    public static void initImageLoader(Context context) {
+        // ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½Ä¿Â¼
+        File cacheDir = StorageUtils.getOwnCacheDirectory(context,
+                "universalimageloader/Cache");
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
+                context)
+                .memoryCacheExtraOptions(480, 800)
+                        // max width, max heightï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½ó³¤¿ï¿½
+                .threadPoolSize(3)
+                        // ï¿½ß³Ì³ï¿½ï¿½ï¿½ï¿½ß³Ìµï¿½ï¿½ï¿½ï¿½ï¿½
+                .threadPriority(Thread.NORM_PRIORITY - 2)
+                .denyCacheImageMultipleSizesInMemory()
+                .diskCacheFileNameGenerator(new Md5FileNameGenerator())
+                        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½URIï¿½ï¿½ï¿½ï¿½ï¿½ï¿½MD5 ï¿½ï¿½ï¿½ï¿½
+                .memoryCache(new UsingFreqLimitedMemoryCache(2 * 1024 * 1024))
+                .memoryCacheSize(2 * 1024 * 1024) // ï¿½Ú´æ»ºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+                .diskCacheSize(50 * 1024 * 1024) // SDï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+                .tasksProcessingOrder(QueueProcessingType.LIFO)
+                        // ï¿½ï¿½Ô­ï¿½Èµï¿½discCache -> diskCache
+                .diskCache(new UnlimitedDiscCache(cacheDir))// ï¿½Ô¶ï¿½ï¿½å»ºï¿½ï¿½Â·ï¿½ï¿½
+                .imageDownloader(
+                        new BaseImageDownloader(context, 5 * 1000, 30 * 1000)) // connectTimeout
+                        // (5
+                        // s),
+                        // readTimeout
+                        // (30
+                        // s)ï¿½ï¿½Ê±Ê±ï¿½ï¿½
+                .writeDebugLogs() // Remove for release app
+                .build();
+        // È«ï¿½Ö³ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        ImageLoader.getInstance().init(config);
+    }
 }

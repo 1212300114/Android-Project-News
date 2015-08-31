@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <include layout="@layout/title" />
+       <RadioGroup
+        android:id="@+id/radioGroup1"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal" >
+
+        <RadioButton
+            android:id="@+id/radio0"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/message_open__indicator_background_selector"
+            android:button="@null"
+            android:checked="true"
+            android:gravity="center"
+            android:tag="0"
+            android:text="领导机构"
+            android:textColor="#ffffff" />
+
+        <RadioButton
+            android:id="@+id/radio1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/message_open__indicator_background_selector"
+            android:button="@null"
+            android:gravity="center"
+            android:tag="1"
+            android:text="组织机构" />
+
+        <RadioButton
+            android:id="@+id/radio2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/message_open__indicator_background_selector"
+            android:button="@null"
+            android:gravity="center"
+            android:tag="2"
+            android:text="历史沿革" />
+
+        <RadioButton
+            android:id="@+id/radio3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/message_open__indicator_background_selector"
+            android:button="@null"
+            android:gravity="center"
+            android:tag="3"
+            android:text="组织建设	" />
+    </RadioGroup>
+
+    <WebView
+        android:id="@+id/webView1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout><!-- From: file:/C:/Users/123456/ffff/News/res/layout/fragment_message_open.xml -->

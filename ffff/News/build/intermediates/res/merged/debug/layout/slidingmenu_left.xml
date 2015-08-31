@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/backs"
+        android:layout_width="fill_parent"
+        android:layout_height="220dp" >
+
+        <ImageView
+            android:id="@+id/ivLeftBackground"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:scaleType="fitXY"
+            android:src="@drawable/left_background" />
+
+        <ImageView
+            android:id="@+id/ivLeftLogo"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="40dp"
+            android:background="@drawable/left_logo"
+            android:scaleType="fitCenter" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layoutFP"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/backs"
+        android:layout_marginTop="30dp" >
+
+        <ImageButton
+            android:id="@+id/btnFP"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@drawable/left_chose_selector"
+            android:scaleType="fitXY" />
+
+        <ImageView
+            android:id="@+id/ivFirstPage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="50sp"
+            android:src="@drawable/left_firstpage" />
+
+        <TextView
+            android:id="@+id/tvFirstPage"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="30sp"
+            android:layout_toRightOf="@+id/ivFirstPage"
+            android:clickable="false"
+            android:focusable="false"
+            android:text="@string/firstpage"
+            android:textColor="#272323"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/lineFirst"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ivFirstPage"
+            android:layout_marginLeft="30sp"
+            android:layout_marginTop="10sp"
+            android:src="@drawable/left_henfenge" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layoutMO"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/layoutFP" >
+
+        <ImageButton
+            android:id="@+id/btnMO"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@drawable/left_chose_selector"
+            android:scaleType="fitXY" />
+
+        <ImageView
+            android:id="@+id/ivMessageOpen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="50sp"
+            android:layout_marginTop="20sp"
+            android:src="@drawable/left_messageopen" />
+
+        <TextView
+            android:id="@+id/tvMessageOpen"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20sp"
+            android:layout_marginTop="20sp"
+            android:layout_toRightOf="@+id/ivMessageOpen"
+            android:text="@string/message_open"
+            android:textColor="#272323"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/lineSecond"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ivMessageOpen"
+            android:layout_marginLeft="30sp"
+            android:layout_marginTop="10sp"
+            android:src="@drawable/left_henfenge" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layoutDY"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/layoutMO" >
+
+        <ImageButton
+            android:id="@+id/btnDY"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@drawable/left_chose_selector"
+            android:scaleType="fitXY" />
+
+        <ImageView
+            android:id="@+id/ivState"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="50sp"
+            android:layout_marginTop="20sp"
+            android:src="@drawable/left_state" />
+
+        <TextView
+            android:id="@+id/tvState"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20sp"
+            android:layout_marginTop="20sp"
+            android:layout_toRightOf="@+id/ivState"
+            android:text="@string/state"
+            android:textColor="#272323"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/lineThird"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ivState"
+            android:layout_marginLeft="30sp"
+            android:layout_marginTop="10sp"
+            android:src="@drawable/left_henfenge" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layoutLA"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/layoutDY" >
+
+        <ImageButton
+            android:id="@+id/btnLA"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@drawable/left_chose_selector"
+            android:scaleType="fitXY" />
+
+        <ImageView
+            android:id="@+id/ivDangji"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="50sp"
+            android:layout_marginTop="20sp"
+            android:src="@drawable/left_dangji" />
+
+        <TextView
+            android:id="@+id/tvDangji"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20sp"
+            android:layout_marginTop="20sp"
+            android:layout_toRightOf="@+id/ivDangji"
+            android:text="@string/law"
+            android:textColor="#272323"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/lineForth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ivDangji"
+            android:layout_marginLeft="30sp"
+            android:layout_marginTop="10sp"
+            android:src="@drawable/left_henfenge" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layoutAB"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/layoutLA" >
+
+        <ImageButton
+            android:id="@+id/btnAB"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@drawable/left_chose_selector"
+            android:scaleType="fitXY" />
+
+        <ImageView
+            android:id="@+id/ivAboutUs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="50sp"
+            android:layout_marginTop="20sp"
+            android:src="@drawable/left_aboutus" />
+
+        <TextView
+            android:id="@+id/tvAboutUs"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20sp"
+            android:layout_marginTop="20sp"
+            android:layout_toRightOf="@+id/ivAboutUs"
+            android:text="@string/about_us"
+            android:textColor="#272323"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/lineFifth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ivAboutUs"
+            android:layout_marginLeft="30sp"
+            android:layout_marginTop="10sp"
+            android:src="@drawable/left_henfenge" />
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/ivShuxian"
+        android:layout_width="wrap_content"
+        android:layout_height="300dp"
+        android:layout_below="@+id/backs"
+        android:layout_marginLeft="90dp"
+        android:layout_marginTop="40sp"
+        android:src="@drawable/left_shufenge" />
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/slider_bottom" />
+
+</RelativeLayout><!-- From: file:/C:/Users/123456/ffff/News/res/layout/slidingmenu_left.xml -->

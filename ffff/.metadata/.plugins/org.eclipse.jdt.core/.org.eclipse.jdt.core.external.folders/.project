@@ -24,5 +24,10 @@
 			<type>2</type>
 			<location>E:/ide/android-sdk/sources/android-15</location>
 		</link>
+		<link>
+			<name>.link3</name>
+			<type>2</type>
+			<location>E:/ide/android-sdk/sources/android-17</location>
+		</link>
 	</linkedResources>
 </projectDescription>

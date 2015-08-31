@@ -11,72 +11,73 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class XListViewAdapter extends BaseAdapter {
-	//ÁÐ±íƒÈÈÝµÄßmÅäÆ÷
-	private LayoutInflater inflater;
-	private int count = 10;
+    //ï¿½Ð±ï¿½ï¿½ï¿½Ýµï¿½ï¿½mï¿½ï¿½ï¿½ï¿½
+    private LayoutInflater inflater;
+    private int count = 10;
 
-	public LayoutInflater getInflater() {
-		return inflater;
-	}
+    public LayoutInflater getInflater() {
+        return inflater;
+    }
 
-	public void setInflater(LayoutInflater inflater) {
-		this.inflater = inflater;
-	}
+    public void setInflater(LayoutInflater inflater) {
+        this.inflater = inflater;
+    }
 
-	public void setCount(int count) {
-		this.count = count;
-	}
+    public void setCount(int count) {
+        this.count = count;
+    }
 
-	public XListViewAdapter(Context context) {
-		this.inflater = LayoutInflater.from(context);
+    public XListViewAdapter(Context context) {
+        this.inflater = LayoutInflater.from(context);
 
-	}
+    }
 
-	public void setCount(int countNumber,boolean isRefresh) {
-		if (!isRefresh) {
-			count = countNumber+count;
-		}	
-		
-	}
-	@Override
-	public int getCount() {
-		// TODO Auto-generated method stub
-		return count;
-	}
+    public void setCount(int countNumber, boolean isRefresh) {
+        if (!isRefresh) {
+            count = countNumber + count;
+        }
 
-	@Override
-	public Object getItem(int position) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    }
 
-	@Override
-	public long getItemId(int position) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+    @Override
+    public int getCount() {
+        // TODO Auto-generated method stub
+        return count;
+    }
 
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-		ViewHolder holder;
-		if (convertView == null) {
-			convertView = inflater.inflate(R.layout.item_list, null);
-			holder = new ViewHolder();
-			holder.iv = (ImageView) convertView.findViewById(R.id.iv);
-			holder.tvTitle = (TextView) convertView.findViewById(R.id.tvTitle);
-			convertView.setTag(holder);
-		}else {
-			holder = (ViewHolder) convertView.getTag();
-		}
-		holder.iv.setImageResource(R.drawable.jinping);
+    @Override
+    public Object getItem(int position) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-		return convertView;
-	}
+    @Override
+    public long getItemId(int position) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
 
-	public class ViewHolder {
-		public ImageView iv;
-		public TextView tvTitle;
-		public TextView tvDescription;
-	}
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        ViewHolder holder;
+        if (convertView == null) {
+            convertView = inflater.inflate(R.layout.item_list, null);
+            holder = new ViewHolder();
+            holder.iv = (ImageView) convertView.findViewById(R.id.iv);
+            holder.tvTitle = (TextView) convertView.findViewById(R.id.tvTitle);
+            convertView.setTag(holder);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
+        }
+        holder.iv.setImageResource(R.drawable.jinping);
+
+        return convertView;
+    }
+
+    public class ViewHolder {
+        public ImageView iv;
+        public TextView tvTitle;
+        public TextView tvDescription;
+    }
 
 }

@@ -1,14 +1,13 @@
 package com.example.demo.news.activity;
 
 import net.xinhuamm.d0403.R;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
 public class Splash extends Activity {
-	// ³ÌÐòÆô¶¯½çÃæÍ¨¹ýÒ»¸öÑÓÊ±Æô¶¯Ö÷activityÀ´ÊµÏÖÐ§¹û£¬¿ÉÒÔÎªËûÌí¼ÓÒ»Ð©¶¯»­Ð§¹û¡£
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¨ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½activityï¿½ï¿½Êµï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½Ò»Ð©ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -23,5 +22,4 @@ public class Splash extends Activity {
 			}
 		}, 3000);
 	}
-
 }

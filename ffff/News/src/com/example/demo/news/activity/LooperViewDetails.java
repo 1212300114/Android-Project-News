@@ -1,15 +1,26 @@
 package com.example.demo.news.activity;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.concurrent.ExecutionException;
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.ContentValues;
+import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.Window;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.CheckBox;
+import android.widget.ImageButton;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
+import com.example.demo.news.databasehelper.DataBaseHelper;
+import com.example.demo.news.databasehelper.ListDataHelper;
 import com.example.demo.news.databeans.content.ContentData;
 import com.google.gson.Gson;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -25,20 +36,15 @@ import com.umeng.socialize.weixin.controller.UMWXHandler;
 
 import net.xinhuamm.d0403.R;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.ContentValues;
-import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
-import android.widget.CheckBox;
-import android.widget.ImageButton;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.concurrent.ExecutionException;
 
 //各页详情内容
 public class LooperViewDetails extends Activity implements OnClickListener {
@@ -54,10 +60,13 @@ public class LooperViewDetails extends Activity implements OnClickListener {
     private AsyncTask<Void, Void, String> task;//获取详情内容的task
     private String urlString;//详情内容的url
     private ContentData dataGot;//详情内容的书
+    private ProgressBar pb;
+    private TextView tvLoad;
 
     @SuppressWarnings("static-access")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_PROGRESS);// 让进度条显示在标题栏上
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_looper_view_details);
         //从Intent 获取到详情的id
@@ -107,10 +116,7 @@ public class LooperViewDetails extends Activity implements OnClickListener {
                 dataGot = new Gson().fromJson(jsString, ContentData.class);
                 //获取到详情页内容的数据
             }
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (ExecutionException e) {
+        } catch (InterruptedException | ExecutionException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
@@ -122,9 +128,7 @@ public class LooperViewDetails extends Activity implements OnClickListener {
         if (title.length() > 15) {
             char[] t = title.toCharArray();
             char[] tt = new char[15];
-            for (int i = 0; i < 15; i++) {
-                tt[i] = t[i];
-            }
+            System.arraycopy(t, 0, tt, 0, 15);
             title = new String().valueOf(tt) + "...";
         }
         // 设置分享内容
@@ -168,8 +172,8 @@ public class LooperViewDetails extends Activity implements OnClickListener {
                 LooperViewDetails.this, "100424468",
                 "c7394704798a158208a74ab60104f0ba");
         qZoneSsoHandler.addToSocialSDK();
+        pb = (ProgressBar) findViewById(R.id.pb);
         WebView webView = (WebView) findViewById(R.id.webView1);
-        webView.loadUrl(getIntent().getExtras().getString("link"));
         webView.getSettings().setSupportZoom(true);
         webView.getSettings().setBuiltInZoomControls(true);
         if (getIntent().getExtras().get("link") != null) {
@@ -178,13 +182,30 @@ public class LooperViewDetails extends Activity implements OnClickListener {
         }
         System.out.println(getIntent().getExtras().get("content_id"));
         //详情内容
-        webView.setWebViewClient(new WebViewClient() {
+        tvLoad = (TextView) findViewById(R.id.tvLoad);
+        WebViewClient client = new WebViewClient() {
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                pb.setVisibility(View.VISIBLE);
+                tvLoad.setVisibility(View.VISIBLE);
+                super.onPageStarted(view, url, favicon);
+            }
+
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                // ��д�˷������������ҳ��������ӻ����ڵ�ǰ��webview����ת��������������Ǳ�
+                // 重写此方法表明点击网页里面的链接还是在当前的webview里跳转，不跳到浏览器那边
                 view.loadUrl(url);
                 return true;
             }
-        });
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                pb.setVisibility(View.GONE);
+                tvLoad.setVisibility(View.GONE);
+                super.onPageFinished(view, url);
+            }
+        };
+        webView.setWebViewClient(client);
+        webView.loadUrl(getIntent().getExtras().getString("link"));
         //初始化各个按钮
         back = (ImageButton) findViewById(R.id.btnBack);
         back.setOnClickListener(this);
@@ -194,7 +215,7 @@ public class LooperViewDetails extends Activity implements OnClickListener {
         collection.setOnClickListener(this);
         //获取到本地数据库判断该条内容是否已经被收藏从而动态改变收藏按钮的状态
 
-        DataBase db = new DataBase(this);
+        DataBaseHelper db = new DataBaseHelper(this);
         SQLiteDatabase dbRead = db.getReadableDatabase();
         Cursor c = dbRead.query("id", null, null, null, null, null, null);
         while (c.moveToNext()) {
@@ -206,6 +227,17 @@ public class LooperViewDetails extends Activity implements OnClickListener {
                 collection.setChecked(true);
             }
         }
+        c.close();
+        dbRead.close();
+        ListDataHelper dataHelper = new ListDataHelper(this);
+        SQLiteDatabase sqLiteDatabase = dataHelper.getReadableDatabase();
+        Cursor cursor = sqLiteDatabase.query("listData", null, null, null, null, null, null);
+        while (cursor.moveToNext()) {
+            String js = cursor.getString(cursor.getColumnIndex("name"));
+            System.out.print("数据内容" + js + "\n\n");
+        }
+        cursor.close();
+        sqLiteDatabase.close();
 
     }
 
@@ -237,9 +269,9 @@ public class LooperViewDetails extends Activity implements OnClickListener {
                         "yyyy-MM-dd    HH:mm:ss     ");
                 Date curDate = new Date(System.currentTimeMillis());// ��ȡ��ǰʱ��
                 String str = formatter.format(curDate);
-                DataBase dataBase = new DataBase(this);
-                SQLiteDatabase dbWriteDatabase = dataBase.getWritableDatabase();
-                SQLiteDatabase dbReaDatabase = dataBase.getReadableDatabase();
+                DataBaseHelper dataBaseHelper = new DataBaseHelper(this);
+                SQLiteDatabase dbWriteDatabase = dataBaseHelper.getWritableDatabase();
+                SQLiteDatabase dbReaDatabase = dataBaseHelper.getReadableDatabase();
                 ContentValues values = new ContentValues();
                 Cursor cc = dbReaDatabase.query("id", null, null, null, null, null,
                         null);

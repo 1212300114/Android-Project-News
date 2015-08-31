@@ -42,10 +42,10 @@ import android.widget.AdapterView.OnItemClickListener;
 	private XListViewAdapter ListAdapter;
 	private Handler mHandler = new Handler();
 	private ImportantNewsLoader loader = new ImportantNewsLoader();
-	private ImportantNewsData data;// ÒªÎÅÒ³»ñÈ¡µÄÍøÂçÊý¾Ý
-	private AsyncTask<String, Void, ImportantNewsData> task;// ¼ÓÔØÒªÎÅµÄtask
-	private ArrayList<String> listTitles;// ÁÐ±íÏîµÄtitle
-	private int page = 1;// µ±Ç°ÁÐ±íÏîµÄÒ³Êý
+	private ImportantNewsData data;// Òªï¿½ï¿½Ò³ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	private AsyncTask<String, Void, ImportantNewsData> task;// ï¿½ï¿½ï¿½ï¿½Òªï¿½Åµï¿½task
+	private ArrayList<String> listTitles;// ï¿½Ð±ï¿½ï¿½ï¿½ï¿½title
+	private int page = 1;// ï¿½ï¿½Ç°ï¿½Ð±ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½
 	private ArrayList<ImportantNewsList> newsList = null;
 	@SuppressWarnings("unused")
 	private int pageCount = 0;
@@ -83,13 +83,12 @@ import android.widget.AdapterView.OnItemClickListener;
 		String JSON = loader
 				.readURL("http://api.jjjc.yn.gov.cn/jwapp/?service=List.index&cid=77&page="
 						+ i);
-		ImportantNewsData data = loader.getJSONDate(JSON);
 
-		return data;
+		return loader.getJSONDate(JSON);
 
 	}
 
-	// »ñÈ¡ÁÐ±íÏîÍ¼Æ¬µÄ·½·¨
+	// ï¿½ï¿½È¡ï¿½Ð±ï¿½ï¿½ï¿½Í¼Æ¬ï¿½Ä·ï¿½ï¿½ï¿½
 	@SuppressWarnings("unused")
 	private Bitmap getListBitmap(int position) throws InterruptedException,
 			ExecutionException, IOException {
@@ -164,7 +163,7 @@ import android.widget.AdapterView.OnItemClickListener;
 	private void onLoad() {
 		lv.stopRefresh();
 		lv.stopLoadMore();
-		lv.setRefreshTime("¸Õ¸Õ");
+		lv.setRefreshTime("ï¿½Õ¸ï¿½");
 	}
 
 	@Override
@@ -244,7 +243,7 @@ import android.widget.AdapterView.OnItemClickListener;
 	}
 
 	public class XListViewAdapter extends BaseAdapter {
-		// ÁÐ±íƒÈÈÝµÄßmÅäÆ÷
+		// ï¿½Ð±ï¿½ï¿½ï¿½Ýµï¿½ï¿½mï¿½ï¿½ï¿½ï¿½
 		private LayoutInflater inflater;
 		private int count = 10;
 

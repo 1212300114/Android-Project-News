@@ -41,10 +41,10 @@ public class FragmentCheck extends Fragment implements IXListViewListener {
 	private XListViewAdapter ListAdapter;
 	private Handler mHandler = new Handler();
 	private ImportantNewsLoader loader = new ImportantNewsLoader();
-	private ImportantNewsData data;// ÒªÎÅÒ³»ñÈ¡µÄÍøÂçÊı¾İ
-	private AsyncTask<String, Void, ImportantNewsData> task;// ¼ÓÔØÒªÎÅµÄtask
-	private ArrayList<String> listTitles;// ÁĞ±íÏîµÄtitle
-	private int page = 1;// µ±Ç°ÁĞ±íÏîµÄÒ³Êı
+	private ImportantNewsData data;// Òªï¿½ï¿½Ò³ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	private AsyncTask<String, Void, ImportantNewsData> task;// ï¿½ï¿½ï¿½ï¿½Òªï¿½Åµï¿½task
+	private ArrayList<String> listTitles;// ï¿½Ğ±ï¿½ï¿½ï¿½ï¿½title
+	private int page = 1;// ï¿½ï¿½Ç°ï¿½Ğ±ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½
 	private ArrayList<ImportantNewsList> newsList = null;
 	private int pageCount = 0;
 
@@ -91,7 +91,7 @@ public class FragmentCheck extends Fragment implements IXListViewListener {
 
 	}
 
-	// »ñÈ¡ÁĞ±íÏîÍ¼Æ¬µÄ·½·¨
+	// ï¿½ï¿½È¡ï¿½Ğ±ï¿½ï¿½ï¿½Í¼Æ¬ï¿½Ä·ï¿½ï¿½ï¿½
 	@SuppressWarnings("unused")
 	private Bitmap getListBitmap(int position) throws InterruptedException,
 			ExecutionException, IOException {
@@ -165,7 +165,7 @@ public class FragmentCheck extends Fragment implements IXListViewListener {
 	private void onLoad() {
 		lv.stopRefresh();
 		lv.stopLoadMore();
-		lv.setRefreshTime("¸Õ¸Õ");
+		lv.setRefreshTime("ï¿½Õ¸ï¿½");
 	}
 
 	@Override
@@ -231,10 +231,7 @@ public class FragmentCheck extends Fragment implements IXListViewListener {
 				ImportantNewsData data = null;
 				try {
 					data = task2.get();
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (ExecutionException e) {
+				} catch (InterruptedException | ExecutionException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
@@ -245,7 +242,7 @@ public class FragmentCheck extends Fragment implements IXListViewListener {
 					}
 				}
 				if (page > pageCount) {
-					Toast.makeText(getActivity(), "Ã»ÓĞ¸ü¶àÁË", Toast.LENGTH_SHORT)
+					Toast.makeText(getActivity(), "Ã»ï¿½Ğ¸ï¿½ï¿½ï¿½ï¿½ï¿½", Toast.LENGTH_SHORT)
 							.show();
 				}
 				ListAdapter.notifyDataSetChanged();
@@ -255,7 +252,7 @@ public class FragmentCheck extends Fragment implements IXListViewListener {
 	}
 
 	public class XListViewAdapter extends BaseAdapter {
-		// ÁĞ±íƒÈÈİµÄßmÅäÆ÷
+		// ï¿½Ğ±ï¿½ï¿½ï¿½İµï¿½ï¿½mï¿½ï¿½ï¿½ï¿½
 		private LayoutInflater inflater;
 		private int count = 10;
 

@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class SubjectListAdapter extends BaseAdapter {
-	// ÁÐ±íƒÈÈÝµÄßmÅäÆ÷
+	// ï¿½Ð±ï¿½ï¿½ï¿½Ýµï¿½ï¿½mï¿½ï¿½ï¿½ï¿½
 	private LayoutInflater inflater;
 	private int count = 10;
 
@@ -45,14 +45,14 @@ public class SubjectListAdapter extends BaseAdapter {
 		return 0;
 	}
 
-	// ·µ»ØÄãÓÐ¶àÉÙ¸ö²»Í¬µÄ²¼¾Ö
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¶ï¿½ï¿½Ù¸ï¿½ï¿½ï¿½Í¬ï¿½Ä²ï¿½ï¿½ï¿½
 	@Override
 	public int getViewTypeCount() {
 		// TODO Auto-generated method stub
 		return 2;
 	}
 
-	// ÓÉposition·µ»Øview type id
+	// ï¿½ï¿½positionï¿½ï¿½ï¿½ï¿½view type id
 	@Override
 	public int getItemViewType(int position) {
 		if (position % 3 == 0) {
