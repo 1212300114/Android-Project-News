@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 import net.xinhuamm.d0403.R;
+
 import com.example.demo.news.activity.LooperViewDetails;
 import com.example.demo.news.databeans.importantnews.ImportantNewsData;
 import com.example.demo.news.databeans.importantnews.ImportantNewsList;
@@ -35,383 +36,383 @@ import android.widget.AdapterView.OnItemClickListener;
 
 public class FragmentImageNews extends Fragment implements IXListViewListener {
 
-	private View root;
-	private XListView lv;
-	private ProgressBar pb;
-	private XListViewAdapter ListAdapter;
-	private Handler mHandler = new Handler();
-	private ImportantNewsLoader loader = new ImportantNewsLoader();
-	private ImportantNewsData data;// ÒªÎÅÒ³»ñÈ¡µÄÍøÂçÊý¾Ý
-	private AsyncTask<String, Void, ImportantNewsData> task;// ¼ÓÔØÒªÎÅµÄtask
-	private ArrayList<String> listTitles;// ÁÐ±íÏîµÄtitle
-	private int page = 1;// µ±Ç°ÁÐ±íÏîµÄÒ³Êý
-	private ArrayList<ImportantNewsList> newsList = null;
-	private ArrayList<Bitmap> bitmaps = null;
+    private View root;
+    private XListView lv;
+    private ProgressBar pb;
+    private XListViewAdapter ListAdapter;
+    private Handler mHandler = new Handler();
+    private ImportantNewsLoader loader = new ImportantNewsLoader();
+    private ImportantNewsData data;// Òªï¿½ï¿½Ò³ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    private AsyncTask<String, Void, ImportantNewsData> task;// ï¿½ï¿½ï¿½ï¿½Òªï¿½Åµï¿½task
+    private ArrayList<String> listTitles;// ï¿½Ð±ï¿½ï¿½ï¿½ï¿½title
+    private int page = 1;// ï¿½ï¿½Ç°ï¿½Ð±ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½
+    private ArrayList<ImportantNewsList> newsList = null;
+    private ArrayList<Bitmap> bitmaps = null;
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
 
-		root = inflater.inflate(R.layout.fragment_important_news, container,
-				false);
+        root = inflater.inflate(R.layout.fragment_important_news, container,
+                false);
 
-		lv = (XListView) root.findViewById(R.id.lvFirstPage);
+        lv = (XListView) root.findViewById(R.id.lvFirstPage);
 
-		onRefresh();
+        onRefresh();
 
-		lv.setXListViewListener(this);
-		lv.setPullLoadEnable(true);
-		lv.setPullRefreshEnable(true);
-		lv.setVisibility(View.GONE);
-		lv.setOnItemClickListener(new OnItemClickListener() {
+        lv.setXListViewListener(this);
+        lv.setPullLoadEnable(true);
+        lv.setPullRefreshEnable(true);
+        lv.setVisibility(View.GONE);
+        lv.setOnItemClickListener(new OnItemClickListener() {
 
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
-				String link = newsList.get(position - 1).getInfo_link();
-				Intent intent = new Intent(getActivity(),
-						LooperViewDetails.class);
-				intent.putExtra("link", link);
-				startActivity(intent);
-			}
-		});
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                String link = newsList.get(position - 1).getInfo_link();
+                Intent intent = new Intent(getActivity(),
+                        LooperViewDetails.class);
+                intent.putExtra("link", link);
+                startActivity(intent);
+            }
+        });
 
-		return root;
-	}
+        return root;
+    }
 
-	private ImportantNewsData getData(int i) throws IOException {
+    private ImportantNewsData getData(int i) throws IOException {
 
-		String JSON = loader
-				.readURL("http://api.jjjc.yn.gov.cn/jwapp/?service=List.index&cid=6&page="
-						+ i);
-		ImportantNewsData data = loader.getJSONDate(JSON);
+        String JSON = loader
+                .readURL("http://api.jjjc.yn.gov.cn/jwapp/?service=List.index&cid=6&page="
+                        + i);
+        ImportantNewsData data = loader.getJSONDate(JSON);
 
-		return data;
+        return data;
 
-	}
+    }
 
-	// »ñÈ¡ÁÐ±íÏîÍ¼Æ¬µÄ·½·¨
-	private Bitmap getListBitmap(int position) throws InterruptedException,
-			ExecutionException, IOException {
-		if (task.get() != null) {
-			data = task.get();
-		}
-		String urlString;
-		urlString = data.getData().getList().get(position).getImage();
-		URL url = null;
-		if (urlString != null) {
+    // ï¿½ï¿½È¡ï¿½Ð±ï¿½ï¿½ï¿½Í¼Æ¬ï¿½Ä·ï¿½ï¿½ï¿½
+    private Bitmap getListBitmap(int position) throws InterruptedException,
+            ExecutionException, IOException {
+        if (task.get() != null) {
+            data = task.get();
+        }
+        String urlString;
+        urlString = data.getData().getList().get(position).getImage();
+        URL url = null;
+        if (urlString != null) {
 
-			url = new URL(urlString);
-		}
-		InputStream is = url.openStream();
-		Bitmap map = BitmapFactory.decodeStream(is);
-		return map;
+            url = new URL(urlString);
+        }
+        InputStream is = url.openStream();
+        Bitmap map = BitmapFactory.decodeStream(is);
+        return map;
 
-	}
+    }
 
-	@Override
-	public void onRefresh() {
+    @Override
+    public void onRefresh() {
 
-		mHandler.postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				page = 1;
-				task = new AsyncTask<String, Void, ImportantNewsData>() {
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                page = 1;
+                task = new AsyncTask<String, Void, ImportantNewsData>() {
 
-					@Override
-					protected ImportantNewsData doInBackground(String... params) {
-						ImportantNewsData data = null;
-						try {
-							data = getData(1);
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						return data;
-					}
-				};
-				task.execute();
-				if (task != null) {
-					try {
-						data = task.get();
-						newsList = data.getData().getList();
+                    @Override
+                    protected ImportantNewsData doInBackground(String... params) {
+                        ImportantNewsData data = null;
+                        try {
+                            data = getData(1);
+                        } catch (IOException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                        return data;
+                    }
+                };
+                task.execute();
+                if (task != null) {
+                    try {
+                        data = task.get();
+                        newsList = data.getData().getList();
 
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (ExecutionException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-				//½âÁÐ±íÏîµÄÍ¼Æ¬µÄtask
-				ArrayList<AsyncTask<Integer, Void, Bitmap>> bitmapTask = new ArrayList<AsyncTask<Integer, Void, Bitmap>>();
-				bitmaps = new ArrayList<Bitmap>();
-				for (int i = 0; i < data.getData().getList().size(); i++) {
-					AsyncTask<Integer, Void, Bitmap> task = new AsyncTask<Integer, Void, Bitmap>() {
+                    } catch (InterruptedException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
+                //ï¿½ï¿½ï¿½Ð±ï¿½ï¿½ï¿½ï¿½Í¼Æ¬ï¿½ï¿½task
+                ArrayList<AsyncTask<Integer, Void, Bitmap>> bitmapTask = new ArrayList<AsyncTask<Integer, Void, Bitmap>>();
+                bitmaps = new ArrayList<Bitmap>();
+                for (int i = 0; i < data.getData().getList().size(); i++) {
+                    AsyncTask<Integer, Void, Bitmap> task = new AsyncTask<Integer, Void, Bitmap>() {
 
-						@Override
-						protected Bitmap doInBackground(Integer... params) {
-							Bitmap bitmap = null;
-							try {
-								bitmap = getListBitmap(params[0]);
-							} catch (InterruptedException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							} catch (ExecutionException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							} catch (IOException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-							return bitmap;
-						}
-					};
-					bitmapTask.add(task);
+                        @Override
+                        protected Bitmap doInBackground(Integer... params) {
+                            Bitmap bitmap = null;
+                            try {
+                                bitmap = getListBitmap(params[0]);
+                            } catch (InterruptedException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                            } catch (ExecutionException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                            } catch (IOException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                            }
+                            return bitmap;
+                        }
+                    };
+                    bitmapTask.add(task);
 
-				}
-				for (int i = 0; i < data.getData().getList().size(); i++) {
-					try {
-						bitmaps.add(bitmapTask.get(i).execute(i).get());
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (ExecutionException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-				listTitles = new ArrayList<String>();
-				for (int i = 0; i < data.getData().getList().size(); i++) {
-					listTitles.add(data.getData().getList().get(i).getTitle());
-				}
-				ListAdapter = new XListViewAdapter(getActivity(), listTitles);
-				lv.setAdapter(ListAdapter);
-				pb = (ProgressBar) root.findViewById(R.id.pb);
-				lv.setVisibility(View.VISIBLE);
-				pb.setVisibility(View.GONE);
-				ListAdapter.notifyDataSetChanged();
-				onLoad();
-			}
-		}, 2000);
+                }
+                for (int i = 0; i < data.getData().getList().size(); i++) {
+                    try {
+                        bitmaps.add(bitmapTask.get(i).execute(i).get());
+                    } catch (InterruptedException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
+                listTitles = new ArrayList<String>();
+                for (int i = 0; i < data.getData().getList().size(); i++) {
+                    listTitles.add(data.getData().getList().get(i).getTitle());
+                }
+                ListAdapter = new XListViewAdapter(getActivity(), listTitles);
+                lv.setAdapter(ListAdapter);
+                pb = (ProgressBar) root.findViewById(R.id.pb);
+                lv.setVisibility(View.VISIBLE);
+                pb.setVisibility(View.GONE);
+                ListAdapter.notifyDataSetChanged();
+                onLoad();
+            }
+        }, 2000);
 
-	}
+    }
 
-	private void onLoad() {
-		lv.stopRefresh();
-		lv.stopLoadMore();
-		lv.setRefreshTime("¸Õ¸Õ");
-	}
+    private void onLoad() {
+        lv.stopRefresh();
+        lv.stopLoadMore();
+        lv.setRefreshTime("ï¿½Õ¸ï¿½");
+    }
 
-	@Override
-	public void onLoadMore() {
+    @Override
+    public void onLoadMore() {
 
-		mHandler.postDelayed(new Runnable() {
-			@Override
-			public void run() {
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
 
-				AsyncTask<Integer, Void, ArrayList<String>> task = new AsyncTask<Integer, Void, ArrayList<String>>() {
+                AsyncTask<Integer, Void, ArrayList<String>> task = new AsyncTask<Integer, Void, ArrayList<String>>() {
 
-					@Override
-					protected ArrayList<String> doInBackground(
-							Integer... params) {
-						page++;
-						ArrayList<String> titleList = new ArrayList<String>();
-						try {
-							ImportantNewsData data = getData(page);
-							for (int i = 0; i < data.getData().getList().size(); i++) {
-								titleList.add(data.getData().getList().get(i)
-										.getTitle());
-							}
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
+                    @Override
+                    protected ArrayList<String> doInBackground(
+                            Integer... params) {
+                        page++;
+                        ArrayList<String> titleList = new ArrayList<String>();
+                        try {
+                            ImportantNewsData data = getData(page);
+                            for (int i = 0; i < data.getData().getList().size(); i++) {
+                                titleList.add(data.getData().getList().get(i)
+                                        .getTitle());
+                            }
+                        } catch (IOException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
 
-						return titleList;
-					}
-				};
-				task.execute();
-				ArrayList<String> list = null;
-				try {
-					list = task.get();
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (ExecutionException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				listTitles.addAll(list);
+                        return titleList;
+                    }
+                };
+                task.execute();
+                ArrayList<String> list = null;
+                try {
+                    list = task.get();
+                } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                listTitles.addAll(list);
 
-				final AsyncTask<String, Void, ImportantNewsData> task2 = new AsyncTask<String, Void, ImportantNewsData>() {
+                final AsyncTask<String, Void, ImportantNewsData> task2 = new AsyncTask<String, Void, ImportantNewsData>() {
 
-					@Override
-					protected ImportantNewsData doInBackground(String... params) {
-						ImportantNewsData data = null;
-						try {
-							data = getData(page);
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						return data;
-					}
-				};
-				task2.execute();
-				ImportantNewsData data = null;
-				try {
-					data = task2.get();
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (ExecutionException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+                    @Override
+                    protected ImportantNewsData doInBackground(String... params) {
+                        ImportantNewsData data = null;
+                        try {
+                            data = getData(page);
+                        } catch (IOException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                        return data;
+                    }
+                };
+                task2.execute();
+                ImportantNewsData data = null;
+                try {
+                    data = task2.get();
+                } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
 
-				if (data != null) {
+                if (data != null) {
 
-					newsList.addAll(data.getData().getList());
-				}
-				ArrayList<AsyncTask<Integer, Void, Bitmap>> task3 = new ArrayList<AsyncTask<Integer, Void, Bitmap>>();
-				for (int i = 0; i < data.getData().getList().size(); i++) {
-					AsyncTask<Integer, Void, Bitmap> newBitmapTask = new AsyncTask<Integer, Void, Bitmap>() {
+                    newsList.addAll(data.getData().getList());
+                }
+                ArrayList<AsyncTask<Integer, Void, Bitmap>> task3 = new ArrayList<AsyncTask<Integer, Void, Bitmap>>();
+                for (int i = 0; i < data.getData().getList().size(); i++) {
+                    AsyncTask<Integer, Void, Bitmap> newBitmapTask = new AsyncTask<Integer, Void, Bitmap>() {
 
-						@Override
-						protected Bitmap doInBackground(Integer... params) {
-							String urlString;
-							Bitmap map = null;
-							try {
-								urlString = task2.get().getData().getList()
-										.get(params[0]).getImage();
-								URL url = null;
-								if (urlString != null) {
+                        @Override
+                        protected Bitmap doInBackground(Integer... params) {
+                            String urlString;
+                            Bitmap map = null;
+                            try {
+                                urlString = task2.get().getData().getList()
+                                        .get(params[0]).getImage();
+                                URL url = null;
+                                if (urlString != null) {
 
-									url = new URL(urlString);
-								}
-								InputStream is = url.openStream();
-								map = BitmapFactory.decodeStream(is);
-							} catch (InterruptedException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							} catch (ExecutionException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							} catch (MalformedURLException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							} catch (IOException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
+                                    url = new URL(urlString);
+                                }
+                                InputStream is = url.openStream();
+                                map = BitmapFactory.decodeStream(is);
+                            } catch (InterruptedException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                            } catch (ExecutionException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                            } catch (MalformedURLException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                            } catch (IOException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                            }
 
-							return map;
-						}
-					};
-					task3.add(newBitmapTask);
-				}
-				ArrayList<Bitmap> arrayList = new ArrayList<Bitmap>();
-				for (int i = 0; i < data.getData().getList().size(); i++) {
-					try {
-						arrayList.add(task3.get(i).execute(i).get());
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (ExecutionException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-				bitmaps.addAll(arrayList);
+                            return map;
+                        }
+                    };
+                    task3.add(newBitmapTask);
+                }
+                ArrayList<Bitmap> arrayList = new ArrayList<Bitmap>();
+                for (int i = 0; i < data.getData().getList().size(); i++) {
+                    try {
+                        arrayList.add(task3.get(i).execute(i).get());
+                    } catch (InterruptedException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
+                bitmaps.addAll(arrayList);
 
-				ListAdapter.notifyDataSetChanged();
-				onLoad();
-			}
-		}, 2000);
-	}
+                ListAdapter.notifyDataSetChanged();
+                onLoad();
+            }
+        }, 2000);
+    }
 
-	public class XListViewAdapter extends BaseAdapter {
-		// ÁÐ±íƒÈÈÝµÄßmÅäÆ÷
-		private LayoutInflater inflater;
-		private int count = 10;
-		private ArrayList<String> listTitles;
+    public class XListViewAdapter extends BaseAdapter {
+        // ï¿½Ð±ï¿½ï¿½ï¿½Ýµï¿½ï¿½mï¿½ï¿½ï¿½ï¿½
+        private LayoutInflater inflater;
+        private int count = 10;
+        private ArrayList<String> listTitles;
 
-		public LayoutInflater getInflater() {
-			return inflater;
-		}
+        public LayoutInflater getInflater() {
+            return inflater;
+        }
 
-		public void setInflater(LayoutInflater inflater) {
-			this.inflater = inflater;
-		}
+        public void setInflater(LayoutInflater inflater) {
+            this.inflater = inflater;
+        }
 
-		public void setCount(int count) {
-			this.count = count;
-		}
+        public void setCount(int count) {
+            this.count = count;
+        }
 
-		public XListViewAdapter(Context context) {
-			this.inflater = LayoutInflater.from(context);
+        public XListViewAdapter(Context context) {
+            this.inflater = LayoutInflater.from(context);
 
-		}
+        }
 
-		public XListViewAdapter(Context context, ArrayList<String> listTitles) {
-			this.inflater = LayoutInflater.from(context);
-			this.listTitles = listTitles;
+        public XListViewAdapter(Context context, ArrayList<String> listTitles) {
+            this.inflater = LayoutInflater.from(context);
+            this.listTitles = listTitles;
 
-		}
+        }
 
-		public void setCount(int countNumber, boolean isRefresh) {
-			if (!isRefresh) {
-				count = countNumber + count;
-			}
+        public void setCount(int countNumber, boolean isRefresh) {
+            if (!isRefresh) {
+                count = countNumber + count;
+            }
 
-		}
+        }
 
-		@Override
-		public int getCount() {
-			// TODO Auto-generated method stub
-			return listTitles.size();
-		}
+        @Override
+        public int getCount() {
+            // TODO Auto-generated method stub
+            return listTitles.size();
+        }
 
-		@Override
-		public Object getItem(int position) {
-			// TODO Auto-generated method stub
-			return null;
-		}
+        @Override
+        public Object getItem(int position) {
+            // TODO Auto-generated method stub
+            return null;
+        }
 
-		@Override
-		public long getItemId(int position) {
-			// TODO Auto-generated method stub
-			return 0;
-		}
+        @Override
+        public long getItemId(int position) {
+            // TODO Auto-generated method stub
+            return 0;
+        }
 
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			ViewHolder holder;
-			if (convertView == null) {
-				convertView = inflater.inflate(R.layout.item_list, null);
-				holder = new ViewHolder();
-				holder.iv = (ImageView) convertView.findViewById(R.id.iv);
-				holder.tvTitle = (TextView) convertView
-						.findViewById(R.id.tvTitle);
-				convertView.setTag(holder);
-			} else {
-				holder = (ViewHolder) convertView.getTag();
-			}
-			holder.iv.setImageResource(R.drawable.news_list_bg);
-			if (bitmaps.get(position) != null) {
-				holder.iv.setImageBitmap(bitmaps.get(position));
-			}
-			holder.tvTitle.setText(listTitles.get(position));
-			return convertView;
-		}
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            ViewHolder holder;
+            if (convertView == null) {
+                convertView = inflater.inflate(R.layout.item_list, null);
+                holder = new ViewHolder();
+                holder.iv = (ImageView) convertView.findViewById(R.id.iv);
+                holder.tvTitle = (TextView) convertView
+                        .findViewById(R.id.tvTitle);
+                convertView.setTag(holder);
+            } else {
+                holder = (ViewHolder) convertView.getTag();
+            }
+            holder.iv.setImageResource(R.drawable.news_list_bg);
+            if (bitmaps.get(position) != null) {
+                holder.iv.setImageBitmap(bitmaps.get(position));
+            }
+            holder.tvTitle.setText(listTitles.get(position));
+            return convertView;
+        }
 
-		public class ViewHolder {
-			public ImageView iv;
-			public TextView tvTitle;
-			public TextView tvDescription;
-		}
+        public class ViewHolder {
+            public ImageView iv;
+            public TextView tvTitle;
+            public TextView tvDescription;
+        }
 
-	}
+    }
 }

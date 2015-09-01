@@ -21,7 +21,7 @@ import medusa.theone.waterdroplistview.utils.Utils;
 
 /**
  * Created by xiayong on 2015/6/23.
- * ÏÂÀ­Í·ÖÐ¼äµÄ¡°Ë®µÎ¡±
+ * ï¿½ï¿½ï¿½ï¿½Í·ï¿½Ð¼ï¿½Ä¡ï¿½Ë®ï¿½Î¡ï¿½
  */
 public class WaterDropView extends View {
 
@@ -30,11 +30,11 @@ public class WaterDropView extends View {
 
     private Paint mPaint;
     private Path mPath;
-    private float mMaxCircleRadius;//Ô²°ë¾¶×î´óÖµ
-    private float mMinCircleRaidus;//Ô²°ë¾¶×îÐ¡Öµ
-    private Bitmap arrowBitmap;//¼ýÍ·
+    private float mMaxCircleRadius;//Ô²ï¿½ë¾¶ï¿½ï¿½ï¿½Öµ
+    private float mMinCircleRaidus;//Ô²ï¿½ë¾¶ï¿½ï¿½Ð¡Öµ
+    private Bitmap arrowBitmap;//ï¿½ï¿½Í·
     private final static int BACK_ANIM_DURATION = 180;
-    private final static float STROKE_WIDTH = 2;//±ßÏß¿í¶È
+    private final static float STROKE_WIDTH = 2;//ï¿½ï¿½ï¿½ß¿ï¿½ï¿½
 
     public WaterDropView(Context context) {
         super(context);
@@ -114,9 +114,9 @@ public class WaterDropView extends View {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        //¿í¶È£ºÉÏÔ²ºÍÏÂÔ²µÄ×î´óÖ±¾¶
+        //ï¿½ï¿½È£ï¿½ï¿½ï¿½Ô²ï¿½ï¿½ï¿½ï¿½Ô²ï¿½ï¿½ï¿½ï¿½ï¿½Ö±ï¿½ï¿½
         int width = (int) ((mMaxCircleRadius + STROKE_WIDTH) * 2);
-        //¸ß¶È£ºÉÏÔ²°ë¾¶ + Ô²ÐÄ¾à + ÏÂÔ²°ë¾¶
+        //ï¿½ß¶È£ï¿½ï¿½ï¿½Ô²ï¿½ë¾¶ + Ô²ï¿½Ä¾ï¿½ + ï¿½ï¿½Ô²ï¿½ë¾¶
         int height = (int) Math.ceil(bottomCircle.getY()+bottomCircle.getRadius() + STROKE_WIDTH * 2);
         setMeasuredDimension(width, height);
     }
@@ -141,7 +141,7 @@ public class WaterDropView extends View {
 
     private void makeBezierPath() {
         mPath.reset();
-        //»ñÈ¡Á½Ô²µÄÁ½¸öÇÐÏßÐÎ³ÉµÄËÄ¸öÇÐµã
+        //ï¿½ï¿½È¡ï¿½ï¿½Ô²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î³Éµï¿½ï¿½Ä¸ï¿½ï¿½Ðµï¿½
         double angle = getAngle();
         float top_x1 = (float) (topCircle.getX() - topCircle.getRadius() * Math.cos(angle));
         float top_y1 = (float) (topCircle.getY() + topCircle.getRadius() * Math.sin(angle));
@@ -175,7 +175,7 @@ public class WaterDropView extends View {
     }
 
     /**
-     * »ñµÃÁ½¸öÔ²ÇÐÏßÓëÔ²ÐÄÁ¬ÏßµÄ¼Ð½Ç
+     * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô²ï¿½ï¿½ï¿½ï¿½ï¿½ßµÄ¼Ð½ï¿½
      *
      * @return
      */
@@ -187,10 +187,10 @@ public class WaterDropView extends View {
     }
 
     /**
-     * ´´½¨»Øµ¯¶¯»­
-     * ÉÏÔ²°ë¾¶¼õËÙ»Ö¸´ÖÁ×î´ó°ë¾¶
-     * ÏÂÔ²°ë¾¶¼õËÙ»Ö¸´ÖÁ×î´ó°ë¾¶
-     * Ô²ÐÄ¾à¼õËÙ´Ó×î´óÖµ¼õµ½0(ÏÂÔ²Y´Óµ±Ç°Î»ÖÃÒÆ¶¯µ½ÉÏÔ²Y)¡£
+     * ï¿½ï¿½ï¿½ï¿½ï¿½Øµï¿½ï¿½ï¿½ï¿½ï¿½
+     * ï¿½ï¿½Ô²ï¿½ë¾¶ï¿½ï¿½ï¿½Ù»Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ë¾¶
+     * ï¿½ï¿½Ô²ï¿½ë¾¶ï¿½ï¿½ï¿½Ù»Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ë¾¶
+     * Ô²ï¿½Ä¾ï¿½ï¿½ï¿½Ù´ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½0(ï¿½ï¿½Ô²Yï¿½Óµï¿½Ç°Î»ï¿½ï¿½ï¿½Æ¶ï¿½ï¿½ï¿½ï¿½ï¿½Ô²Y)ï¿½ï¿½
      *
      * @return
      */
@@ -207,14 +207,14 @@ public class WaterDropView extends View {
     }
 
     /**
-     * Íê³ÉµÄ°Ù·Ö±È
+     * ï¿½ï¿½ÉµÄ°Ù·Ö±ï¿½
      *
      * @param percent between[0,1]
      */
     public void updateComleteState(float percent) {
-        if (percent < 0 || percent > 1) {
-            throw new IllegalStateException("completion percent should between 0 and 1!");
-        }
+//        if (percent < 0 || percent > 1) {
+//            throw new IllegalStateException("completion percent should between 0 and 1!");
+//        }
         float top_r = (float) (mMaxCircleRadius - 0.25 * percent * mMaxCircleRadius);
         float bottom_r = (mMinCircleRaidus - mMaxCircleRadius) * percent + mMaxCircleRadius;
         float bottomCricleOffset = 2 * percent * mMaxCircleRadius;

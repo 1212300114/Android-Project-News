@@ -19,6 +19,7 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.v4.app.FragmentActivity;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -34,6 +35,7 @@ public class MainActivity extends FragmentActivity {
     private FragmentAboutUs fragmentAboutUs;
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
+    private long firstTime;
 
     public SlidingMenu getSlidingMenu1() {
         return slidingMenu1;
@@ -233,6 +235,25 @@ public class MainActivity extends FragmentActivity {
     protected void onActivityResult(int arg0, int arg1, Intent arg2) {
 
         super.onActivityResult(arg0, arg1, arg2);
+    }
+
+    @Override
+    public void onBackPressed() {
+        long secondTime = System.currentTimeMillis();
+        if (slidingMenu1.isMenuShowing()) {
+            slidingMenu1.toggle();
+        } else if (slidingMenu2.isMenuShowing()) {
+            slidingMenu2.toggle();
+        } else {
+
+            if (secondTime - firstTime > 2000) {
+                //判断两次点击按钮时间间隔 大于2秒则弹出消息
+                Toast.makeText(MainActivity.this, "再次按下退出程序", Toast.LENGTH_SHORT).show();
+                firstTime = secondTime;
+            } else {//小于2秒则推出activity也就推出了app
+                finish();
+            }
+        }
     }
 
 }

@@ -1,5 +1,6 @@
 package com.example.demo.news.fragments.slidingmenu.left;
 
+import android.annotation.TargetApi;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -9,6 +10,7 @@ import android.graphics.Rect;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -79,6 +81,11 @@ public class FragmentMain extends Fragment implements OnClickListener {
                 storedJson = cursor.getString(cursor.getColumnIndex("json"));
             }
         }
+        cursor.close();
+        dbRead.close();
+        if (!MainActivity.isNetworkConnected(getActivity())) {
+            indicatorData = loader.getJSONDate(storedJson);
+        }
     }
 
     @Override
@@ -106,17 +113,15 @@ public class FragmentMain extends Fragment implements OnClickListener {
         };
         task.execute();
         try {
-            if (network) {
+            if (MainActivity.isNetworkConnected(getActivity())) {
                 indicatorData = task.get();//获取到数据
-            } else {
             }
+
         } catch (InterruptedException | ExecutionException e1) {
             // TODO Auto-generated catch block
             e1.printStackTrace();
         }
-        if (!network) {
-            indicatorData = loader.getJSONDate(storedJson);
-        }
+
         root = inflater.inflate(R.layout.fragment_main, container, false);
         viewPager = (ViewPager) root.findViewById(R.id.pager);
         fragments = new ArrayList<>();
@@ -236,6 +241,7 @@ public class FragmentMain extends Fragment implements OnClickListener {
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     @Override
     public void onDetach() {
         super.onDetach();
@@ -246,9 +252,7 @@ public class FragmentMain extends Fragment implements OnClickListener {
             childFragmentManager.setAccessible(true);
             childFragmentManager.set(this, null);
 
-        } catch (NoSuchFieldException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
+        } catch (NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
 
@@ -313,27 +317,14 @@ public class FragmentMain extends Fragment implements OnClickListener {
             }
         }
         if (flag) {
-            String sql = "DELETE FROM listData WHERE name ='" + TITLE + "'";
-            database.execSQL(sql);
+            database.update("listData", values, "name = ?", new String[]{TITLE});
+        } else {
+            database.insert("listData", null, values);
         }
-
-        database.insert("listData", null, values);
         cursor.close();
         database.close();
         return loader.getJSONDate(JSON);
 
-    }
-
-    public static boolean isNetworkConnected(Context context) {
-        if (context != null) {
-            ConnectivityManager mConnectivityManager = (ConnectivityManager) context
-                    .getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
-            if (mNetworkInfo != null) {
-                return mNetworkInfo.isAvailable();
-            }
-        }
-        return false;
     }
 
 }

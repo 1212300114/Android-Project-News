@@ -28,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.demo.news.activity.LooperViewDetails;
+import com.example.demo.news.activity.MainActivity;
 import com.example.demo.news.databasehelper.ListDataHelper;
 import com.example.demo.news.databeans.firstpage.FirstPageData;
 import com.example.demo.news.databeans.firstpage.FirstpageLoopPager;
@@ -108,21 +109,23 @@ public class FragmentFirstPage extends Fragment implements XListView.IXListViewL
                 .showImageOnFail(R.drawable.news_list_bg).cacheInMemory(true)
                 .cacheOnDisk(true).build();
         listDataHelper = new ListDataHelper(getActivity());
-        task = new AsyncTask<String, Void, FirstPageData>() {
+        if (MainActivity.isNetworkConnected(getActivity())) {
+            task = new AsyncTask<String, Void, FirstPageData>() {
 
-            @Override
-            protected FirstPageData doInBackground(String... params) {
-                FirstPageData data = null;
-                try {
-                    data = getResource(page);
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                @Override
+                protected FirstPageData doInBackground(String... params) {
+                    FirstPageData data = null;
+                    try {
+                        data = getResource(page);
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                    return data;
                 }
-                return data;
-            }
-        };
-        task.execute();
+            };
+            task.execute();
+        }
         classId = 0;
         SQLiteDatabase dbRead = listDataHelper.getReadableDatabase();
         Cursor cursor = dbRead.query("listData", null, null, null, null, null, null);
@@ -131,6 +134,9 @@ public class FragmentFirstPage extends Fragment implements XListView.IXListViewL
             if (name.equals(TITLE)) {
                 storedJson = cursor.getString(cursor.getColumnIndex("json"));
             }
+        }
+        if (!MainActivity.isNetworkConnected(getActivity())) {
+            data = loader.getJSONDate(storedJson);
         }
     }
 
@@ -196,14 +202,11 @@ public class FragmentFirstPage extends Fragment implements XListView.IXListViewL
                 had = true;
             }
         }
-        System.out.print("有没有这条数据" + had);
         if (had) {
-            String sql = "delete from listData where name  = '"
-                    + TITLE + "'";
-            dbWrite.execSQL(sql);
+            dbWrite.update("listData", values, "name = ?", new String[]{TITLE});
+        } else {
+            dbWrite.insert("listData", null, values);
         }
-        dbWrite.insert("listData", null, values);
-
         dbWrite.close();
         dbRead.close();
         return loader.getJSONDate(JSON);
@@ -218,37 +221,37 @@ public class FragmentFirstPage extends Fragment implements XListView.IXListViewL
             @Override
             public void run() {
 
-                // TODO Auto-generated method stub
-                task2 = new AsyncTask<String, Void, FirstPageData>() {
+                if (MainActivity.isNetworkConnected(getActivity())) {
+                    task2 = new AsyncTask<String, Void, FirstPageData>() {
 
-                    @Override
-                    protected FirstPageData doInBackground(String... params) {
-                        FirstPageData data = null;
-                        try {
-                            data = getResource(page);
-                        } catch (IOException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
+                        @Override
+                        protected FirstPageData doInBackground(String... params) {
+                            FirstPageData data = null;
+                            try {
+                                data = getResource(page);
+                            } catch (IOException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                            }
+                            return data;
                         }
-                        return data;
-                    }
-                };
-                task2.execute();
+                    };
+                    task2.execute();
+                }
                 page = 1;
                 listImageURL.clear();
                 bannerImageURL.clear();
                 listTitles.clear();
                 try {
-                    if (network) {
+                    if (MainActivity.isNetworkConnected(getActivity())) {
                         data = task2.get();
-                    } else {
                     }
                 } catch (ExecutionException | InterruptedException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
-                if (!network) {
-                    data = loader.getJSONDate(storedJson);
+                if (!MainActivity.isNetworkConnected(getActivity())) {
+                    Toast.makeText(getActivity(), "请检查您的网络后再试", Toast.LENGTH_SHORT).show();
                 }
                 pageCount = data.getData().getPagecount();
                 viewPagerSize = data.getData().getBanner().size();
@@ -258,40 +261,34 @@ public class FragmentFirstPage extends Fragment implements XListView.IXListViewL
                             .getImage());
                 }
                 for (int j = 0; j < data.getData().getBanner().size(); j++) {
-
                     bannerImageURL.add(data.getData().getBanner()
                             .get(j).getImage());
                 }
-                if (data != null) {
-                    // ¼��ͼ��������
-                    imageSource = new ArrayList<>();
-                    if (viewPagerSize > 0 && !viewPagerCreated) {
-                        for (int i = 0; i < viewPagerSize; i++) {
-                            imageViews[i] = (ImageView) layoutInflater.inflate(
-                                    R.layout.image_item, null);
-                            imageSource.add(imageViews[i]);
-                        }
-
-                        try {
-                            ImageAdapter adapter = new ImageAdapter(imageSource);
-                            lv.addHeaderView(init(layoutInflater));
-                            viewPagerCreated = true;
-                            viewPager.setAdapter(adapter);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-
+                imageSource = new ArrayList<>();
+                if (viewPagerSize > 0 && !viewPagerCreated) {
+                    for (int i = 0; i < viewPagerSize; i++) {
+                        imageViews[i] = (ImageView) layoutInflater.inflate(
+                                R.layout.image_item, null);
+                        imageSource.add(imageViews[i]);
+                    }
+                    try {
+                        ImageAdapter adapter = new ImageAdapter(imageSource);
+                        lv.addHeaderView(init(layoutInflater));
+                        viewPagerCreated = true;
+                        viewPager.setAdapter(adapter);
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
 
-                    for (int i = 0; i < data.getData().getList().size(); i++) {
-                        listTitles.add(data.getData().getList().get(i).getTitle());
-                    }
-
-                    adapter = new XListViewAdapter(getActivity(), listTitles);
-                    lv.setAdapter(adapter);
-                    adapter.notifyDataSetChanged();
-                    lv.stopRefresh();
                 }
+
+                for (int i = 0; i < data.getData().getList().size(); i++) {
+                    listTitles.add(data.getData().getList().get(i).getTitle());
+                }
+                adapter = new XListViewAdapter(getActivity(), listTitles);
+                lv.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+                lv.stopRefresh();
                 bar.setVisibility(View.GONE);
                 lv.setVisibility(View.VISIBLE);
             }
@@ -305,6 +302,9 @@ public class FragmentFirstPage extends Fragment implements XListView.IXListViewL
 
         if (page >= pageCount) {
             Toast.makeText(getActivity(), "没有更多了", Toast.LENGTH_SHORT).show();
+            onLoad();
+        } else if (!MainActivity.isNetworkConnected(getActivity())) {
+            Toast.makeText(getActivity(), "请检查您的网络后再试", Toast.LENGTH_SHORT).show();
             onLoad();
         } else {
             page++;

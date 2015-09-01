@@ -14,6 +14,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -103,21 +104,23 @@ public class FragmentAll extends Fragment implements IXListViewListener, WaterDr
                 .showImageOnFail(R.drawable.news_list_bg).cacheInMemory(true)
                 .cacheOnDisk(true).build();
         listDataHelper = new ListDataHelper(getActivity());
-        task = new AsyncTask<String, Void, FirstPageData>() {
+        if (network) {
+            task = new AsyncTask<String, Void, FirstPageData>() {
 
-            @Override
-            protected FirstPageData doInBackground(String... params) {
-                FirstPageData data = null;
-                try {
-                    data = getResource(1);
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                @Override
+                protected FirstPageData doInBackground(String... params) {
+                    FirstPageData data = null;
+                    try {
+                        data = getResource(1);
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                    return data;
                 }
-                return data;
-            }
-        };
-        task.execute();
+            };
+            task.execute();
+        }
         SQLiteDatabase dbRead = listDataHelper.getReadableDatabase();
         Cursor cursor = dbRead.query("listData", null, null, null, null, null, null);
         while (cursor.moveToNext()) {
@@ -126,7 +129,14 @@ public class FragmentAll extends Fragment implements IXListViewListener, WaterDr
                 storedJson = cursor.getString(cursor.getColumnIndex("json"));
             }
         }
-        System.out.print("存储的数据" + storedJson + "\n");
+        dbRead.close();
+        cursor.close();
+        System.out.print("\n" + storedJson + "\n");
+        if (!network) {
+            System.out.print("--------------------");
+            data = loader.getJSONDate(storedJson);
+            System.out.print(new Gson().toJson(data));
+        }
     }
 
     @Override
@@ -206,11 +216,10 @@ public class FragmentAll extends Fragment implements IXListViewListener, WaterDr
             }
         }
         if (had) {
-            String sql = "delete from listData where name  = '"
-                    + name + "'";
-            dbWrite.execSQL(sql);
+            dbWrite.update("listData", values, "name = ?", new String[]{name});
+        } else {
+            dbWrite.insert("listData", null, values);
         }
-        dbWrite.insert("listData", null, values);
         dbWrite.close();
         dbRead.close();
         return loader.getJSONDate(JSON);
@@ -225,37 +234,36 @@ public class FragmentAll extends Fragment implements IXListViewListener, WaterDr
             @SuppressLint("InflateParams")
             @Override
             public void run() {
+
                 // TODO Auto-generated method stub
 
                 page = 1;
-                task2 = new AsyncTask<String, Void, FirstPageData>() {
+                if (network) {
+                    task2 = new AsyncTask<String, Void, FirstPageData>() {
 
-                    @Override
-                    protected FirstPageData doInBackground(String... params) {
-                        FirstPageData data = null;
-                        try {
-                            data = getResource(page);
-                        } catch (IOException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
+                        @Override
+                        protected FirstPageData doInBackground(String... params) {
+                            FirstPageData data = null;
+                            try {
+                                data = getResource(page);
+                            } catch (IOException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                            }
+                            return data;
                         }
-                        return data;
-                    }
-                };
-                task2.execute();
-                try {
-                    if (network) {
+                    };
+                    task2.execute();
+                    try {
                         data = task2.get();//获取到数据
-                    } else {
+                    } catch (InterruptedException | ExecutionException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
                     }
-                } catch (InterruptedException | ExecutionException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
                 }
-                if (!network) {
-                    System.out.print("--------------------");
-                    data = loader.getJSONDate(storedJson);
-                    System.out.print(new Gson().toJson(data));
+                if (!MainActivity.isNetworkConnected(getActivity())) {
+                    Toast.makeText(getActivity(), "请检查您的网络后再试", Toast.LENGTH_SHORT).show();
+
                 }
                 pageCount = data.getData().getPagecount();
                 viewPagerSize = data.getData().getBanner().size();
@@ -267,11 +275,9 @@ public class FragmentAll extends Fragment implements IXListViewListener, WaterDr
                             .getImage());
                 }
                 for (int j = 0; j < data.getData().getBanner().size(); j++) {
-
                     bannerImageURL.add(data.getData().getBanner()
                             .get(j).getImage());
                 }
-
                 imageSource = new ArrayList<>();
                 if (viewPagerSize > 0 && !viewPagerCreated) {
                     viewPagerCreated = true;
@@ -280,7 +286,6 @@ public class FragmentAll extends Fragment implements IXListViewListener, WaterDr
                                 R.layout.image_item, null);
                         imageSource.add(imageViews[i]);
                     }
-
                     try {
                         ImageAdapter adapter = new ImageAdapter(imageSource);
                         lv.addHeaderView(init(layoutInflater));
@@ -294,7 +299,6 @@ public class FragmentAll extends Fragment implements IXListViewListener, WaterDr
                 for (int i = 0; i < data.getData().getList().size(); i++) {
                     listTitles.add(data.getData().getList().get(i).getTitle());
                 }
-
                 bar.setVisibility(View.GONE);
 
                 adapter = new XListViewAdapter(getActivity(), listTitles);
@@ -315,6 +319,10 @@ public class FragmentAll extends Fragment implements IXListViewListener, WaterDr
         if (page >= pageCount) {
             Toast.makeText(getActivity(), "没有更多了", Toast.LENGTH_SHORT).show();
             onLoad();
+        } else if (!network) {
+            Toast.makeText(getActivity(), "请检查您的网络后再试", Toast.LENGTH_SHORT).show();
+            onLoad();
+
         } else {
             page++;
 
