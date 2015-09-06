@@ -27,7 +27,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.demo.news.activity.LooperViewDetails;
+import com.example.demo.news.activity.LooperViewDetailsActivity;
 import com.example.demo.news.activity.MainActivity;
 import com.example.demo.news.databasehelper.ListDataHelper;
 import com.example.demo.news.databeans.firstpage.FirstPageData;
@@ -174,7 +174,7 @@ public class FragmentFirstPage extends Fragment implements XListView.IXListViewL
                         contentId = data.getData().getList().get(position - 1)
                                 .getContent_id();
                     }
-                    intent = new Intent(getActivity(), LooperViewDetails.class);
+                    intent = new Intent(getActivity(), LooperViewDetailsActivity.class);
                     intent.putExtra("link", link);
                     intent.putExtra("content_id", contentId);
                     startActivityForResult(intent, 1);
@@ -520,7 +520,7 @@ public class FragmentFirstPage extends Fragment implements XListView.IXListViewL
                     infoLink = data.getData().getBanner()
                             .get(viewPager.getCurrentItem()).getInfo_link();
                     Intent intent = new Intent(getActivity(),
-                            LooperViewDetails.class);
+                            LooperViewDetailsActivity.class);
                     intent.putExtra("link", infoLink);
                     intent.putExtra("content_id", data.getData().getBanner()
                             .get(viewPager.getCurrentItem()).getContent_id());

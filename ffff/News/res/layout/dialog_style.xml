@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="400dp"
-    android:background="@drawable/dialog_background" >
+    android:background="@drawable/dialog_background">
 
     <TextView
         android:id="@+id/tvDialogTitle"
@@ -28,28 +28,34 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/line"
-        android:layout_centerHorizontal="true" >
+        android:layout_centerHorizontal="true">
 
-        <Button
-            android:id="@+id/tvFirstPage"
+        <CheckBox
+            android:id="@+id/btnFirstPage"
             android:layout_width="80dp"
             android:layout_height="40dp"
             android:layout_marginLeft="25dp"
             android:layout_marginTop="20dp"
-            android:background="@drawable/test"
+            android:background="@drawable/dialog_button_selector"
+            android:button="@null"
+            android:checked="true"
+            android:gravity="center"
             android:text="@string/firstpage1"
             android:textColor="#cf0808"
             android:textSize="15sp" />
 
-        <Button
-            android:id="@+id/tvImPortantNews"
+        <CheckBox
+            android:id="@+id/btnImportantNews"
             android:layout_width="80dp"
             android:layout_height="40dp"
             android:layout_alignParentRight="true"
             android:layout_marginRight="25dp"
             android:layout_marginTop="20dp"
-            android:background="@drawable/testt"
+            android:background="@drawable/dialog_button_selector"
+            android:button="@null"
+            android:gravity="center"
             android:text="@string/improtantnews"
+            android:textColor="#121212"
             android:textSize="15sp" />
     </RelativeLayout>
 
@@ -58,27 +64,31 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/first"
-        android:layout_centerHorizontal="true" >
+        android:layout_centerHorizontal="true">
 
-        <Button
-            android:id="@+id/tvWind"
+        <CheckBox
+            android:id="@+id/btnWind"
             android:layout_width="80dp"
             android:layout_height="40dp"
             android:layout_marginLeft="25dp"
             android:layout_marginTop="10dp"
-            android:background="@drawable/testt"
+            android:background="@drawable/dialog_button_selector"
+            android:button="@null"
+            android:gravity="center"
             android:text="@string/wind"
             android:textColor="#121212"
             android:textSize="15sp" />
 
-        <Button
-            android:id="@+id/tvCheck"
+        <CheckBox
+            android:id="@+id/btnCheck"
             android:layout_width="80dp"
             android:layout_height="40dp"
             android:layout_alignParentRight="true"
             android:layout_marginRight="25dp"
             android:layout_marginTop="10dp"
-            android:background="@drawable/testt"
+            android:background="@drawable/dialog_button_selector"
+            android:button="@null"
+            android:gravity="center"
             android:text="@string/check"
             android:textColor="#121212"
             android:textSize="15sp" />
@@ -89,39 +99,60 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/second"
-        android:layout_centerHorizontal="true" >
+        android:layout_centerHorizontal="true">
 
-        <Button
-            android:id="@+id/tvWatch"
+        <CheckBox
+            android:id="@+id/btnWatch"
             android:layout_width="80dp"
             android:layout_height="40dp"
             android:layout_marginLeft="25dp"
             android:layout_marginTop="10dp"
-            android:background="@drawable/testt"
+            android:background="@drawable/dialog_button_selector"
+            android:button="@null"
+            android:gravity="center"
             android:text="@string/watch"
             android:textColor="#121212"
             android:textSize="15sp" />
 
-        <Button
-            android:id="@+id/tvImageNews"
+        <CheckBox
+            android:id="@+id/btnImageNews"
             android:layout_width="80dp"
             android:layout_height="40dp"
             android:layout_alignParentRight="true"
             android:layout_marginRight="25dp"
             android:layout_marginTop="10dp"
-            android:background="@drawable/testt"
+            android:background="@drawable/dialog_button_selector"
+            android:button="@null"
+            android:gravity="center"
             android:text="@string/imagenews"
             android:textColor="#121212"
             android:textSize="15sp" />
 
-        <Button
-            android:id="@+id/tvSubject"
+        <CheckBox
+            android:id="@+id/btnBaoGuang"
             android:layout_width="80dp"
             android:layout_height="40dp"
-            android:layout_below="@+id/tvWatch"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/btnWatch"
+            android:layout_marginRight="25dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/dialog_button_selector"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/baoguang"
+            android:textColor="#121212"
+            android:textSize="15sp" />
+
+        <CheckBox
+            android:id="@+id/btnSubject"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:layout_below="@+id/btnWatch"
             android:layout_marginLeft="25dp"
             android:layout_marginTop="10dp"
-            android:background="@drawable/testt"
+            android:background="@drawable/dialog_button_selector"
+            android:button="@null"
+            android:gravity="center"
             android:text="@string/subject"
             android:textColor="#121212"
             android:textSize="15sp" />

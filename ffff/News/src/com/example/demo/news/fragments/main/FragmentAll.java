@@ -28,13 +28,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.demo.news.activity.LooperViewDetails;
+import com.example.demo.news.activity.LooperViewDetailsActivity;
 import com.example.demo.news.activity.MainActivity;
+import com.example.demo.news.activity.SubjectDetails;
 import com.example.demo.news.databasehelper.ListDataHelper;
+import com.example.demo.news.databeans.firstpage.FirstPageCate;
 import com.example.demo.news.databeans.firstpage.FirstPageData;
 import com.example.demo.news.databeans.firstpage.FirstpageLoopPager;
 import com.example.demo.news.dataloaders.FirstPageContentLoader;
-import com.example.demo.news.fragments.slidingmenu.left.FragmentMain;
 import com.example.demo.news.xlistviewsource.XListView.IXListViewListener;
 import com.google.gson.Gson;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -50,62 +51,67 @@ import java.util.concurrent.ExecutionException;
 import medusa.theone.waterdroplistview.view.WaterDropListView;
 
 public class FragmentAll extends Fragment implements IXListViewListener, WaterDropListView.IWaterDropListViewListener {
-    private View root;// fragment�������view
-    private WaterDropListView lv;// ����ˢ���б�
-    private String link;// �洢��main��ȡ����link
+    private View root;// fragment的主view
+    private WaterDropListView lv;// 新闻列表 使用的是水滴状下拉刷新的控件
+    private String link;// 从argument获取到的link用来获取拼接接口地址
     private ProgressBar bar;// ������Ϊ�������ʱ��ʾ�Ľ�����
-    private ImageView[] imageViews = new ImageView[20];// ViewPager��������
+    private ImageView[] imageViews = new ImageView[20];//imageview数组用来给轮播图放置内容
     private LayoutInflater layoutInflater = null;
-    private AsyncTask<String, Void, FirstPageData> task;// ���ص�ǰҳ�����ݵ�task
-    private AsyncTask<String, Void, FirstPageData> task2;// ���ص�ǰҳ�����ݵ�task
-    private FirstPageContentLoader loader = new FirstPageContentLoader();// ������
-    private FirstPageData data = null;// ����ʵ��
-    private int pageCount = 0;// ��ǰ��Ŀ�б������ҳ��
-    private int page = 1;// ��ǰҳ��
-    private boolean viewPagerCreated = false;// �ж��ֲ�ͼ�Ƿ��Ѿ�����
-    private int viewPagerSize = 0;// �ֲ�ͼ��size �ж��Ƿ�Ҫ����ֲ�ͼ��Ϊ0�����
-    private XListViewAdapter adapter;// �б����������
-    private Handler mHandler = null;// handler����ui
-    private ArrayList<String> listTitles;// �б����title
-    private ArrayList<FirstpageLoopPager> newsList = new ArrayList<>();// �����б��ڼ��ظ���ʱ��Ҫ������������ݲ�Ȼ�����ݵ��������������޷���ȡ
-    private LinearLayout layout;// ����ViewPager��layout
-    private ViewPager viewPager;// �ֲ�ͼ
-    private ArrayList<View> dots;// �ֲ�ͼ�ĵ�����
-    private ArrayList<ImageView> imageSource = new ArrayList<>();// �ֲ�ͼ��������
-    private String[] titles;// �ֲ�ͼ�ı�������
+    private AsyncTask<String, Void, FirstPageData> taskForSaving;// 获取网络数据用于保存数据字符串
+    private AsyncTask<String, Void, FirstPageData> taskForRefresh;// 用来加载数据的task 不用同一个的原因是？？我忘记了好像可以只用一个。
+    private FirstPageContentLoader loader = new FirstPageContentLoader();// 加载数据的loader也就是把加载的过程封装在一个类里面了
+    private FirstPageData data = null;// 获取到的数据实体
+    private int pageCount = 0;//  新闻列表的页数
+    private int page = 1;//  当前新闻页码
+    private boolean viewPagerCreated = false;// 判断viewpager即轮播图是否已经创建的flag
+    private int viewPagerSize = 0;// 轮播图的size 当为0的时候不添加轮播图当为1的时候不添加显示位置的点
+    private XListViewAdapter adapter;// 新闻列表的listview的适配器
+    private Handler mHandler = null;
+    private ArrayList<String> listTitles;// 新闻列表的标题字符串 数组
+    private ArrayList<FirstpageLoopPager> newsList = new ArrayList<>();//新闻列表数据数组
+    private ArrayList<FirstPageCate> cateList;//栏目数据数组主要是为了专题页 的分栏设计是获取数据
+    private LinearLayout layout;// 轮播图
+    private ViewPager viewPager;// 轮播图的viewpager部分
+    private ArrayList<View> dots;// 显示图片位置的点
+    private ArrayList<ImageView> imageSource = new ArrayList<>();//为填充viewpager的图片数组
+    private String[] titles;//轮播图的标题
     private String[] titles1;
-    private TextView viewPagerTitle;// �ֲ�ͼ�ı���view
+    private TextView viewPagerTitle;// 显示轮播图标题的textview
     private int oldPage = 0;
-    private int currPage = 0;
-    private ImageLoader imageLoader;
-    private DisplayImageOptions options;
-    private ArrayList<String> listImageURL;
-    private ArrayList<String> bannerImageURL;
-    private String name;
-    private ListDataHelper listDataHelper;
-    private int classId;
-    private SharedPreferences sharedPreferences;
-    private boolean network = false;
-    private String storedJson;
+    private ImageLoader imageLoader;//imageloader加载图片··贼好使
+    private DisplayImageOptions options;//加载图片的选项
+    private ArrayList<String> listImageURL;//新闻列表的图片地址字符串数组
+    private ArrayList<String> bannerImageURL;//轮播图的图片地址字符串数组
+    private String name;//当前栏目的标题
+    private ListDataHelper listDataHelper;//数据库建立的helper
+    private SharedPreferences sharedPreferences;//其实没用到的 app保存数据
+    private boolean network = false;//判断网络状态的flag
+    private String storedJson;//从数据库获取到的字符串
+    private boolean subject = false;//判断当前栏目是否为专题的flag
+    private Context context;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        bannerImageURL = new ArrayList<>();
+        cateList = new ArrayList<>();
         sharedPreferences = getActivity().getSharedPreferences("settings", Context.MODE_PRIVATE);
         network = sharedPreferences.getBoolean("network", false);
         Bundle bundle = getArguments();
         name = bundle.getString("name");
-        classId = bundle.getInt("classId");
+        context = getActivity();
         link = bundle.getString("link");// ��ȡ��link�Ӷ���ȡ����ǰ��Ŀ������
+        Log.e("link", link);
         imageLoader = ImageLoader.getInstance();
         options = new DisplayImageOptions.Builder()
                 .showImageOnLoading(R.drawable.news_list_bg)
                 .showImageForEmptyUri(R.drawable.news_list_bg)
                 .showImageOnFail(R.drawable.news_list_bg).cacheInMemory(true)
                 .cacheOnDisk(true).build();
-        listDataHelper = new ListDataHelper(getActivity());
+        //初始化各种数据以及图片加载选项
+        listDataHelper = new ListDataHelper(context);
         if (network) {
-            task = new AsyncTask<String, Void, FirstPageData>() {
+            taskForSaving = new AsyncTask<String, Void, FirstPageData>() {
 
                 @Override
                 protected FirstPageData doInBackground(String... params) {
@@ -119,7 +125,7 @@ public class FragmentAll extends Fragment implements IXListViewListener, WaterDr
                     return data;
                 }
             };
-            task.execute();
+            taskForSaving.execute();
         }
         SQLiteDatabase dbRead = listDataHelper.getReadableDatabase();
         Cursor cursor = dbRead.query("listData", null, null, null, null, null, null);
@@ -129,18 +135,22 @@ public class FragmentAll extends Fragment implements IXListViewListener, WaterDr
                 storedJson = cursor.getString(cursor.getColumnIndex("json"));
             }
         }
+        //从数据库获取到当前栏目的数据
         dbRead.close();
         cursor.close();
         System.out.print("\n" + storedJson + "\n");
         if (!network) {
             System.out.print("--------------------");
-            data = loader.getJSONDate(storedJson);
+            data = loader.getJSONDate(storedJson);//如果没用网络则调用数据库的数据
             System.out.print(new Gson().toJson(data));
+        }
+        if (name.equals("专题")) {
+            subject = true;//栏目是专题flag = true；
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         layoutInflater = inflater;
@@ -150,54 +160,67 @@ public class FragmentAll extends Fragment implements IXListViewListener, WaterDr
         oldPage = 0;
         viewPagerCreated = false;// ����ʱ�Ƚ��ֲ�ͼ����Ϊδ����
         onRefresh();
-        SQLiteDatabase dbRead = listDataHelper.getReadableDatabase();
-        Cursor c = dbRead.query("listData", null, null, null, null, null, null);
-        while (c.moveToNext()) {
-            String json = c.getString(c.getColumnIndex("json"));
-            System.out.print("数据库的内容" + json + "\n");
-        }
-        System.out.print("输出完毕\n");
-        c.close();
-        dbRead.close();
         lv.setWaterDropListViewListener(this);
         lv.setPullLoadEnable(true);
-        if (newsList.size() < 10) {
+        if (newsList.size() < 10 || subject) {
             lv.setPullLoadEnable(false);
         }
-        lv.setOnItemClickListener(new OnItemClickListener() {
+        if (!subject) {
+            //如果不知专题时新闻列表的点击事件
+            lv.setOnItemClickListener(new OnItemClickListener() {
 
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                String link;
-                Intent intent;
-                Integer contentId;
-                if (position >= 1) {
-                    if (viewPagerSize > 0) {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view,
+                                        int position, long id) {
+                    String link;
+                    Intent intent;
+                    Integer contentId;
+                    if (position >= 1) {
+                        if (viewPagerSize > 0) {
 
-                        link = data.getData().getList().get(position - 2)
-                                .getInfo_link();
-                        contentId = data.getData().getList().get(position - 2)
-                                .getContent_id();
-                    } else {
-                        link = data.getData().getList().get(position - 1)
-                                .getInfo_link();
-                        contentId = data.getData().getList().get(position - 1)
-                                .getContent_id();
+                            link = data.getData().getList().get(position - 2)
+                                    .getInfo_link();
+                            contentId = data.getData().getList().get(position - 2)
+                                    .getContent_id();
+                        } else {
+                            link = data.getData().getList().get(position - 1)
+                                    .getInfo_link();
+                            contentId = data.getData().getList().get(position - 1)
+                                    .getContent_id();
+                        }
+                        intent = new Intent(context, LooperViewDetailsActivity.class);
+                        intent.putExtra("link", link);
+                        intent.putExtra("content_id", contentId);
+                        startActivityForResult(intent, 1);
                     }
-                    intent = new Intent(getActivity(), LooperViewDetails.class);
-                    intent.putExtra("link", link);
-                    intent.putExtra("content_id", contentId);
-                    startActivityForResult(intent, 1);
                 }
-            }
-        });
+            });
+        } else {
+            lv.setOnItemClickListener(new OnItemClickListener() {
+                //如果是专题时的设置
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    if (position >= 1) {
+                        String link;
+                        String name;
+                        Intent intent;
+                        name = cateList.get(position - 1).getName();
+                        link = cateList.get(position - 1).getCate_link();
+                        intent = new Intent(context, SubjectDetails.class);
+                        intent.putExtra("link", link);
+                        intent.putExtra("name", name);
+                        startActivity(intent);
+                    }
+                }
+            });
+        }
         return root;
 
     }
 
     // ��ȡjson����ķ���
     private FirstPageData getResource(int i) throws IOException {
+        //获取数据的方法同时执行方法的同时回去更新数据库的内容
         String JSON = loader
                 .readURL("http://api.jjjc.yn.gov.cn/jwapp/?service=" + link
                         + "&page=" + i);
@@ -220,6 +243,7 @@ public class FragmentAll extends Fragment implements IXListViewListener, WaterDr
         } else {
             dbWrite.insert("listData", null, values);
         }
+        cursor.close();
         dbWrite.close();
         dbRead.close();
         return loader.getJSONDate(JSON);
@@ -236,10 +260,10 @@ public class FragmentAll extends Fragment implements IXListViewListener, WaterDr
             public void run() {
 
                 // TODO Auto-generated method stub
-
+                //刷新时的操作包含了第一次获取数据时候的操作
                 page = 1;
-                if (network) {
-                    task2 = new AsyncTask<String, Void, FirstPageData>() {
+                if (MainActivity.isNetworkConnected(context)) {
+                    taskForRefresh = new AsyncTask<String, Void, FirstPageData>() {
 
                         @Override
                         protected FirstPageData doInBackground(String... params) {
@@ -253,33 +277,42 @@ public class FragmentAll extends Fragment implements IXListViewListener, WaterDr
                             return data;
                         }
                     };
-                    task2.execute();
+                    taskForRefresh.execute();
                     try {
-                        data = task2.get();//获取到数据
+                        data = taskForRefresh.get();//获取到数据
                     } catch (InterruptedException | ExecutionException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
                 }
-                if (!MainActivity.isNetworkConnected(getActivity())) {
-                    Toast.makeText(getActivity(), "请检查您的网络后再试", Toast.LENGTH_SHORT).show();
+                if (!MainActivity.isNetworkConnected(context)) {
+                    Toast.makeText(context, "请检查您的网络后再试", Toast.LENGTH_SHORT).show();
 
                 }
                 pageCount = data.getData().getPagecount();
                 viewPagerSize = data.getData().getBanner().size();
                 newsList = data.getData().getList();
+                cateList = data.getData().getCate();
                 listImageURL = new ArrayList<>();
-                bannerImageURL = new ArrayList<>();
-                for (int i = 0; i < data.getData().getList().size(); i++) {
-                    listImageURL.add(data.getData().getList().get(i)
-                            .getImage());
-                }
-                for (int j = 0; j < data.getData().getBanner().size(); j++) {
-                    bannerImageURL.add(data.getData().getBanner()
-                            .get(j).getImage());
+
+                listTitles = new ArrayList<>();
+                if (!subject) {//针对是否为专题获取不同的数据来呈现不同的列表
+                    for (int i = 0; i < data.getData().getList().size(); i++) {
+                        listImageURL.add(data.getData().getList().get(i)
+                                .getImage());
+                    }
+                } else {
+                    for (int i = 0; i < data.getData().getCate().size(); i++) {
+                        listImageURL.add(data.getData().getCate().get(i).getImage());
+                    }
                 }
                 imageSource = new ArrayList<>();
+                //轮播图数据的设置
                 if (viewPagerSize > 0 && !viewPagerCreated) {
+                    for (int j = 0; j < data.getData().getBanner().size(); j++) {
+                        bannerImageURL.add(data.getData().getBanner()
+                                .get(j).getImage());
+                    }
                     viewPagerCreated = true;
                     for (int i = 0; i < viewPagerSize; i++) {
                         imageViews[i] = (ImageView) layoutInflater.inflate(
@@ -295,15 +328,18 @@ public class FragmentAll extends Fragment implements IXListViewListener, WaterDr
                     }
 
                 }
-                listTitles = new ArrayList<>();
-                for (int i = 0; i < data.getData().getList().size(); i++) {
-                    listTitles.add(data.getData().getList().get(i).getTitle());
+                if (!subject) {
+                    for (int i = 0; i < data.getData().getList().size(); i++) {
+                        listTitles.add(data.getData().getList().get(i).getTitle());
+                    }
+                } else {
+                    for (int i = 0; i < data.getData().getCate().size(); i++) {
+                        listTitles.add(data.getData().getCate().get(i).getName());
+                    }
                 }
                 bar.setVisibility(View.GONE);
-
-                adapter = new XListViewAdapter(getActivity(), listTitles);
+                adapter = new XListViewAdapter(context, listTitles);
                 // firstPageListAdapter.setBitmaps(listBitmaps);
-
                 lv.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
                 lv.setVisibility(View.VISIBLE);
@@ -315,21 +351,20 @@ public class FragmentAll extends Fragment implements IXListViewListener, WaterDr
 
     @Override
     public void onLoadMore() {
-
+        //加载更多的操作
         if (page >= pageCount) {
-            Toast.makeText(getActivity(), "没有更多了", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "没有更多了", Toast.LENGTH_SHORT).show();
             onLoad();
-        } else if (!network) {
-            Toast.makeText(getActivity(), "请检查您的网络后再试", Toast.LENGTH_SHORT).show();
+        } else if (!MainActivity.isNetworkConnected(context)) {
+            Toast.makeText(context, "请检查您的网络后再试", Toast.LENGTH_SHORT).show();
             onLoad();
 
         } else {
             page++;
-
             mHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-
+                    //加载更多数据的task
                     final AsyncTask<String, Void, FirstPageData> task2 = new AsyncTask<String, Void, FirstPageData>() {
 
                         @Override
@@ -348,16 +383,13 @@ public class FragmentAll extends Fragment implements IXListViewListener, WaterDr
                     FirstPageData data = null;
                     try {
                         data = task2.get();
-                    } catch (InterruptedException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    } catch (ExecutionException e) {
+                    } catch (InterruptedException | ExecutionException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
 
                     if (data != null) {
-
+                        //向title 和image 数组添加内容
                         newsList.addAll(data.getData().getList());
                         for (int i = 0; i < data.getData().getList().size(); i++) {
                             listTitles.add(data.getData().getList().get(i)
@@ -382,10 +414,8 @@ public class FragmentAll extends Fragment implements IXListViewListener, WaterDr
     // ��ʼ���ֲ�ͼ������
     @SuppressLint("InflateParams")
     public LinearLayout init(LayoutInflater inflater) throws Exception {
-        if (task != null) {
 
-            data = task.get();
-        }
+        //初始化轮播图内容的方法
         layout = (LinearLayout) inflater.inflate(R.layout.fragment_viewpager,
                 null);
         viewPager = (ViewPager) layout.findViewById(R.id.vp);
@@ -424,7 +454,7 @@ public class FragmentAll extends Fragment implements IXListViewListener, WaterDr
             }
 
         }
-        // �������ݵ����ã����Ƚ���������Ϊ���ݵĵ�һ������ٶ�̬�ĸı�
+        //缩短title的做法
         viewPagerTitle = (TextView) layout.findViewById(R.id.title);
         if (titles1 != null) {
 
@@ -446,11 +476,10 @@ public class FragmentAll extends Fragment implements IXListViewListener, WaterDr
         } else {
             viewPagerTitle.setText(titles[0]);
         }
-
         return layout;
     }
 
-    // �ֲ�ͼ��ҳ�仯��������
+    //  轮播图变化的侦听器主要为了更新显示点的状态以及轮播图标题
     private class MyPageChangeListener implements OnPageChangeListener {
 
         @Override
@@ -488,15 +517,13 @@ public class FragmentAll extends Fragment implements IXListViewListener, WaterDr
             dots.get(oldPage).setBackgroundResource(R.drawable.dot_normal);
             // ��¼��ҳ��
             oldPage = position;
-            currPage = position;
 
         }
 
     }
 
     public class ImageAdapter extends PagerAdapter {
-        // ��ҳ�ֲ�ͼ�������������������Ҫʵ�������ֲ���getcount�����Ż�һ���ܴ������Ȼ�󽫵��ڵ�λ�����ó��м��һ�����־Ϳ������߻����ˡ�����
-        // ������instantiateItem����Ҫһ���Ĳ���
+        //轮播图viewpager的适配器
         private ArrayList<ImageView> imageSource = null;
 
         public ImageAdapter(ArrayList<ImageView> imageSource) {
@@ -540,21 +567,22 @@ public class FragmentAll extends Fragment implements IXListViewListener, WaterDr
                     String infoLink;
                     infoLink = data.getData().getBanner()
                             .get(viewPager.getCurrentItem()).getInfo_link();
-                    Intent intent = new Intent(getActivity(),
-                            LooperViewDetails.class);
+                    Intent intent = new Intent(context,
+                            LooperViewDetailsActivity.class);
                     intent.putExtra("link", infoLink);
                     intent.putExtra("content_id", data.getData().getBanner()
                             .get(viewPager.getCurrentItem()).getContent_id());
                     startActivity(intent);
                 }
             });
+            //当图片被载入到viewpager的时候就为他设置侦听
             return imageSource.get(position);
 
         }
     }
 
     public class XListViewAdapter extends BaseAdapter {
-        // �б���ݵ��m����
+        //新闻列表的适配器
         private LayoutInflater inflater;
         private int count = 10;
         private ArrayList<String> listTitles;
@@ -607,28 +635,43 @@ public class FragmentAll extends Fragment implements IXListViewListener, WaterDr
             return 0;
         }
 
+        //根据是否为专题加载不同的内容
         @SuppressLint("InflateParams")
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             ViewHolder holder;
-            if (convertView == null) {
-                convertView = inflater.inflate(R.layout.item_list, null);
-                holder = new ViewHolder();
-                holder.iv = (ImageView) convertView.findViewById(R.id.iv);
-                holder.tvTitle = (TextView) convertView
-                        .findViewById(R.id.tvTitle);
-                convertView.setTag(holder);
+            if (!subject) {
+                if (convertView == null) {
+                    convertView = inflater.inflate(R.layout.item_list, null);
+                    holder = new ViewHolder();
+                    holder.iv = (ImageView) convertView.findViewById(R.id.iv);
+                    holder.tvTitle = (TextView) convertView
+                            .findViewById(R.id.tvTitle);
+                    convertView.setTag(holder);
+                } else {
+                    holder = (ViewHolder) convertView.getTag();
+                }
+                imageLoader.displayImage(listImageURL.get(position), holder.iv,
+                        options);
+                if (listTitles.get(position).length() > 25) {
+                    char[] t = listTitles.get(position).toCharArray();
+                    char[] tt = new char[25];
+                    System.arraycopy(t, 0, tt, 0, 25);
+                    holder.tvTitle.setText(String.valueOf(tt) + "...");
+                } else {
+                    holder.tvTitle.setText(listTitles.get(position));
+                }
             } else {
-                holder = (ViewHolder) convertView.getTag();
-            }
-            imageLoader.displayImage(listImageURL.get(position), holder.iv,
-                    options);
-            if (listTitles.get(position).length() > 25) {
-                char[] t = listTitles.get(position).toCharArray();
-                char[] tt = new char[25];
-                System.arraycopy(t, 0, tt, 0, 25);
-                holder.tvTitle.setText(String.valueOf(tt) + "...");
-            } else {
+                if (convertView == null) {
+                    convertView = inflater.inflate(R.layout.item_subject, null);
+                    holder = new ViewHolder();
+                    holder.iv = (ImageView) convertView.findViewById(R.id.iv);
+                    holder.tvTitle = (TextView) convertView.findViewById(R.id.tv);
+                    convertView.setTag(holder);
+                } else {
+                    holder = (ViewHolder) convertView.getTag();
+                }
+                imageLoader.displayImage(listImageURL.get(position), holder.iv, options);
                 holder.tvTitle.setText(listTitles.get(position));
             }
             return convertView;

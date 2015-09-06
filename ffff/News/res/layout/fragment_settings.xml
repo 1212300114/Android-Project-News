@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.demo.news.activity.Settings" >
+    tools:context="com.example.demo.news.activity.SettingsActivity" >
 
     <ImageButton
         android:id="@+id/btnBack"

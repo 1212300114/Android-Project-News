@@ -5,23 +5,28 @@ import java.util.ArrayList;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentTransaction;
+import android.view.ViewGroup;
 
-public class FragmentViewPagerAdapter extends FragmentPagerAdapter {
+public class FragmentViewPagerAdapter extends FragmentStatePagerAdapter {
     //栏目viewpager的适配器 里面的gettitle方法返回给viewpagerindicator导航栏标题
     private ArrayList<Fragment> fragments;
     private String[] titles = new String[]{"首页", "要闻", "审查", "党风", "巡视",
             "图闻", "专题"};
+    private ArrayList<String> title;
 
     public ArrayList<Fragment> getFragments() {
         return fragments;
     }
 
-    public void setTitles(String[] titles) {
-        this.titles = titles;
+    public void setTitles(ArrayList<String> titles) {
+        this.title = titles;
     }
 
     public void setFragments(ArrayList<Fragment> fragments) {
         this.fragments = fragments;
+        notifyDataSetChanged();
     }
 
     public FragmentViewPagerAdapter(FragmentManager fm) {
@@ -38,6 +43,9 @@ public class FragmentViewPagerAdapter extends FragmentPagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         // TODO Auto-generated method stub
+        if (title != null) {
+            return title.get(position);
+        }
         return titles[position % titles.length];
     }
 
@@ -53,4 +61,8 @@ public class FragmentViewPagerAdapter extends FragmentPagerAdapter {
         return fragments.size();
     }
 
+    @Override
+    public int getItemPosition(Object object) {
+        return POSITION_NONE;
+    }
 }

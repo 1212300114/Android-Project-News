@@ -8,10 +8,10 @@ package com.baoyz.swipemenulistview;
 
 public final class R {
 	public static final class drawable {
-		public static final int ic_launcher = 0x7f02003a;
+		public static final int ic_launcher = 0x7f02003b;
 	}
 	public static final class string {
-		public static final int app_name = 0x7f0d0004;
+		public static final int app_name = 0x7f0d0005;
 	}
 	public static final class style {
 		public static final int AppBaseTheme = 0x7f070000;

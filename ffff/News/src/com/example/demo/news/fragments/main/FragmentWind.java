@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 import net.xinhuamm.d0403.R;
-import com.example.demo.news.activity.LooperViewDetails;
+import com.example.demo.news.activity.LooperViewDetailsActivity;
 import com.example.demo.news.databeans.importantnews.ImportantNewsData;
 import com.example.demo.news.databeans.importantnews.ImportantNewsList;
 import com.example.demo.news.dataloaders.ImportantNewsLoader;
@@ -42,10 +42,10 @@ public class FragmentWind extends Fragment implements IXListViewListener {
 	private XListViewAdapter ListAdapter;
 	private Handler mHandler = new Handler();
 	private ImportantNewsLoader loader = new ImportantNewsLoader();
-	private ImportantNewsData data;// ÒªÎÅÒ³»ñÈ¡µÄÍøÂçÊý¾Ý
-	private AsyncTask<String, Void, ImportantNewsData> task;// ¼ÓÔØÒªÎÅµÄtask
-	private ArrayList<String> listTitles;// ÁÐ±íÏîµÄtitle
-	private int page = 1;// µ±Ç°ÁÐ±íÏîµÄÒ³Êý
+	private ImportantNewsData data;// Òªï¿½ï¿½Ò³ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	private AsyncTask<String, Void, ImportantNewsData> task;// ï¿½ï¿½ï¿½ï¿½Òªï¿½Åµï¿½task
+	private ArrayList<String> listTitles;// ï¿½Ð±ï¿½ï¿½ï¿½ï¿½title
+	private int page = 1;// ï¿½ï¿½Ç°ï¿½Ð±ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½
 	private ArrayList<ImportantNewsList> newsList = null;
 
 	@Override
@@ -71,7 +71,7 @@ public class FragmentWind extends Fragment implements IXListViewListener {
 					int position, long id) {
 				String link = newsList.get(position - 1).getInfo_link();
 				Intent intent = new Intent(getActivity(),
-						LooperViewDetails.class);
+						LooperViewDetailsActivity.class);
 				intent.putExtra("link", link);
 				startActivity(intent);
 			}
@@ -91,7 +91,7 @@ public class FragmentWind extends Fragment implements IXListViewListener {
 
 	}
 
-	// »ñÈ¡ÁÐ±íÏîÍ¼Æ¬µÄ·½·¨
+	// ï¿½ï¿½È¡ï¿½Ð±ï¿½ï¿½ï¿½Í¼Æ¬ï¿½Ä·ï¿½ï¿½ï¿½
 	@SuppressWarnings("unused")
 	private Bitmap getListBitmap(int position) throws InterruptedException,
 			ExecutionException, IOException {
@@ -164,7 +164,7 @@ public class FragmentWind extends Fragment implements IXListViewListener {
 	private void onLoad() {
 		lv.stopRefresh();
 		lv.stopLoadMore();
-		lv.setRefreshTime("¸Õ¸Õ");
+		lv.setRefreshTime("ï¿½Õ¸ï¿½");
 	}
 
 	@Override
@@ -244,7 +244,7 @@ public class FragmentWind extends Fragment implements IXListViewListener {
 	}
 
 	public class XListViewAdapter extends BaseAdapter {
-		// ÁÐ±íƒÈÈÝµÄßmÅäÆ÷
+		// ï¿½Ð±ï¿½ï¿½ï¿½Ýµï¿½ï¿½mï¿½ï¿½ï¿½ï¿½
 		private LayoutInflater inflater;
 		private int count = 10;
 

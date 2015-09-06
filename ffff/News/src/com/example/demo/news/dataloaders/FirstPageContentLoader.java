@@ -13,13 +13,12 @@ import com.example.demo.news.databeans.firstpage.FirstPageData;
 import com.google.gson.Gson;
 
 public class FirstPageContentLoader {
-	public String readURL(String urlString) throws ClientProtocolException,
+	public String readURL(String urlString) throws
 			IOException {
 		HttpGet get = new HttpGet(urlString);
 		HttpClient client = new DefaultHttpClient();
 		HttpResponse response = client.execute(get);
 		String resultString = EntityUtils.toString(response.getEntity());
-
 		return resultString;
 	}
 

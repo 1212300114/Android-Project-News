@@ -7,7 +7,7 @@ import java.util.concurrent.ExecutionException;
 
 import net.xinhuamm.d0403.R;
 
-import com.example.demo.news.activity.LooperViewDetails;
+import com.example.demo.news.activity.LooperViewDetailsActivity;
 import com.example.demo.news.activity.MainActivity;
 import com.example.demo.news.databeans.importantnews.ImportantNewsData;
 import com.example.demo.news.databeans.importantnews.ImportantNewsList;
@@ -34,326 +34,337 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Toast;
 
 //党纪法规栏目内容
 @SuppressLint("InflateParams")
 public class FragmentLaw extends Fragment implements OnClickListener,
-		IXListViewListener {
-	private SlidingMenu slidingMenu1;
-	private SlidingMenu slidingMenu2;
-	private ImageButton showLeft;
-	private ImageButton showRight;
-	private View root;
-	private XListView lv;
-	private ProgressBar pb;
-	private XListViewAdapter ListAdapter;
-	private Handler mHandler = new Handler();
-	private ImportantNewsLoader loader = new ImportantNewsLoader();
-	private ImportantNewsData data;// Ҫ��ҳ��ȡ����������
-	private AsyncTask<String, Void, ImportantNewsData> task;// ����Ҫ�ŵ�task
-	private ArrayList<String> listTitles;// �б����title
-	private int page = 1;// ��ǰ�б����ҳ��
-	private ArrayList<ImportantNewsList> newsList = null;
-	private Context context;
+        IXListViewListener {
+    private SlidingMenu slidingMenu1;
+    private SlidingMenu slidingMenu2;
+    private ImageButton showLeft;
+    private ImageButton showRight;
+    private View root;
+    private XListView lv;
+    private ProgressBar pb;
+    private XListViewAdapter ListAdapter;
+    private Handler mHandler = new Handler();
+    private ImportantNewsLoader loader = new ImportantNewsLoader();
+    private ImportantNewsData data;// Ҫ��ҳ��ȡ����������
+    private AsyncTask<String, Void, ImportantNewsData> task;// ����Ҫ�ŵ�task
+    private ArrayList<String> listTitles;// �б����title
+    private int page = 1;// ��ǰ�б����ҳ��
+    private ArrayList<ImportantNewsList> newsList = null;
+    private Context context;
+    private int pageCount = 0;
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		context = getActivity().getApplicationContext();
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        context = getActivity().getApplicationContext();
 
-		super.onCreate(savedInstanceState);
-	}
+        super.onCreate(savedInstanceState);
+    }
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		root = inflater.inflate(R.layout.fragment_law, container, false);
-		slidingMenu1 = ((MainActivity) getActivity()).getSlidingMenu1();
-		slidingMenu2 = ((MainActivity) getActivity()).getSlidingMenu2();
-		slidingMenu1.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
-		slidingMenu2.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
-		showLeft = (ImageButton) root.findViewById(R.id.btnShowLeft);
-		showLeft.setOnClickListener(this);
-		showRight = (ImageButton) root.findViewById(R.id.btnShowRight);
-		showRight.setOnClickListener(this);
+    @Override
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        root = inflater.inflate(R.layout.fragment_law, container, false);
+        slidingMenu1 = ((MainActivity) getActivity()).getSlidingMenu1();
+        slidingMenu2 = ((MainActivity) getActivity()).getSlidingMenu2();
+        slidingMenu1.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+        slidingMenu2.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+        showLeft = (ImageButton) root.findViewById(R.id.btnShowLeft);
+        showLeft.setOnClickListener(this);
+        showRight = (ImageButton) root.findViewById(R.id.btnShowRight);
+        showRight.setOnClickListener(this);
 
-		lv = (XListView) root.findViewById(R.id.lvFirstPage);
-		onRefresh();
+        lv = (XListView) root.findViewById(R.id.lvFirstPage);
+        onRefresh();
 
-		lv.setXListViewListener(this);
-		lv.setPullLoadEnable(true);
-		lv.setPullRefreshEnable(true);
-		lv.setVisibility(View.GONE);
-		lv.setOnItemClickListener(new OnItemClickListener() {
+        lv.setXListViewListener(this);
+        lv.setPullLoadEnable(true);
+        lv.setPullRefreshEnable(true);
+        lv.setVisibility(View.GONE);
+        if (MainActivity.isNetworkConnected(getActivity())) {
+            lv.setOnItemClickListener(new OnItemClickListener() {
 
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
-				String link = newsList.get(position - 1).getInfo_link();
-				Intent intent = new Intent(getActivity(),
-						LooperViewDetails.class);
-				intent.putExtra("link", link);
-				startActivity(intent);
-			}
-		});
-		return root;
-	}
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view,
+                                        int position, long id) {
+                    String link = newsList.get(position - 1).getInfo_link();
+                    Intent intent = new Intent(getActivity(),
+                            LooperViewDetailsActivity.class);
+                    int contentId = newsList.get(position - 1).getContent_id();
+                    intent.putExtra("content_id", contentId);
+                    intent.putExtra("link", link);
+                    startActivity(intent);
+                }
+            });
+        }
+        return root;
+    }
 
-	private ImportantNewsData getData(int i) throws IOException {
+    private ImportantNewsData getData(int i) throws IOException {
 
-		String JSON = loader
-				.readURL("http://api.jjjc.yn.gov.cn//jwapp//?service=List.index&cid=43&page="
-						+ i);
-		ImportantNewsData data = loader.getJSONDate(JSON);
+        String JSON = loader
+                .readURL("http://api.jjjc.yn.gov.cn//jwapp//?service=List.index&cid=43&page="
+                        + i);
+        ImportantNewsData data = loader.getJSONDate(JSON);
+        return data;
 
-		return data;
+    }
 
-	}
+    @Override
+    public void onRefresh() {
 
-	@Override
-	public void onRefresh() {
+        if (MainActivity.isNetworkConnected(getActivity())) {
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    page = 1;
+                    task = new AsyncTask<String, Void, ImportantNewsData>() {
 
-		mHandler.postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				page = 1;
-				task = new AsyncTask<String, Void, ImportantNewsData>() {
+                        @Override
+                        protected ImportantNewsData doInBackground(String... params) {
+                            ImportantNewsData data = null;
+                            try {
+                                data = getData(1);
+                            } catch (IOException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                            }
+                            return data;
+                        }
+                    };
+                    task.execute();
+                    if (task != null) {
+                        try {
+                            data = task.get();
+                            newsList = data.getData().getList();
+                            pageCount = data.getData().getPagecount();
+                        } catch (InterruptedException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        } catch (ExecutionException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                    }
+                    listTitles = new ArrayList<String>();
+                    listTitles.clear();
+                    for (int i = 0; i < data.getData().getList().size(); i++) {
+                        listTitles.add(data.getData().getList().get(i).getTitle());
+                    }
+                    System.out.println("listsize=" + listTitles.size());
+                    ListAdapter = new XListViewAdapter(context, listTitles);
+                    lv.setAdapter(ListAdapter);
+                    pb = (ProgressBar) root.findViewById(R.id.pb);
+                    lv.setVisibility(View.VISIBLE);
+                    pb.setVisibility(View.GONE);
+                    ListAdapter.notifyDataSetChanged();
+                    onLoad();
+                }
+            }, 2000);
+        } else {
+            Toast.makeText(getActivity(), "请检查您的网络后继续", Toast.LENGTH_SHORT).show();
+            onLoad();
+        }
 
-					@Override
-					protected ImportantNewsData doInBackground(String... params) {
-						ImportantNewsData data = null;
-						try {
-							data = getData(1);
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						return data;
-					}
-				};
-				task.execute();
-				if (task != null) {
-					try {
-						data = task.get();
-						newsList = data.getData().getList();
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (ExecutionException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-				listTitles = new ArrayList<String>();
-				listTitles.removeAll(listTitles);
-				for (int i = 0; i < data.getData().getList().size(); i++) {
-					listTitles.add(data.getData().getList().get(i).getTitle());
-				}
-				System.out.println("listsize=" + listTitles.size());
-				ListAdapter = new XListViewAdapter(context, listTitles);
-				lv.setAdapter(ListAdapter);
-				pb = (ProgressBar) root.findViewById(R.id.pb);
-				lv.setVisibility(View.VISIBLE);
-				pb.setVisibility(View.GONE);
-				ListAdapter.notifyDataSetChanged();
-				onLoad();
-			}
-		}, 2000);
+    }
 
-	}
+    private void onLoad() {
+        lv.stopRefresh();
+        lv.stopLoadMore();
+        lv.setRefreshTime("刚刚");
+    }
 
-	private void onLoad() {
-		lv.stopRefresh();
-		lv.stopLoadMore();
-		lv.setRefreshTime("刚刚");
-	}
+    @Override
+    public void onLoadMore() {
 
-	@Override
-	public void onLoadMore() {
+        page++;
+        if (page >= pageCount) {
+            Toast.makeText(getActivity(), "没有更多了", Toast.LENGTH_SHORT).show();
+            onLoad();
+        } else {
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
 
-		mHandler.postDelayed(new Runnable() {
-			@Override
-			public void run() {
+                    AsyncTask<Integer, Void, ArrayList<String>> task = new AsyncTask<Integer, Void, ArrayList<String>>() {
 
-				AsyncTask<Integer, Void, ArrayList<String>> task = new AsyncTask<Integer, Void, ArrayList<String>>() {
+                        @Override
+                        protected ArrayList<String> doInBackground(
+                                Integer... params) {
 
-					@Override
-					protected ArrayList<String> doInBackground(
-							Integer... params) {
-						page++;
-						ArrayList<String> titleList = new ArrayList<String>();
-						try {
-							ImportantNewsData data = getData(page);
-							for (int i = 0; i < data.getData().getList().size(); i++) {
-								titleList.add(data.getData().getList().get(i)
-										.getTitle());
-							}
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
+                            ArrayList<String> titleList = new ArrayList<String>();
+                            try {
+                                ImportantNewsData data = getData(page);
+                                for (int i = 0; i < data.getData().getList().size(); i++) {
+                                    titleList.add(data.getData().getList().get(i)
+                                            .getTitle());
+                                }
+                            } catch (IOException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                            }
 
-						return titleList;
-					}
-				};
-				task.execute();
-				ArrayList<String> list = null;
-				try {
-					list = task.get();
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (ExecutionException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				listTitles.addAll(list);
+                            return titleList;
+                        }
+                    };
+                    task.execute();
+                    ArrayList<String> list = null;
+                    try {
+                        list = task.get();
+                    } catch (InterruptedException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                    listTitles.addAll(list);
 
-				AsyncTask<String, Void, ImportantNewsData> task2 = new AsyncTask<String, Void, ImportantNewsData>() {
+                    AsyncTask<String, Void, ImportantNewsData> task2 = new AsyncTask<String, Void, ImportantNewsData>() {
 
-					@Override
-					protected ImportantNewsData doInBackground(String... params) {
-						ImportantNewsData data = null;
-						try {
-							data = getData(page);
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						return data;
-					}
-				};
-				task2.execute();
-				ImportantNewsData data = null;
-				try {
-					data = task2.get();
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (ExecutionException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				if (data != null) {
+                        @Override
+                        protected ImportantNewsData doInBackground(String... params) {
+                            ImportantNewsData data = null;
+                            try {
+                                data = getData(page);
+                            } catch (IOException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                            }
+                            return data;
+                        }
+                    };
+                    task2.execute();
+                    ImportantNewsData data = null;
+                    try {
+                        data = task2.get();
+                    } catch (InterruptedException | ExecutionException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                    if (data != null) {
 
-					newsList.addAll(data.getData().getList());
-				}
-				ListAdapter.notifyDataSetChanged();
-				onLoad();
-			}
-		}, 2000);
-	}
+                        newsList.addAll(data.getData().getList());
+                    }
+                    ListAdapter.notifyDataSetChanged();
+                    onLoad();
+                }
+            }, 2000);
+        }
+    }
 
-	@Override
-	public void onClick(View v) {
-		switch (v.getId()) {
-		case R.id.btnShowLeft:
-			slidingMenu1.toggle();
-			break;
-		case R.id.btnShowRight:
-			slidingMenu2.toggle();
-			break;
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btnShowLeft:
+                slidingMenu1.toggle();
+                break;
+            case R.id.btnShowRight:
+                slidingMenu2.toggle();
+                break;
 
-		default:
-			break;
-		}
-	}
+            default:
+                break;
+        }
+    }
 
-	@Override
-	public void onDetach() {
-		super.onDetach();
-		super.onDetach();
-		try {
-			Field childFragmentManager = Fragment.class
-					.getDeclaredField("mChildFragmentManager");
-			childFragmentManager.setAccessible(true);
-			childFragmentManager.set(this, null);
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        super.onDetach();
+        try {
+            Field childFragmentManager = Fragment.class
+                    .getDeclaredField("mChildFragmentManager");
+            childFragmentManager.setAccessible(true);
+            childFragmentManager.set(this, null);
 
-		} catch (NoSuchFieldException e) {
-			throw new RuntimeException(e);
-		} catch (IllegalAccessException e) {
-			throw new RuntimeException(e);
-		}
+        } catch (NoSuchFieldException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
 
-	}
+    }
 
-	public class XListViewAdapter extends BaseAdapter {
-		// �б���ݵ��m����
-		private LayoutInflater inflater;
-		private int count = 10;
-		private ArrayList<String> listTitles;
+    public class XListViewAdapter extends BaseAdapter {
+        // �б���ݵ��m����
+        private LayoutInflater inflater;
+        private int count = 10;
+        private ArrayList<String> listTitles;
 
-		public LayoutInflater getInflater() {
-			return inflater;
-		}
+        public LayoutInflater getInflater() {
+            return inflater;
+        }
 
-		public void setInflater(LayoutInflater inflater) {
-			this.inflater = inflater;
-		}
+        public void setInflater(LayoutInflater inflater) {
+            this.inflater = inflater;
+        }
 
-		public void setCount(int count) {
-			this.count = count;
-		}
+        public void setCount(int count) {
+            this.count = count;
+        }
 
-		public XListViewAdapter(Context context) {
-			this.inflater = LayoutInflater.from(context);
+        public XListViewAdapter(Context context) {
+            this.inflater = LayoutInflater.from(context);
 
-		}
+        }
 
-		public XListViewAdapter(Context context, ArrayList<String> listTitles) {
-			this.inflater = LayoutInflater.from(context);
-			this.listTitles = listTitles;
+        public XListViewAdapter(Context context, ArrayList<String> listTitles) {
+            this.inflater = LayoutInflater.from(context);
+            this.listTitles = listTitles;
 
-		}
+        }
 
-		public void setCount(int countNumber, boolean isRefresh) {
-			if (!isRefresh) {
-				count = countNumber + count;
-			}
+        public void setCount(int countNumber, boolean isRefresh) {
+            if (!isRefresh) {
+                count = countNumber + count;
+            }
 
-		}
+        }
 
-		@Override
-		public int getCount() {
-			// TODO Auto-generated method stub
-			return listTitles.size();
-		}
+        @Override
+        public int getCount() {
+            // TODO Auto-generated method stub
+            return listTitles.size();
+        }
 
-		@Override
-		public Object getItem(int position) {
-			// TODO Auto-generated method stub
-			return null;
-		}
+        @Override
+        public Object getItem(int position) {
+            // TODO Auto-generated method stub
+            return null;
+        }
 
-		@Override
-		public long getItemId(int position) {
-			// TODO Auto-generated method stub
-			return 0;
-		}
+        @Override
+        public long getItemId(int position) {
+            // TODO Auto-generated method stub
+            return 0;
+        }
 
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			ViewHolder holder;
-			if (convertView == null) {
-				convertView = inflater.inflate(R.layout.item_list, null);
-				holder = new ViewHolder();
-				holder.iv = (ImageView) convertView.findViewById(R.id.iv);
-				holder.tvTitle = (TextView) convertView
-						.findViewById(R.id.tvTitle);
-				convertView.setTag(holder);
-			} else {
-				holder = (ViewHolder) convertView.getTag();
-			}
-			holder.iv.setImageResource(R.drawable.jinping);
-			holder.iv.setVisibility(View.GONE);
-			holder.tvTitle.setText(listTitles.get(position));
-			return convertView;
-		}
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            ViewHolder holder;
+            if (convertView == null) {
+                convertView = inflater.inflate(R.layout.item_law, null);
+                holder = new ViewHolder();
+                holder.tvTitle = (TextView) convertView
+                        .findViewById(R.id.tvTitle);
+                convertView.setTag(holder);
+            } else {
+                holder = (ViewHolder) convertView.getTag();
+            }
+            holder.tvTitle.setText(listTitles.get(position));
+            return convertView;
+        }
 
-		public class ViewHolder {
-			public ImageView iv;
-			public TextView tvTitle;
-			public TextView tvDescription;
-		}
+        public class ViewHolder {
+            public ImageView iv;
+            public TextView tvTitle;
+            public TextView tvDescription;
+        }
 
-	}
+    }
 }

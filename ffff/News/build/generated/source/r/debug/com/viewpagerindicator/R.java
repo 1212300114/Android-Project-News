@@ -57,16 +57,16 @@ public final class R {
 		public static final int default_title_indicator_selected_color = 0x7f0a001d;
 		public static final int default_title_indicator_text_color = 0x7f0a001e;
 		public static final int default_underline_indicator_selected_color = 0x7f0a001f;
-		public static final int vpi__background_holo_dark = 0x7f0a0044;
-		public static final int vpi__background_holo_light = 0x7f0a0045;
-		public static final int vpi__bright_foreground_disabled_holo_dark = 0x7f0a0046;
-		public static final int vpi__bright_foreground_disabled_holo_light = 0x7f0a0047;
-		public static final int vpi__bright_foreground_holo_dark = 0x7f0a0048;
-		public static final int vpi__bright_foreground_holo_light = 0x7f0a0049;
-		public static final int vpi__bright_foreground_inverse_holo_dark = 0x7f0a004a;
-		public static final int vpi__bright_foreground_inverse_holo_light = 0x7f0a004b;
-		public static final int vpi__dark_theme = 0x7f0a0054;
-		public static final int vpi__light_theme = 0x7f0a0055;
+		public static final int vpi__background_holo_dark = 0x7f0a0045;
+		public static final int vpi__background_holo_light = 0x7f0a0046;
+		public static final int vpi__bright_foreground_disabled_holo_dark = 0x7f0a0047;
+		public static final int vpi__bright_foreground_disabled_holo_light = 0x7f0a0048;
+		public static final int vpi__bright_foreground_holo_dark = 0x7f0a0049;
+		public static final int vpi__bright_foreground_holo_light = 0x7f0a004a;
+		public static final int vpi__bright_foreground_inverse_holo_dark = 0x7f0a004b;
+		public static final int vpi__bright_foreground_inverse_holo_light = 0x7f0a004c;
+		public static final int vpi__dark_theme = 0x7f0a0055;
+		public static final int vpi__light_theme = 0x7f0a0056;
 	}
 	public static final class dimen {
 		public static final int default_circle_indicator_radius = 0x7f080016;
@@ -85,14 +85,14 @@ public final class R {
 	}
 	public static final class drawable {
 		public static final int chosen = 0x7f02000c;
-		public static final int firstpage_chosed = 0x7f020038;
-		public static final int vpi__tab_indicator = 0x7f020127;
-		public static final int vpi__tab_selected_focused_holo = 0x7f020128;
-		public static final int vpi__tab_selected_holo = 0x7f020129;
-		public static final int vpi__tab_selected_pressed_holo = 0x7f02012a;
-		public static final int vpi__tab_unselected_focused_holo = 0x7f02012b;
-		public static final int vpi__tab_unselected_holo = 0x7f02012c;
-		public static final int vpi__tab_unselected_pressed_holo = 0x7f02012d;
+		public static final int firstpage_chosed = 0x7f020039;
+		public static final int vpi__tab_indicator = 0x7f020128;
+		public static final int vpi__tab_selected_focused_holo = 0x7f020129;
+		public static final int vpi__tab_selected_holo = 0x7f02012a;
+		public static final int vpi__tab_selected_pressed_holo = 0x7f02012b;
+		public static final int vpi__tab_unselected_focused_holo = 0x7f02012c;
+		public static final int vpi__tab_unselected_holo = 0x7f02012d;
+		public static final int vpi__tab_unselected_pressed_holo = 0x7f02012e;
 	}
 	public static final class id {
 		public static final int bottom = 0x7f0b0008;

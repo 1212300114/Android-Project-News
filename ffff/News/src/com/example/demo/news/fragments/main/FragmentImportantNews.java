@@ -4,11 +4,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.concurrent.ExecutionException;
 
 import net.xinhuamm.d0403.R;
 
-import com.example.demo.news.activity.LooperViewDetails;
+import com.example.demo.news.activity.LooperViewDetailsActivity;
 import com.example.demo.news.databeans.importantnews.ImportantNewsData;
 import com.example.demo.news.databeans.importantnews.ImportantNewsList;
 import com.example.demo.news.dataloaders.ImportantNewsLoader;
@@ -39,522 +40,513 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
-@SuppressLint("InflateParams") public class FragmentImportantNews extends Fragment implements
-		IXListViewListener {
-	private View root;
-	private XListView lv;
-	private ProgressBar pb;
-	private XListViewAdapter ListAdapter;
-	private Handler mHandler = new Handler();
-	private ImportantNewsLoader loader = new ImportantNewsLoader();
-	private ImportantNewsData data;// ÒªÎÅÒ³»ñÈ¡µÄÍøÂçÊý¾Ý
-	private AsyncTask<String, Void, ImportantNewsData> task;// ¼ÓÔØÒªÎÅµÄtask
-	private ArrayList<String> listTitles;// ÁÐ±íÏîµÄtitle
-	private LinearLayout layout;
-	private ViewPager viewPager;// ÂÖ²¥Í¼
-	private int page = 1;// µ±Ç°ÁÐ±íÏîµÄÒ³Êý
-	@SuppressWarnings("unused")
-	private int currPage = 0;// µ±Ç°ÏÔÊ¾µÄÒ³
-	private int oldPage = 0;// ÉÏÒ»´ÎÏÔÊ¾µÄÒ³
-	private ArrayList<View> dots = null;
-	private TextView title = null;
-	private ImageAdapter imageAdapter;
-	private String[] titles = null;// µ±Êý¾ÝÃ»ÓÐÊ±ÂÖ²¥Í¼µÄ±êÌâ
-	private MyPageChangeListener listener;
-	private ArrayList<ImageView> imageSource = null;// ÂÖ²¥Í¼ÓÃµÄImageview
-	private String[] imageTitles;// ÂÖ²¥Í¼µÄ±êÌâ
-	private ImageView[] imageView = null;
-	Bitmap[] bitmaps;
-	private ArrayList<ImportantNewsList> newsList = null;
-
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		task = new AsyncTask<String, Void, ImportantNewsData>() {
-
-			@Override
-			protected ImportantNewsData doInBackground(String... params) {
-				ImportantNewsData data = null;
-				try {
-					data = getData(1);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				return data;
-			}
-		};
-		task.execute();
-		if (task != null) {
-			try {
-				data = task.get();
-				newsList = data.getData().getList();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (ExecutionException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		root = inflater.inflate(R.layout.fragment_important_news, container,
-				false);
-		imageView = new ImageView[20];
-		for (int i = 0; i < data.getData().getBanner().size(); i++) {
-			imageView[i] = (ImageView) inflater.inflate(R.layout.image_item,
-					null);
-			imageView[i].setImageResource(R.drawable.fuqi);
-		}
-		listTitles = new ArrayList<String>();
-		for (int i = 0; i < data.getData().getList().size(); i++) {
-			listTitles.add(data.getData().getList().get(i).getTitle());
-		}
-
-		lv = (XListView) root.findViewById(R.id.lvFirstPage);
-		ListAdapter = new XListViewAdapter(getActivity());
-		lv.addHeaderView(initLayout(inflater));
-		onRefresh();
-		lv.setAdapter(ListAdapter);
-		lv.setXListViewListener(this);
-		lv.setPullLoadEnable(true);
-		lv.setPullRefreshEnable(true);
-		lv.setVisibility(View.GONE);
-		lv.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
-				// String link = data.getData().getList().get(position-2)
-				// .getInfo_link();
-				String link = newsList.get(position - 2).getInfo_link();
-				Intent intent = new Intent(getActivity(),
-						LooperViewDetails.class);
-				intent.putExtra("link", link);
-				startActivity(intent);
-			}
-		});
-
-		return root;
-	}
-
-	private ImportantNewsData getData(int i) throws IOException {
-
-		String JSON = loader
-				.readURL("http://api.jjjc.yn.gov.cn/jwapp/?service=List.index&cid=30&page="
-						+ i);
-		ImportantNewsData data = loader.getJSONDate(JSON);
-
-		return data;
-
-	}
-
-	public LinearLayout initLayout(LayoutInflater inflater) {
-
-		titles = new String[] { "ÕâÊÇµÚ1ÕÅÍ¼Æ¬", "ÕâÊÇµÚ2ÕÅÍ¼Æ¬", "ÕâÊÇµÚ3ÕÅÍ¼Æ¬", "ÕâÊÇµÚ4ÕÅÍ¼Æ¬",
-				"ÕâÊÇµÚ5ÕÅÍ¼Æ¬" };
-		imageSource = new ArrayList<ImageView>();
-		layout = (LinearLayout) inflater.inflate(R.layout.fragment_viewpager,
-				null);
-		viewPager = (ViewPager) layout.findViewById(R.id.vp);
-		listener = new MyPageChangeListener();
-		viewPager.setOnPageChangeListener(listener);
-
-		imageTitles = new String[20];
-		int viewPagerSize = data.getData().getBanner().size();// ÂÖ²¥Í¼µÄÒ³Êý
-		for (int i = 0; i < viewPagerSize; i++) {
-			imageTitles[i] = data.getData().getBanner().get(i).getTitle();
-			// »ñÈ¡µ½ÂÖ²¥Í¼µÄ±êÌâ
-		}
-		dots = new ArrayList<View>();// ³õÊ¼»¯±êÌâµãÕâÀïÎÒ¶¨ÒåÁË×î¶àÓÐ7¸öµã
-		// --¿ÉÒÔÔÙ¶àÐ©µÄ-µ«ÊÇÒª¸ÄlayoutÒòÎªÎÒ²»ÊÇÍ¨¹ý¶¯Ì¬Ìí¼Ó¶øÊÇÖ±½ÓÔÚlayoutÀïÃæ»­×ÅµÄ
-		View dotView[] = new View[7];
-		dotView[0] = layout.findViewById(R.id.dot1);
-		dotView[1] = layout.findViewById(R.id.dot2);
-		dotView[2] = layout.findViewById(R.id.dot3);
-		dotView[3] = layout.findViewById(R.id.dot4);
-		dotView[4] = layout.findViewById(R.id.dot5);
-		dotView[5] = layout.findViewById(R.id.dot6);
-		dotView[6] = layout.findViewById(R.id.dot7);
-		for (int i = 0; i < dotView.length; i++) {
-			dots.add(dotView[i]);
-		}
-		// ¸ù¾ÝÂÖ²¥Í¼ÓÐ¶àÉÙÒ³¶¯Ì¬µÄ½«²»ÐèÒªµÄµã¸øgoneµô
-		if (viewPagerSize < 7) {
-			int div = 7 - viewPagerSize;
-			int j = 6;
-
-			for (int i = 0; i < div; i++) {
-				dots.remove(j);
-				dotView[j].setVisibility(View.GONE);
-				j--;
-			}
-
-		}
-		// ±êÌâÄÚÈÝµÄÉèÖÃ£¬Ê×ÏÈ½«±êÌâÉèÖÃÎªÊý¾ÝµÄµÚÒ»Ïî¡£ºóÃæÔÙ¶¯Ì¬µÄ¸Ä±ä
-		title = (TextView) layout.findViewById(R.id.title);
-		if (imageTitles != null) {
-
-			title.setText(imageTitles[0]);
-		} else {
-			title.setText(titles[0]);
-		}
-
-		return layout;
-
-	}
-
-	private class MyPageChangeListener implements OnPageChangeListener {
-
-		@Override
-		public void onPageScrollStateChanged(int arg0) {
-
-		}
-
-		@Override
-		public void onPageScrolled(int position, float arg1, int arg2) {
-
-		}
-
-		@Override
-		public void onPageSelected(int position) {
-			if (imageTitles != null) {
-
-				title.setText(imageTitles[position]);
-			} else {
-				title.setText(titles[position]);
-			}
-			// ¸Ä±äµãµÄ×´Ì¬
-			dots.get(position).setBackgroundResource(R.drawable.dot_focused);
-			dots.get(oldPage).setBackgroundResource(R.drawable.dot_normal);
-			// ¼ÇÂ¼µÄÒ³Ãæ
-			oldPage = position;
-			currPage = position;
-
-		}
-
-	}
-
-	public class ImageAdapter extends PagerAdapter {
-		// Ê×Ò³ÂÖ²¥Í¼µÄÊÊÅäÆ÷¡£¡£¡£¡£Èç¹ûÒªÊµÏÖÎÞÏßÂÖ²¥½«getcount·½·¨·Å»ØÒ»¸öºÜ´óµÄÊý×ÖÈ»ºó½«µ±ÆÚµÄÎ»ÖÃÉèÖÃ³ÉÖÐ¼äµÄÒ»¸öÊý×Ö¾Í¿ÉÒÔÎÞÏß»¬¶¯ÁË¡£¡£¡£
-		// ²¢ÇÒÔÚinstantiateItemÖÐÐèÒªÒ»¶¨µÄ²Ù×÷
-		private ArrayList<ImageView> imageSource = null;
-
-		public ImageAdapter(ArrayList<ImageView> imageSource) {
-			this.imageSource = imageSource;
-
-		}
-
-		public ArrayList<ImageView> getImageSource() {
-			return imageSource;
-		}
-
-		public void setImageSource(ArrayList<ImageView> imageSource) {
-			this.imageSource = imageSource;
-		}
-
-		@Override
-		public int getCount() {
-			System.out.println("size=" + imageSource.size());
-			return imageSource.size();
-		}
-
-		@Override
-		public boolean isViewFromObject(View arg0, Object arg1) {
-			// ÅÐ¶Ï½«ÒªÏÔÊ¾µÄÍ¼Æ¬ÊÇ·ñºÍÏÖÔÚÏÔÊ¾µÄÍ¼Æ¬ÊÇÍ¬Ò»¸ö
-			// arg0Îªµ±Ç°ÏÔÊ¾µÄÍ¼Æ¬£¬arg1ÊÇ½«ÒªÏÔÊ¾µÄÍ¼Æ¬
-			return arg0 == arg1;
-		}
-
-		@Override
-		public void destroyItem(ViewGroup container, int position, Object object) {
-			container.removeView(imageSource.get(position));
-			// Ïú»Ù¸ÃÍ¼Æ¬
-		}
-
-		@Override
-		public Object instantiateItem(ViewGroup container, int position) {
-
-			container.addView(imageSource.get(position));
-			imageSource.get(position).setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					Intent intent;
-					intent = new Intent(getActivity(), LooperViewDetails.class);
-					intent.putExtra(
-							"link",
-							data.getData().getBanner()
-									.get(viewPager.getCurrentItem())
-									.getInfo_link());
-					startActivity(intent);
-				}
-			});
-			return imageSource.get(position);
-
-		}
-	}
-
-	// »ñÈ¡ÂÖ²¥Í¼×ÊÔ´Í¼Æ¬µÄ·½·¨
-	private Bitmap getBitmap(int position) throws InterruptedException,
-			ExecutionException, IOException {
-		if (task.get() != null) {
-
-			data = task.get();
-		}
-		String urlString;
-		urlString = data.getData().getBanner().get(position).getImage();
-		URL url = new URL(urlString);
-		InputStream is = url.openStream();
-
-		Bitmap map = BitmapFactory.decodeStream(is);
-		return map;
-	}
-
-	// »ñÈ¡ÁÐ±íÏîÍ¼Æ¬µÄ·½·¨
-	@SuppressWarnings("unused")
-	private Bitmap getListBitmap(int position) throws InterruptedException,
-			ExecutionException, IOException {
-		if (task.get() != null) {
-
-			data = task.get();
-		}
-		String urlString;
-		urlString = data.getData().getList().get(position).getImage();
-		URL url = null;
-		if (urlString != null) {
-
-			url = new URL(urlString);
-		}
-		InputStream is = url.openStream();
-		Bitmap map = BitmapFactory.decodeStream(is);
-		return map;
-
-	}
-
-	@Override
-	public void onRefresh() {
-
-		mHandler.postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				page = 1;
-				if (data != null) {
-
-					int viewPagerSize = data.getData().getBanner().size();
-
-					AsyncTask<Integer, Void, Bitmap> taskBanner = null;
-					ArrayList<AsyncTask<Integer, Void, Bitmap>> bannerList = new ArrayList<AsyncTask<Integer, Void, Bitmap>>();
-					for (int i = 0; i < viewPagerSize; i++) {
-						taskBanner = new AsyncTask<Integer, Void, Bitmap>() {
-
-							@Override
-							protected Bitmap doInBackground(Integer... params) {
-								Bitmap bitmap = null;
-								try {
-									bitmap = getBitmap(params[0]);
-								} catch (InterruptedException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								} catch (ExecutionException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								} catch (IOException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								}
-								return bitmap;
-							}
-						};
-						bannerList.add(taskBanner);
-
-					}
-					bitmaps = new Bitmap[50];
-					for (int i = 0; i < viewPagerSize; i++) {
-						try {
-							bitmaps[i] = bannerList.get(i).execute(i).get();
-						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} catch (ExecutionException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					}
-
-					for (int i = 0; i < data.getData().getBanner().size(); i++) {
-						if (bitmaps[i] != null) {
-							imageView[i].setImageBitmap(bitmaps[i]);
-						}
-						if (bitmaps[i] == null) {
-							imageView[i].setImageResource(R.drawable.fuqi);
-						}
-						imageSource.add(imageView[i]);
-					}
-				}
-				pb = (ProgressBar) root.findViewById(R.id.pb);
-				imageAdapter = new ImageAdapter(imageSource);
-				lv.setVisibility(View.VISIBLE);
-				pb.setVisibility(View.GONE);
-				viewPager.setAdapter(imageAdapter);
-				ListAdapter.notifyDataSetChanged();
-				imageAdapter.notifyDataSetChanged();
-				onLoad();
-			}
-		}, 2000);
-
-	}
-
-	private void onLoad() {
-		lv.stopRefresh();
-		lv.stopLoadMore();
-		lv.setRefreshTime("¸Õ¸Õ");
-	}
-
-	@Override
-	public void onLoadMore() {
-
-		mHandler.postDelayed(new Runnable() {
-			@Override
-			public void run() {
-
-				AsyncTask<Integer, Void, ArrayList<String>> task = new AsyncTask<Integer, Void, ArrayList<String>>() {
-
-					@Override
-					protected ArrayList<String> doInBackground(
-							Integer... params) {
-						page++;
-						ArrayList<String> titleList = new ArrayList<String>();
-						try {
-							ImportantNewsData data = getData(page);
-							for (int i = 0; i < data.getData().getList().size(); i++) {
-								titleList.add(data.getData().getList().get(i)
-										.getTitle());
-							}
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-
-						return titleList;
-					}
-				};
-				task.execute();
-				ArrayList<String> list = null;
-				try {
-					list = task.get();
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (ExecutionException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				listTitles.addAll(list);
-				AsyncTask<String, Void, ImportantNewsData> task2 = new AsyncTask<String, Void, ImportantNewsData>() {
-
-					@Override
-					protected ImportantNewsData doInBackground(String... params) {
-						ImportantNewsData data = null;
-						try {
-							data = getData(page);
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						return data;
-					}
-				};
-				task2.execute();
-				ImportantNewsData data = null;
-				try {
-					data = task2.get();
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (ExecutionException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				if (data != null) {
-
-					newsList.addAll(data.getData().getList());
-				}
-				ListAdapter.notifyDataSetChanged();
-				onLoad();
-			}
-		}, 2000);
-	}
-
-	public class XListViewAdapter extends BaseAdapter {
-		// ÁÐ±íƒÈÈÝµÄßmÅäÆ÷
-		private LayoutInflater inflater;
-		private int count = 10;
-
-		public LayoutInflater getInflater() {
-			return inflater;
-		}
-
-		public void setInflater(LayoutInflater inflater) {
-			this.inflater = inflater;
-		}
-
-		public void setCount(int count) {
-			this.count = count;
-		}
-
-		public XListViewAdapter(Context context) {
-			this.inflater = LayoutInflater.from(context);
-
-		}
-
-		public void setCount(int countNumber, boolean isRefresh) {
-			if (!isRefresh) {
-				count = countNumber + count;
-			}
-
-		}
-
-		@Override
-		public int getCount() {
-			// TODO Auto-generated method stub
-			return listTitles.size();
-		}
-
-		@Override
-		public Object getItem(int position) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public long getItemId(int position) {
-			// TODO Auto-generated method stub
-			return 0;
-		}
-
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			ViewHolder holder;
-			if (convertView == null) {
-				convertView = inflater.inflate(R.layout.item_list, null);
-				holder = new ViewHolder();
-				holder.iv = (ImageView) convertView.findViewById(R.id.iv);
-				holder.tvTitle = (TextView) convertView
-						.findViewById(R.id.tvTitle);
-				convertView.setTag(holder);
-			} else {
-				holder = (ViewHolder) convertView.getTag();
-			}
-			holder.iv.setImageResource(R.drawable.news_list_bg);
-			holder.tvTitle.setText(listTitles.get(position));
-			return convertView;
-		}
-
-		public class ViewHolder {
-			public ImageView iv;
-			public TextView tvTitle;
-			public TextView tvDescription;
-		}
-
-	}
+@SuppressLint("InflateParams")
+public class FragmentImportantNews extends Fragment implements
+        IXListViewListener {
+    private View root;
+    private XListView lv;
+    private ProgressBar pb;
+    private XListViewAdapter ListAdapter;
+    private Handler mHandler = new Handler();
+    private ImportantNewsLoader loader = new ImportantNewsLoader();
+    private ImportantNewsData data;// Òªï¿½ï¿½Ò³ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    private AsyncTask<String, Void, ImportantNewsData> task;// ï¿½ï¿½ï¿½ï¿½Òªï¿½Åµï¿½task
+    private ArrayList<String> listTitles;// ï¿½Ð±ï¿½ï¿½ï¿½ï¿½title
+    private LinearLayout layout;
+    private ViewPager viewPager;// ï¿½Ö²ï¿½Í¼
+    private int page = 1;// ï¿½ï¿½Ç°ï¿½Ð±ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½
+    @SuppressWarnings("unused")
+    private int currPage = 0;// ï¿½ï¿½Ç°ï¿½ï¿½Ê¾ï¿½ï¿½Ò³
+    private int oldPage = 0;// ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½Ò³
+    private ArrayList<View> dots = null;
+    private TextView title = null;
+    private ImageAdapter imageAdapter;
+    private String[] titles = null;// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½Ê±ï¿½Ö²ï¿½Í¼ï¿½Ä±ï¿½ï¿½ï¿½
+    private MyPageChangeListener listener;
+    private ArrayList<ImageView> imageSource = null;// ï¿½Ö²ï¿½Í¼ï¿½Ãµï¿½Imageview
+    private String[] imageTitles;// ï¿½Ö²ï¿½Í¼ï¿½Ä±ï¿½ï¿½ï¿½
+    private ImageView[] imageView = null;
+    Bitmap[] bitmaps;
+    private ArrayList<ImportantNewsList> newsList = null;
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        task = new AsyncTask<String, Void, ImportantNewsData>() {
+
+            @Override
+            protected ImportantNewsData doInBackground(String... params) {
+                ImportantNewsData data = null;
+                try {
+                    data = getData(1);
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                return data;
+            }
+        };
+        task.execute();
+        if (task != null) {
+            try {
+                data = task.get();
+                newsList = data.getData().getList();
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        root = inflater.inflate(R.layout.fragment_important_news, container,
+                false);
+        imageView = new ImageView[20];
+        for (int i = 0; i < data.getData().getBanner().size(); i++) {
+            imageView[i] = (ImageView) inflater.inflate(R.layout.image_item,
+                    null);
+            imageView[i].setImageResource(R.drawable.fuqi);
+        }
+        listTitles = new ArrayList<String>();
+        for (int i = 0; i < data.getData().getList().size(); i++) {
+            listTitles.add(data.getData().getList().get(i).getTitle());
+        }
+
+        lv = (XListView) root.findViewById(R.id.lvFirstPage);
+        ListAdapter = new XListViewAdapter(getActivity());
+        lv.addHeaderView(initLayout(inflater));
+        onRefresh();
+        lv.setAdapter(ListAdapter);
+        lv.setXListViewListener(this);
+        lv.setPullLoadEnable(true);
+        lv.setPullRefreshEnable(true);
+        lv.setVisibility(View.GONE);
+        lv.setOnItemClickListener(new OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                // String link = data.getData().getList().get(position-2)
+                // .getInfo_link();
+                String link = newsList.get(position - 2).getInfo_link();
+                Intent intent = new Intent(getActivity(),
+                        LooperViewDetailsActivity.class);
+                intent.putExtra("link", link);
+                startActivity(intent);
+            }
+        });
+
+        return root;
+    }
+
+    private ImportantNewsData getData(int i) throws IOException {
+
+        String JSON = loader
+                .readURL("http://api.jjjc.yn.gov.cn/jwapp/?service=List.index&cid=30&page="
+                        + i);
+        ImportantNewsData data = loader.getJSONDate(JSON);
+
+        return data;
+
+    }
+
+    public LinearLayout initLayout(LayoutInflater inflater) {
+
+        titles = new String[]{"ï¿½ï¿½ï¿½Çµï¿½1ï¿½ï¿½Í¼Æ¬", "ï¿½ï¿½ï¿½Çµï¿½2ï¿½ï¿½Í¼Æ¬", "ï¿½ï¿½ï¿½Çµï¿½3ï¿½ï¿½Í¼Æ¬", "ï¿½ï¿½ï¿½Çµï¿½4ï¿½ï¿½Í¼Æ¬",
+                "ï¿½ï¿½ï¿½Çµï¿½5ï¿½ï¿½Í¼Æ¬"};
+        imageSource = new ArrayList<ImageView>();
+        layout = (LinearLayout) inflater.inflate(R.layout.fragment_viewpager,
+                null);
+        viewPager = (ViewPager) layout.findViewById(R.id.vp);
+        listener = new MyPageChangeListener();
+        viewPager.setOnPageChangeListener(listener);
+
+        imageTitles = new String[20];
+        int viewPagerSize = data.getData().getBanner().size();// ï¿½Ö²ï¿½Í¼ï¿½ï¿½Ò³ï¿½ï¿½
+        for (int i = 0; i < viewPagerSize; i++) {
+            imageTitles[i] = data.getData().getBanner().get(i).getTitle();
+            // ï¿½ï¿½È¡ï¿½ï¿½ï¿½Ö²ï¿½Í¼ï¿½Ä±ï¿½ï¿½ï¿½
+        }
+        dots = new ArrayList<View>();// ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½7ï¿½ï¿½ï¿½ï¿½
+        // --ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶ï¿½Ð©ï¿½ï¿½-ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½layoutï¿½ï¿½Îªï¿½Ò²ï¿½ï¿½ï¿½Í¨ï¿½ï¿½ï¿½ï¿½Ì¬ï¿½ï¿½Ó¶ï¿½ï¿½ï¿½Ö±ï¿½ï¿½ï¿½ï¿½layoutï¿½ï¿½ï¿½æ»­ï¿½Åµï¿½
+        View dotView[] = new View[7];
+        dotView[0] = layout.findViewById(R.id.dot1);
+        dotView[1] = layout.findViewById(R.id.dot2);
+        dotView[2] = layout.findViewById(R.id.dot3);
+        dotView[3] = layout.findViewById(R.id.dot4);
+        dotView[4] = layout.findViewById(R.id.dot5);
+        dotView[5] = layout.findViewById(R.id.dot6);
+        dotView[6] = layout.findViewById(R.id.dot7);
+        Collections.addAll(dots, dotView);
+        // ï¿½ï¿½ï¿½ï¿½ï¿½Ö²ï¿½Í¼ï¿½Ð¶ï¿½ï¿½ï¿½Ò³ï¿½ï¿½Ì¬ï¿½Ä½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½Äµï¿½ï¿½goneï¿½ï¿½
+        if (viewPagerSize < 7) {
+            int div = 7 - viewPagerSize;
+            int j = 6;
+
+            for (int i = 0; i < div; i++) {
+                dots.remove(j);
+                dotView[j].setVisibility(View.GONE);
+                j--;
+            }
+
+        }
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ýµï¿½ï¿½ï¿½ï¿½Ã£ï¿½ï¿½ï¿½ï¿½È½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½ÝµÄµï¿½Ò»ï¿½î¡£ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶ï¿½Ì¬ï¿½Ä¸Ä±ï¿½
+        title = (TextView) layout.findViewById(R.id.title);
+        if (imageTitles != null) {
+
+            title.setText(imageTitles[0]);
+        } else {
+            title.setText(titles[0]);
+        }
+
+        return layout;
+
+    }
+
+    private class MyPageChangeListener implements OnPageChangeListener {
+
+        @Override
+        public void onPageScrollStateChanged(int arg0) {
+
+        }
+
+        @Override
+        public void onPageScrolled(int position, float arg1, int arg2) {
+
+        }
+
+        @Override
+        public void onPageSelected(int position) {
+            if (imageTitles != null) {
+
+                title.setText(imageTitles[position]);
+            } else {
+                title.setText(titles[position]);
+            }
+            // ï¿½Ä±ï¿½ï¿½ï¿½×´Ì¬
+            dots.get(position).setBackgroundResource(R.drawable.dot_focused);
+            dots.get(oldPage).setBackgroundResource(R.drawable.dot_normal);
+            // ï¿½ï¿½Â¼ï¿½ï¿½Ò³ï¿½ï¿½
+            oldPage = position;
+            currPage = position;
+
+        }
+
+    }
+
+    public class ImageAdapter extends PagerAdapter {
+        // ï¿½ï¿½Ò³ï¿½Ö²ï¿½Í¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÒªÊµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö²ï¿½ï¿½ï¿½getcountï¿½ï¿½ï¿½ï¿½ï¿½Å»ï¿½Ò»ï¿½ï¿½ï¿½Ü´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È»ï¿½ó½«µï¿½ï¿½Úµï¿½Î»ï¿½ï¿½ï¿½ï¿½ï¿½Ã³ï¿½ï¿½Ð¼ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½Ö¾Í¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß»ï¿½ï¿½ï¿½ï¿½Ë¡ï¿½ï¿½ï¿½ï¿½ï¿½
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½instantiateItemï¿½ï¿½ï¿½ï¿½ÒªÒ»ï¿½ï¿½ï¿½Ä²ï¿½ï¿½ï¿½
+        private ArrayList<ImageView> imageSource = null;
+
+        public ImageAdapter(ArrayList<ImageView> imageSource) {
+            this.imageSource = imageSource;
+
+        }
+
+        @Override
+        public int getCount() {
+            System.out.println("size=" + imageSource.size());
+            return imageSource.size();
+        }
+
+        @Override
+        public boolean isViewFromObject(View arg0, Object arg1) {
+            // ï¿½Ð¶Ï½ï¿½Òªï¿½ï¿½Ê¾ï¿½ï¿½Í¼Æ¬ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½Í¼Æ¬ï¿½ï¿½Í¬Ò»ï¿½ï¿½
+            // arg0Îªï¿½ï¿½Ç°ï¿½ï¿½Ê¾ï¿½ï¿½Í¼Æ¬ï¿½ï¿½arg1ï¿½Ç½ï¿½Òªï¿½ï¿½Ê¾ï¿½ï¿½Í¼Æ¬
+            return arg0 == arg1;
+        }
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            container.removeView(imageSource.get(position));
+            // ï¿½ï¿½ï¿½Ù¸ï¿½Í¼Æ¬
+        }
+
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+
+            container.addView(imageSource.get(position));
+            imageSource.get(position).setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent;
+                    intent = new Intent(getActivity(), LooperViewDetailsActivity.class);
+                    intent.putExtra(
+                            "link",
+                            data.getData().getBanner()
+                                    .get(viewPager.getCurrentItem())
+                                    .getInfo_link());
+                    startActivity(intent);
+                }
+            });
+            return imageSource.get(position);
+
+        }
+    }
+
+    // ï¿½ï¿½È¡ï¿½Ö²ï¿½Í¼ï¿½ï¿½Ô´Í¼Æ¬ï¿½Ä·ï¿½ï¿½ï¿½
+    private Bitmap getBitmap(int position) throws InterruptedException,
+            ExecutionException, IOException {
+        if (task.get() != null) {
+
+            data = task.get();
+        }
+        String urlString;
+        urlString = data.getData().getBanner().get(position).getImage();
+        URL url = new URL(urlString);
+        InputStream is = url.openStream();
+
+        Bitmap map = BitmapFactory.decodeStream(is);
+        return map;
+    }
+
+    // ï¿½ï¿½È¡ï¿½Ð±ï¿½ï¿½ï¿½Í¼Æ¬ï¿½Ä·ï¿½ï¿½ï¿½
+    @SuppressWarnings("unused")
+    private Bitmap getListBitmap(int position) throws InterruptedException,
+            ExecutionException, IOException {
+        if (task.get() != null) {
+
+            data = task.get();
+        }
+        String urlString;
+        urlString = data.getData().getList().get(position).getImage();
+        URL url = null;
+        if (urlString != null) {
+
+            url = new URL(urlString);
+        }
+        InputStream is = url.openStream();
+        Bitmap map = BitmapFactory.decodeStream(is);
+        return map;
+
+    }
+
+    @Override
+    public void onRefresh() {
+
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                page = 1;
+                if (data != null) {
+
+                    int viewPagerSize = data.getData().getBanner().size();
+
+                    AsyncTask<Integer, Void, Bitmap> taskBanner;
+                    ArrayList<AsyncTask<Integer, Void, Bitmap>> bannerList = new ArrayList<AsyncTask<Integer, Void, Bitmap>>();
+                    for (int i = 0; i < viewPagerSize; i++) {
+                        taskBanner = new AsyncTask<Integer, Void, Bitmap>() {
+
+                            @Override
+                            protected Bitmap doInBackground(Integer... params) {
+                                Bitmap bitmap = null;
+                                try {
+                                    bitmap = getBitmap(params[0]);
+                                } catch (InterruptedException e) {
+                                    // TODO Auto-generated catch block
+                                    e.printStackTrace();
+                                } catch (ExecutionException e) {
+                                    // TODO Auto-generated catch block
+                                    e.printStackTrace();
+                                } catch (IOException e) {
+                                    // TODO Auto-generated catch block
+                                    e.printStackTrace();
+                                }
+                                return bitmap;
+                            }
+                        };
+                        bannerList.add(taskBanner);
+
+                    }
+                    bitmaps = new Bitmap[50];
+                    for (int i = 0; i < viewPagerSize; i++) {
+                        try {
+                            bitmaps[i] = bannerList.get(i).execute(i).get();
+                        } catch (InterruptedException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        } catch (ExecutionException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                    }
+
+                    for (int i = 0; i < data.getData().getBanner().size(); i++) {
+                        if (bitmaps[i] != null) {
+                            imageView[i].setImageBitmap(bitmaps[i]);
+                        }
+                        if (bitmaps[i] == null) {
+                            imageView[i].setImageResource(R.drawable.fuqi);
+                        }
+                        imageSource.add(imageView[i]);
+                    }
+                }
+                pb = (ProgressBar) root.findViewById(R.id.pb);
+                imageAdapter = new ImageAdapter(imageSource);
+                lv.setVisibility(View.VISIBLE);
+                pb.setVisibility(View.GONE);
+                viewPager.setAdapter(imageAdapter);
+                ListAdapter.notifyDataSetChanged();
+                imageAdapter.notifyDataSetChanged();
+                onLoad();
+            }
+        }, 2000);
+
+    }
+
+    private void onLoad() {
+        lv.stopRefresh();
+        lv.stopLoadMore();
+        lv.setRefreshTime("ï¿½Õ¸ï¿½");
+    }
+
+    @Override
+    public void onLoadMore() {
+
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                AsyncTask<Integer, Void, ArrayList<String>> task = new AsyncTask<Integer, Void, ArrayList<String>>() {
+
+                    @Override
+                    protected ArrayList<String> doInBackground(
+                            Integer... params) {
+                        page++;
+                        ArrayList<String> titleList = new ArrayList<String>();
+                        try {
+                            ImportantNewsData data = getData(page);
+                            for (int i = 0; i < data.getData().getList().size(); i++) {
+                                titleList.add(data.getData().getList().get(i)
+                                        .getTitle());
+                            }
+                        } catch (IOException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+
+                        return titleList;
+                    }
+                };
+                task.execute();
+                ArrayList<String> list = null;
+                try {
+                    list = task.get();
+                } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                listTitles.addAll(list);
+                AsyncTask<String, Void, ImportantNewsData> task2 = new AsyncTask<String, Void, ImportantNewsData>() {
+
+                    @Override
+                    protected ImportantNewsData doInBackground(String... params) {
+                        ImportantNewsData data = null;
+                        try {
+                            data = getData(page);
+                        } catch (IOException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                        return data;
+                    }
+                };
+                task2.execute();
+                ImportantNewsData data = null;
+                try {
+                    data = task2.get();
+                } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                if (data != null) {
+
+                    newsList.addAll(data.getData().getList());
+                }
+                ListAdapter.notifyDataSetChanged();
+                onLoad();
+            }
+        }, 2000);
+    }
+
+    public class XListViewAdapter extends BaseAdapter {
+        // ï¿½Ð±ï¿½ï¿½ï¿½Ýµï¿½ï¿½mï¿½ï¿½ï¿½ï¿½
+        private LayoutInflater inflater;
+        private int count = 10;
+
+        public LayoutInflater getInflater() {
+            return inflater;
+        }
+
+        public void setInflater(LayoutInflater inflater) {
+            this.inflater = inflater;
+        }
+
+        public void setCount(int count) {
+            this.count = count;
+        }
+
+        public XListViewAdapter(Context context) {
+            this.inflater = LayoutInflater.from(context);
+
+        }
+
+        public void setCount(int countNumber, boolean isRefresh) {
+            if (!isRefresh) {
+                count = countNumber + count;
+            }
+
+        }
+
+        @Override
+        public int getCount() {
+            // TODO Auto-generated method stub
+            return listTitles.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            // TODO Auto-generated method stub
+            return 0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            ViewHolder holder;
+            if (convertView == null) {
+                convertView = inflater.inflate(R.layout.item_list, null);
+                holder = new ViewHolder();
+                holder.iv = (ImageView) convertView.findViewById(R.id.iv);
+                holder.tvTitle = (TextView) convertView
+                        .findViewById(R.id.tvTitle);
+                convertView.setTag(holder);
+            } else {
+                holder = (ViewHolder) convertView.getTag();
+            }
+            holder.iv.setImageResource(R.drawable.news_list_bg);
+            holder.tvTitle.setText(listTitles.get(position));
+            return convertView;
+        }
+
+        public class ViewHolder {
+            public ImageView iv;
+            public TextView tvTitle;
+            public TextView tvDescription;
+        }
+
+    }
 
 }

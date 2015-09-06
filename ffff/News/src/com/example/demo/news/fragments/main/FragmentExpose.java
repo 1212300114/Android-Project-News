@@ -8,7 +8,7 @@ import java.util.concurrent.ExecutionException;
 
 import net.xinhuamm.d0403.R;
 
-import com.example.demo.news.activity.LooperViewDetails;
+import com.example.demo.news.activity.LooperViewDetailsActivity;
 import com.example.demo.news.databeans.importantnews.ImportantNewsData;
 import com.example.demo.news.databeans.importantnews.ImportantNewsList;
 import com.example.demo.news.dataloaders.ImportantNewsLoader;
@@ -70,7 +70,7 @@ import android.widget.AdapterView.OnItemClickListener;
 					int position, long id) {
 				String link = newsList.get(position - 1).getInfo_link();
 				Intent intent = new Intent(getActivity(),
-						LooperViewDetails.class);
+						LooperViewDetailsActivity.class);
 				intent.putExtra("link", link);
 				startActivity(intent);
 			}

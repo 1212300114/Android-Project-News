@@ -7,19 +7,19 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Rect;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
@@ -40,7 +40,6 @@ import net.xinhuamm.d0403.R;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
 public class FragmentMain extends Fragment implements OnClickListener {
@@ -64,15 +63,39 @@ public class FragmentMain extends Fragment implements OnClickListener {
     private ListDataHelper listDataHelper;
     private static String TITLE = "栏目";
     private SharedPreferences sharedPreferences;
-    private boolean network = false;
     private String storedJson;
+    private CheckBox firstPageBox;
+    private CheckBox importantNews;
+    private CheckBox wind;
+    private CheckBox check;
+    private CheckBox watch;
+    private CheckBox imageNews;
+    private CheckBox subject;
+    private CheckBox expose;
+    private ArrayList<Fragment> selectedFragments;
+    private static final String FIRST = "首页";
+    private static final String IMPORTANT = "要闻";
+    private static final String WIND = "党风";
+    private static final String CHECK = "审查";
+    private static final String WATCH = "巡视";
+    private static final String IMAGE = "图闻";
+    private static final String SUBJECT = "专题";
+    private static final String EXPOSE = "曝光";
+    private String firstLink;
+    private String importantLink;
+    private String windLink;
+    private String checkLink;
+    private String watchLink;
+    private String imageLink;
+    private String subjectLink;
+    private String exposeLink;
+    private boolean flag = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         listDataHelper = new ListDataHelper(getActivity());
         sharedPreferences = getActivity().getSharedPreferences("settings", Context.MODE_PRIVATE);
-        network = sharedPreferences.getBoolean("network", false);
         SQLiteDatabase dbRead = listDataHelper.getReadableDatabase();
         Cursor cursor = dbRead.query("listData", null, null, null, null, null, null);
         while (cursor.moveToNext()) {
@@ -86,6 +109,10 @@ public class FragmentMain extends Fragment implements OnClickListener {
         if (!MainActivity.isNetworkConnected(getActivity())) {
             indicatorData = loader.getJSONDate(storedJson);
         }
+        selectedFragments = new ArrayList<>();
+        FragmentFirstPage fragmentFirstPage = new FragmentFirstPage();
+        selectedFragments.add(fragmentFirstPage);
+        selectedTitle.add(FIRST);
     }
 
     @Override
@@ -95,6 +122,25 @@ public class FragmentMain extends Fragment implements OnClickListener {
         dialog = new MyDialog(getActivity(), R.style.MyDialog);
         dialog.setContentView(R.layout.dialog_style);
         dialog.findViewById(R.id.btnDialogCancle).setOnClickListener(this);
+        dialog.findViewById(R.id.btnFirstPage).setOnClickListener(this);
+        firstPageBox = (CheckBox) dialog.findViewById(R.id.btnFirstPage);
+        importantNews = (CheckBox) dialog.findViewById(R.id.btnImportantNews);
+        wind = (CheckBox) dialog.findViewById(R.id.btnWind);
+        check = (CheckBox) dialog.findViewById(R.id.btnCheck);
+        watch = (CheckBox) dialog.findViewById(R.id.btnWatch);
+        subject = (CheckBox) dialog.findViewById(R.id.btnSubject);
+        imageNews = (CheckBox) dialog.findViewById(R.id.btnImageNews);
+        expose = (CheckBox) dialog.findViewById(R.id.btnBaoGuang);
+
+        firstPageBox.setClickable(false);
+        importantNews.setOnClickListener(this);
+        wind.setOnClickListener(this);
+        check.setOnClickListener(this);
+        watch.setOnClickListener(this);
+        subject.setOnClickListener(this);
+        imageNews.setOnClickListener(this);
+        expose.setOnClickListener(this);
+
         mainActivity = (MainActivity) getActivity();
         slidingMenu1 = mainActivity.getSlidingMenu1();
         slidingMenu2 = mainActivity.getSlidingMenu2();
@@ -128,38 +174,67 @@ public class FragmentMain extends Fragment implements OnClickListener {
         firstPage = new FragmentFirstPage();//初始化栏目数组为其添加内容首先将首页固定
         adapter = new FragmentViewPagerAdapter(getChildFragmentManager(),
                 fragments);
-        String[] names = new String[100];
+        ArrayList<String> names = new ArrayList<>();
         fragments.add(firstPage);//
         if (indicatorData != null) {
-            names[0] = "首页";
+            names.add(FIRST);
             for (int i = 1; i < indicatorData.getData().getCate().size(); i++) {
                 String name = indicatorData.getData().getCate().get(i)
                         .getName();
                 String link = indicatorData.getData().getCate().get(i)
                         .getCate_link();
-                int classId = indicatorData.getData().getCate().get(i).getClass_id();
+                if (name.equals(IMPORTANT)) {
+                    importantLink = link;
+//                    importantNews.setChecked(true);
+//                    importantNews.setTextColor(getResources().getColor(R.color.dialog));
+                } else if (name.equals(WIND)) {
+                    windLink = link;
+//                    wind.setChecked(true);
+//                    wind.setTextColor(getResources().getColor(R.color.dialog));
+                } else if (name.equals(CHECK)) {
+                    checkLink = link;
+//                    check.setChecked(true);
+//                    check.setTextColor(getResources().getColor(R.color.dialog));
+                } else if (name.equals(WATCH)) {
+                    watchLink = link;
+//                    watch.setChecked(true);
+//                    watch.setTextColor(getResources().getColor(R.color.dialog));
+                } else if (name.equals(IMAGE)) {
+                    imageLink = link;
+//                    imageNews.setChecked(true);
+//                    imageNews.setTextColor(getResources().getColor(R.color.dialog));
+                } else if (name.equals(SUBJECT)) {
+                    subjectLink = link;
+//                    subject.setChecked(true);
+//                    subject.setTextColor(getResources().getColor(R.color.dialog));
+                } else if (name.equals(EXPOSE)) {
+                    exposeLink = link;
+//                    expose.setChecked(true);
+//                    expose.setTextColor(getResources().getColor(R.color.dialog));
+                }
                 Bundle bundle = new Bundle();
-
-                bundle.putInt("classId", classId);
                 bundle.putString("name", name);
                 bundle.putString("link", link);//获取到各个栏目的列表数据的数据接口以及栏目的名字并且将名字传给导航栏
                 FragmentAll all = new FragmentAll();// 动态添加栏目
                 all.setArguments(bundle);
                 fragments.add(all);
-                names[i] = indicatorData.getData().getCate().get(i).getName();
+                names.add(indicatorData.getData().getCate().get(i).getName());
             }
         }
         adapter.setFragments(fragments);
         adapter.setTitles(names);
         viewPager.setAdapter(adapter);
+
         indicator = (TabPageIndicator) root.findViewById(R.id.indicator);
         indicator.setViewPager(viewPager);// 将导航栏与栏目内容绑定
         indicator.setCurrentItem(0);
         indicator.setOnPageChangeListener(new MyPageChangeListener());//设置栏目内容切换侦听器
+
         showLeft = (ImageButton) root.findViewById(R.id.btnShowLeft);//初始化各个按钮的内容
         showLeft.setOnClickListener(this);
         showRight = (ImageButton) root.findViewById(R.id.btnShowRight);
         showRight.setOnClickListener(this);
+
         add = (ImageButton) root.findViewById(R.id.btnAdd);
         add.setOnClickListener(this);
         //获取到touch事件动态判断左右侧栏的touchmode
@@ -184,6 +259,10 @@ public class FragmentMain extends Fragment implements OnClickListener {
                 } else if (viewPager.getCurrentItem() != (fragments.size() - 1)) {
                     slidingMenu2.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
                 }
+                if (flag && viewPager.getCurrentItem() == selectedFragments.size() - 1) {
+                    slidingMenu2
+                            .setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+                }
                 if (viewPager.getCurrentItem() == 0 && !viewpagerIsTouched) {
                     slidingMenu1
                             .setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
@@ -199,12 +278,10 @@ public class FragmentMain extends Fragment implements OnClickListener {
                             && viewPager.getCurrentItem() != 0) {
                         slidingMenu1
                                 .setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
-                    }
-                    if (vp.getCurrentItem() != 0 && viewpagerIsTouched) {
+                    } else if (vp.getCurrentItem() != 0 && viewpagerIsTouched) {
                         slidingMenu1
                                 .setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
-                    }
-                    if (vp.getCurrentItem() == 0
+                    } else if (vp.getCurrentItem() == 0
                             && viewPager.getCurrentItem() == 0) {
                         slidingMenu1
                                 .setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
@@ -220,8 +297,20 @@ public class FragmentMain extends Fragment implements OnClickListener {
         return root;
     }
 
+    FragmentAll importantFragment = new FragmentAll();
+    FragmentAll windFragment = new FragmentAll();
+    FragmentAll watchFragment = new FragmentAll();
+    FragmentAll checkFragment = new FragmentAll();
+    FragmentAll imageFragment = new FragmentAll();
+    FragmentAll subjectFragment = new FragmentAll();
+    FragmentAll exposeFragment = new FragmentAll();
+    ArrayList<String> selectedTitle = new ArrayList<>();
+
     @Override
     public void onClick(View v) {
+
+
+        Bundle bundle = new Bundle();
         switch (v.getId()) {
             case R.id.btnShowLeft:
                 slidingMenu1.toggle();
@@ -233,9 +322,177 @@ public class FragmentMain extends Fragment implements OnClickListener {
                 dialog.show();
                 break;
             case R.id.btnDialogCancle:
+                viewPager.removeAllViews();
+                adapter.setFragments(selectedFragments);
+                adapter.setTitles(selectedTitle);
+                adapter.notifyDataSetChanged();
+                indicator.setViewPager(viewPager);
+                indicator.notifyDataSetChanged();
                 dialog.cancel();
+                flag = true;
                 break;
+            case R.id.btnImportantNews:
+                bundle.clear();
+                bundle.putString("name", IMPORTANT);
+                bundle.putString("link", importantLink);
+                if (importantNews.isChecked()) {
+                    importantNews.setTextColor(getActivity().getResources().getColor(R.color.dialog));
+                    if (!selectedFragments.contains(importantFragment)) {
+                        if (importantFragment.getArguments() == null) {
+                            importantFragment.setArguments(bundle);
+                        }
+                        selectedFragments.add(importantFragment);
+                        selectedTitle.add(IMPORTANT);
+                    }
+                } else {
+                    importantNews.setTextColor(getActivity().getResources().getColor(R.color.black));
+                    if (selectedFragments.contains(importantFragment)) {
+                        selectedFragments.remove(importantFragment);
+                        selectedTitle.remove(IMPORTANT);
+                    }
+                }
+                Log.e("size", String.valueOf(selectedFragments.size()));
+                Log.e("~~", String.valueOf(selectedTitle.size()));
+                break;
+            case R.id.btnWind:
+                bundle.clear();
+                bundle.putString("name", WIND);
+                bundle.putString("link", windLink);
+                if (wind.isChecked()) {
+                    wind.setTextColor(getActivity().getResources().getColor(R.color.dialog));
+                    if (!selectedFragments.contains(windFragment)) {
+                        if (windFragment.getArguments() == null) {
 
+                            windFragment.setArguments(bundle);
+                        }
+                        selectedFragments.add(windFragment);
+                        selectedTitle.add(WIND);
+                    }
+                } else {
+                    wind.setTextColor(getActivity().getResources().getColor(R.color.black));
+                    if (selectedFragments.contains(windFragment)) {
+                        selectedFragments.remove(windFragment);
+                        selectedTitle.remove(WIND);
+                    }
+                }
+                Log.e("size", String.valueOf(selectedFragments.size()));
+                Log.e("~~", String.valueOf(selectedTitle.size()));
+                break;
+            case R.id.btnWatch:
+                bundle.clear();
+                bundle.putString("name", WATCH);
+                bundle.putString("link", watchLink);
+                if (watch.isChecked()) {
+                    watch.setTextColor(getActivity().getResources().getColor(R.color.dialog));
+                    if (!selectedFragments.contains(watchFragment)) {
+                        if (watchFragment.getArguments() == null) {
+                            watchFragment.setArguments(bundle);
+                        }
+                        selectedFragments.add(watchFragment);
+                        selectedTitle.add(WATCH);
+                    }
+                } else {
+                    watch.setTextColor(getActivity().getResources().getColor(R.color.black));
+                    if (selectedFragments.contains(watchFragment)) {
+                        selectedFragments.remove(watchFragment);
+                        selectedTitle.remove(WATCH);
+                    }
+                }
+                Log.e("size", String.valueOf(selectedFragments.size()));
+                Log.e("~~", String.valueOf(selectedTitle.size()));
+                break;
+            case R.id.btnCheck:
+                bundle.clear();
+                bundle.putString("name", CHECK);
+                bundle.putString("link", checkLink);
+                if (check.isChecked()) {
+                    check.setTextColor(getActivity().getResources().getColor(R.color.dialog));
+                    if (!selectedFragments.contains(checkFragment)) {
+                        if (checkFragment.getArguments() == null) {
+                            checkFragment.setArguments(bundle);
+                        }
+                        selectedFragments.add(checkFragment);
+                        selectedTitle.add(CHECK);
+                    }
+                } else {
+                    check.setTextColor(getActivity().getResources().getColor(R.color.black));
+                    if (selectedFragments.contains(checkFragment)) {
+                        selectedFragments.remove(checkFragment);
+                        selectedTitle.remove(CHECK);
+                    }
+                }
+                Log.e("size", String.valueOf(selectedFragments.size()));
+                Log.e("~~", String.valueOf(selectedTitle.size()));
+                break;
+            case R.id.btnImageNews:
+                bundle.clear();
+                bundle.putString("name", IMAGE);
+                bundle.putString("link", imageLink);
+                if (imageNews.isChecked()) {
+                    imageNews.setTextColor(getActivity().getResources().getColor(R.color.dialog));
+                    if (!selectedFragments.contains(imageFragment)) {
+                        if (imageFragment.getArguments() == null) {
+                            imageFragment.setArguments(bundle);
+                        }
+                        selectedFragments.add(imageFragment);
+                        selectedTitle.add(IMAGE);
+                    }
+                } else {
+                    imageNews.setTextColor(getActivity().getResources().getColor(R.color.black));
+                    if (selectedFragments.contains(imageFragment)) {
+                        selectedFragments.remove(imageFragment);
+                        selectedTitle.remove(IMAGE);
+                    }
+                }
+                Log.e("size", String.valueOf(selectedFragments.size()));
+                Log.e("~~", String.valueOf(selectedTitle.size()));
+                break;
+            case R.id.btnSubject:
+                bundle.clear();
+                bundle.putString("name", SUBJECT);
+                bundle.putString("link", subjectLink);
+                if (subject.isChecked()) {
+                    subject.setTextColor(getActivity().getResources().getColor(R.color.dialog));
+                    if (!selectedFragments.contains(subjectFragment)) {
+                        if (subjectFragment.getArguments() == null) {
+                            subjectFragment.setArguments(bundle);
+                        }
+                        selectedFragments.add(subjectFragment);
+                        selectedTitle.add(SUBJECT);
+                    }
+                } else {
+                    subject.setTextColor(getActivity().getResources().getColor(R.color.black));
+                    if (selectedFragments.contains(subjectFragment)) {
+                        selectedFragments.remove(subjectFragment);
+                        selectedTitle.remove(SUBJECT);
+                    }
+                }
+                Log.e("size", String.valueOf(selectedFragments.size()));
+                Log.e("~~", String.valueOf(selectedTitle.size()));
+                break;
+            case R.id.btnBaoGuang:
+                bundle.clear();
+                bundle.putString("name", EXPOSE);
+                bundle.putString("link", exposeLink);
+                if (expose.isChecked()) {
+                    expose.setTextColor(getActivity().getResources().getColor(R.color.dialog));
+                    if (!selectedFragments.contains(exposeFragment)) {
+                        if (exposeFragment.getArguments() == null) {
+                            exposeFragment.setArguments(bundle);
+                        }
+                        selectedFragments.add(exposeFragment);
+                        selectedTitle.add(EXPOSE);
+                    }
+                } else {
+                    expose.setTextColor(getActivity().getResources().getColor(R.color.black));
+                    if (selectedFragments.contains(exposeFragment)) {
+                        selectedFragments.remove(exposeFragment);
+                        selectedTitle.remove(EXPOSE);
+                    }
+                }
+                Log.e("size", String.valueOf(selectedFragments.size()));
+                Log.e("~~", String.valueOf(selectedTitle.size()));
+                break;
             default:
                 break;
         }

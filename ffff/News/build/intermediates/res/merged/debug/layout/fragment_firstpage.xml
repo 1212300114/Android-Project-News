@@ -14,6 +14,6 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:divider="#a0a0a0"
-        android:dividerHeight="1dp"></medusa.theone.waterdroplistview.view.WaterDropListView>
+        android:dividerHeight="1dp"/>
 
 </RelativeLayout><!-- From: file:/C:/Users/123456/ffff/News/res/layout/fragment_firstpage.xml -->

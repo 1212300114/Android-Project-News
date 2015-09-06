@@ -2,12 +2,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.demo.news.activity.DynamicDetail" >
+    tools:context="com.example.demo.news.activity.DynamicDetailActivity">
 
     <RelativeLayout
         android:id="@+id/title"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content">
 
         <ImageButton
             android:id="@+id/btnBack"
@@ -36,7 +36,13 @@
         android:id="@+id/lv"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@+id/title" >
-    </com.example.demo.news.xlistviewsource.XListView>
+        android:layout_below="@+id/title" />
 
+    <TextView
+        android:id="@+id/noData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="@string/NoData"
+        android:textSize="20sp" />
 </RelativeLayout><!-- From: file:/C:/Users/123456/ffff/News/res/layout/activity_dynamic_detail.xml -->

@@ -213,7 +213,7 @@ public class SearchActivity extends Activity implements OnClickListener,
                             int content_id = data.getData().getList()
                                     .get(position - 1).getContent_id();
                             intent = new Intent(SearchActivity.this,
-                                    LooperViewDetails.class);
+                                    LooperViewDetailsActivity.class);
                             intent.putExtra("link", link);
                             intent.putExtra("content_id", content_id);
                             startActivity(intent);

@@ -19,7 +19,6 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.v4.app.FragmentActivity;
-import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -191,7 +190,7 @@ public class MainActivity extends FragmentActivity {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(MainActivity.this,
-                                MyCollections.class);
+                                MyCollectionsActivity.class);
                         startActivity(intent);
                     }
                 });
@@ -201,7 +200,7 @@ public class MainActivity extends FragmentActivity {
                     @Override
                     public void onClick(View v) {
                         startActivity(new Intent(MainActivity.this,
-                                Settings.class));
+                                SettingsActivity.class));
                     }
                 });
 
