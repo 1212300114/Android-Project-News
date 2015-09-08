@@ -16,6 +16,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -36,6 +37,7 @@ import com.example.demo.news.databeans.firstpage.FirstPageCate;
 import com.example.demo.news.databeans.firstpage.FirstPageData;
 import com.example.demo.news.databeans.firstpage.FirstpageLoopPager;
 import com.example.demo.news.dataloaders.FirstPageContentLoader;
+import com.example.demo.news.myviews.MyViewPager;
 import com.example.demo.news.xlistviewsource.XListView.IXListViewListener;
 import com.google.gson.Gson;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -71,7 +73,7 @@ public class FragmentAll extends Fragment implements IXListViewListener, WaterDr
     private ArrayList<FirstpageLoopPager> newsList = new ArrayList<>();//新闻列表数据数组
     private ArrayList<FirstPageCate> cateList;//栏目数据数组主要是为了专题页 的分栏设计是获取数据
     private LinearLayout layout;// 轮播图
-    private ViewPager viewPager;// 轮播图的viewpager部分
+    private MyViewPager viewPager;// 轮播图的viewpager部分
     private ArrayList<View> dots;// 显示图片位置的点
     private ArrayList<ImageView> imageSource = new ArrayList<>();//为填充viewpager的图片数组
     private String[] titles;//轮播图的标题
@@ -89,6 +91,22 @@ public class FragmentAll extends Fragment implements IXListViewListener, WaterDr
     private String storedJson;//从数据库获取到的字符串
     private boolean subject = false;//判断当前栏目是否为专题的flag
     private Context context;
+
+    public int getViewPagerSize() {
+        return viewPagerSize;
+    }
+
+    public boolean isViewPagerCreated() {
+        return viewPagerCreated;
+    }
+
+    public LinearLayout getLayout() {
+        return layout;
+    }
+
+    public ViewPager getViewPager() {
+        return viewPager;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -162,7 +180,8 @@ public class FragmentAll extends Fragment implements IXListViewListener, WaterDr
         onRefresh();
         lv.setWaterDropListViewListener(this);
         lv.setPullLoadEnable(true);
-        if (newsList.size() < 10 || subject) {
+        if (newsList.size() < 9 || subject) {
+            Log.e("aaaaaaaaaa", "????????????????????????????");
             lv.setPullLoadEnable(false);
         }
         if (!subject) {
@@ -418,7 +437,7 @@ public class FragmentAll extends Fragment implements IXListViewListener, WaterDr
         //初始化轮播图内容的方法
         layout = (LinearLayout) inflater.inflate(R.layout.fragment_viewpager,
                 null);
-        viewPager = (ViewPager) layout.findViewById(R.id.vp);
+        viewPager = (MyViewPager) layout.findViewById(R.id.vp);
         MyPageChangeListener listener = new MyPageChangeListener();
         viewPager.setOnPageChangeListener(listener);
         // �����õ��ֲ�ͼ������

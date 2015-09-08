@@ -84,6 +84,7 @@ public class FragmentFirstPage extends Fragment implements XListView.IXListViewL
     private SharedPreferences sharedPreferences;
     private boolean network = false;
     private String storedJson;
+    private Context context;
 
     public ViewPager getViewPager() {
         return viewPager;
@@ -96,6 +97,7 @@ public class FragmentFirstPage extends Fragment implements XListView.IXListViewL
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context = getActivity();
         sharedPreferences = getActivity().getSharedPreferences("settings", Context.MODE_PRIVATE);
         network = sharedPreferences.getBoolean("network", false);
         listImageURL = new ArrayList<>();
@@ -108,8 +110,8 @@ public class FragmentFirstPage extends Fragment implements XListView.IXListViewL
                 .showImageForEmptyUri(R.drawable.news_list_bg)
                 .showImageOnFail(R.drawable.news_list_bg).cacheInMemory(true)
                 .cacheOnDisk(true).build();
-        listDataHelper = new ListDataHelper(getActivity());
-        if (MainActivity.isNetworkConnected(getActivity())) {
+        listDataHelper = new ListDataHelper(context);
+        if (MainActivity.isNetworkConnected(context)) {
             task = new AsyncTask<String, Void, FirstPageData>() {
 
                 @Override
@@ -135,7 +137,7 @@ public class FragmentFirstPage extends Fragment implements XListView.IXListViewL
                 storedJson = cursor.getString(cursor.getColumnIndex("json"));
             }
         }
-        if (!MainActivity.isNetworkConnected(getActivity())) {
+        if (!MainActivity.isNetworkConnected(context)) {
             data = loader.getJSONDate(storedJson);
         }
     }
@@ -174,7 +176,7 @@ public class FragmentFirstPage extends Fragment implements XListView.IXListViewL
                         contentId = data.getData().getList().get(position - 1)
                                 .getContent_id();
                     }
-                    intent = new Intent(getActivity(), LooperViewDetailsActivity.class);
+                    intent = new Intent(context, LooperViewDetailsActivity.class);
                     intent.putExtra("link", link);
                     intent.putExtra("content_id", contentId);
                     startActivityForResult(intent, 1);
@@ -221,7 +223,7 @@ public class FragmentFirstPage extends Fragment implements XListView.IXListViewL
             @Override
             public void run() {
 
-                if (MainActivity.isNetworkConnected(getActivity())) {
+                if (MainActivity.isNetworkConnected(context)) {
                     task2 = new AsyncTask<String, Void, FirstPageData>() {
 
                         @Override
@@ -243,15 +245,15 @@ public class FragmentFirstPage extends Fragment implements XListView.IXListViewL
                 bannerImageURL.clear();
                 listTitles.clear();
                 try {
-                    if (MainActivity.isNetworkConnected(getActivity())) {
+                    if (MainActivity.isNetworkConnected(context)) {
                         data = task2.get();
                     }
                 } catch (ExecutionException | InterruptedException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
-                if (!MainActivity.isNetworkConnected(getActivity())) {
-                    Toast.makeText(getActivity(), "请检查您的网络后再试", Toast.LENGTH_SHORT).show();
+                if (!MainActivity.isNetworkConnected(context)) {
+                    Toast.makeText(context, "请检查您的网络后再试", Toast.LENGTH_SHORT).show();
                 }
                 pageCount = data.getData().getPagecount();
                 viewPagerSize = data.getData().getBanner().size();
@@ -285,7 +287,7 @@ public class FragmentFirstPage extends Fragment implements XListView.IXListViewL
                 for (int i = 0; i < data.getData().getList().size(); i++) {
                     listTitles.add(data.getData().getList().get(i).getTitle());
                 }
-                adapter = new XListViewAdapter(getActivity(), listTitles);
+                adapter = new XListViewAdapter(context, listTitles);
                 lv.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
                 lv.stopRefresh();
@@ -301,10 +303,10 @@ public class FragmentFirstPage extends Fragment implements XListView.IXListViewL
     public void onLoadMore() {
 
         if (page >= pageCount) {
-            Toast.makeText(getActivity(), "没有更多了", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "没有更多了", Toast.LENGTH_SHORT).show();
             onLoad();
-        } else if (!MainActivity.isNetworkConnected(getActivity())) {
-            Toast.makeText(getActivity(), "请检查您的网络后再试", Toast.LENGTH_SHORT).show();
+        } else if (!MainActivity.isNetworkConnected(context)) {
+            Toast.makeText(context, "请检查您的网络后再试", Toast.LENGTH_SHORT).show();
             onLoad();
         } else {
             page++;
@@ -519,7 +521,7 @@ public class FragmentFirstPage extends Fragment implements XListView.IXListViewL
                     String infoLink;
                     infoLink = data.getData().getBanner()
                             .get(viewPager.getCurrentItem()).getInfo_link();
-                    Intent intent = new Intent(getActivity(),
+                    Intent intent = new Intent(context,
                             LooperViewDetailsActivity.class);
                     intent.putExtra("link", infoLink);
                     intent.putExtra("content_id", data.getData().getBanner()

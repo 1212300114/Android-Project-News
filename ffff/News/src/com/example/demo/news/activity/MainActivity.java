@@ -19,12 +19,13 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Toast;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends FragmentActivity implements OnClickListener {
     private SlidingMenu slidingMenu1, slidingMenu2;
     private boolean isInFragmentFirstPage = true;//判断是否在首页内
     private FragmentMain main;
@@ -35,6 +36,7 @@ public class MainActivity extends FragmentActivity {
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
     private long firstTime;
+
 
     public SlidingMenu getSlidingMenu1() {
         return slidingMenu1;
@@ -111,98 +113,22 @@ public class MainActivity extends FragmentActivity {
 
         // 左侧menu的按钮设置
         slidingMenu1.findViewById(R.id.btnFP).setOnClickListener(
-                new OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.container, main).commit();
-                        slidingMenu1.toggle();
-                        slidingMenu2
-                                .setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
-                        isInFragmentFirstPage = true;
-                    }
-                });
+                this);
         slidingMenu1.findViewById(R.id.btnMO).setOnClickListener(
-                new OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.container, fragmentMessageOpen)
-                                .commit();
-                        slidingMenu2
-                                .setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
-                        slidingMenu1.toggle();
-                        isInFragmentFirstPage = false;
-                    }
-                });
+                this);
         slidingMenu1.findViewById(R.id.btnDY).setOnClickListener(
-                new OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.container, fragmentDynamic)
-                                .commit();
-                        slidingMenu2
-                                .setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
-                        slidingMenu1.toggle();
-                        isInFragmentFirstPage = false;
-                    }
-                });
+                this);
         slidingMenu1.findViewById(R.id.btnLA).setOnClickListener(
-                new OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.container, fragmentLaw).commit();
-                        slidingMenu1.toggle();
-                        isInFragmentFirstPage = false;
-                    }
-                });
+                this);
         slidingMenu1.findViewById(R.id.btnAB).setOnClickListener(
-                new OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.container, fragmentAboutUs)
-                                .commit();
-                        slidingMenu1.toggle();
-                        isInFragmentFirstPage = false;
-                    }
-                });
+                this);
         // 右侧menu按钮的设置
         slidingMenu2.findViewById(R.id.btnSA).setOnClickListener(
-                new OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        startActivity(new Intent(MainActivity.this,
-                                SearchActivity.class));
-                    }
-                });
+                this);
         slidingMenu2.findViewById(R.id.btnCO).setOnClickListener(
-                new OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(MainActivity.this,
-                                MyCollectionsActivity.class);
-                        startActivity(intent);
-                    }
-                });
+                this);
         slidingMenu2.findViewById(R.id.btnSE).setOnClickListener(
-                new OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        startActivity(new Intent(MainActivity.this,
-                                SettingsActivity.class));
-                    }
-                });
+                this);
 
     }
 
@@ -224,6 +150,49 @@ public class MainActivity extends FragmentActivity {
 
     public void unregisterMyOnTouchListener(MyOnTouchListener myOnTouchListener) {
         onTouchListeners.remove(myOnTouchListener);
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId()) {
+            case R.id.btnFP:
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, main).addToBackStack(null).commit();
+                isInFragmentFirstPage = true;
+                slidingMenu1.toggle();
+                break;
+            case R.id.btnMO:
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, fragmentMessageOpen).addToBackStack(null).commit();
+                isInFragmentFirstPage = false;
+                slidingMenu1.toggle();
+                break;
+            case R.id.btnDY:
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, fragmentDynamic).addToBackStack(null).commit();
+                isInFragmentFirstPage = false;
+                slidingMenu1.toggle();
+                break;
+            case R.id.btnLA:
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, fragmentLaw).addToBackStack(null).commit();
+                isInFragmentFirstPage = false;
+                slidingMenu1.toggle();
+                break;
+            case R.id.btnAB:
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, fragmentAboutUs).addToBackStack(null).commit();
+                slidingMenu1.toggle();
+                isInFragmentFirstPage = false;
+                break;
+            case R.id.btnSA:
+                startActivity(new Intent(MainActivity.this, SearchActivity.class));
+                break;
+            case R.id.btnCO:
+                startActivity(new Intent(MainActivity.this, MyCollectionsActivity.class));
+                break;
+            case R.id.btnSE:
+                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+                break;
+            default:
+                break;
+        }
     }
 
     public interface MyOnTouchListener {

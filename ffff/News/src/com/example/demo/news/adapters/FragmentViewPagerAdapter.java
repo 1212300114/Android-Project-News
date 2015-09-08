@@ -2,19 +2,25 @@ package com.example.demo.news.adapters;
 
 import java.util.ArrayList;
 
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.ViewGroup;
 
 public class FragmentViewPagerAdapter extends FragmentStatePagerAdapter {
-    //栏目viewpager的适配器 里面的gettitle方法返回给viewpagerindicator导航栏标题
-    private ArrayList<Fragment> fragments;
+    //栏目viewpager的适配器 里面的gettitle方法返回给viewpagerindicator导航栏标题   这里用state的 可以做到fragment更新后viewpager更新否则viewpager无变化
+    private ArrayList<Fragment.SavedState> mSavedState = new ArrayList<>();
+    private ArrayList<Fragment> fragments = new ArrayList<>();
+    private final FragmentManager mFragmentManager;
     private String[] titles = new String[]{"首页", "要闻", "审查", "党风", "巡视",
             "图闻", "专题"};
     private ArrayList<String> title;
+    private static final String TAG = "FragmentStatePagerAdapter";
 
     public ArrayList<Fragment> getFragments() {
         return fragments;
@@ -31,6 +37,8 @@ public class FragmentViewPagerAdapter extends FragmentStatePagerAdapter {
 
     public FragmentViewPagerAdapter(FragmentManager fm) {
         super(fm);
+        mFragmentManager = fm;
+
         // TODO Auto-generated constructor stub
     }
 
@@ -38,6 +46,7 @@ public class FragmentViewPagerAdapter extends FragmentStatePagerAdapter {
                                     ArrayList<Fragment> fragments) {
         super(fm);
         this.fragments = fragments;
+        mFragmentManager = fm;
     }
 
     @Override
@@ -65,4 +74,5 @@ public class FragmentViewPagerAdapter extends FragmentStatePagerAdapter {
     public int getItemPosition(Object object) {
         return POSITION_NONE;
     }
+
 }

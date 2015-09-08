@@ -32,6 +32,7 @@ import com.example.demo.news.dataloaders.IndicatorLoader;
 import com.example.demo.news.fragments.main.FragmentAll;
 import com.example.demo.news.fragments.main.FragmentFirstPage;
 import com.example.demo.news.myviews.MyDialog;
+import com.google.gson.Gson;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.viewpagerindicator.TabPageIndicator;
 
@@ -59,6 +60,8 @@ public class FragmentMain extends Fragment implements OnClickListener {
     private FragmentViewPagerAdapter adapter;// 栏目内容viewpager的适配器
     private FragmentFirstPage firstPage; // 首页栏目内容
     private AsyncTask<String, Void, IndicatorData> task;// 加载导航栏数据的task
+    private AsyncTask<String, Void, IndicatorData> taskForSelecting;// 加载用户自选择导航栏的task
+    private AsyncTask<String, Void, IndicatorData> taskForUser;// 加载用户自选择导航栏的task
     private LinearLayout layout;
     private ListDataHelper listDataHelper;
     private static String TITLE = "栏目";
@@ -72,7 +75,6 @@ public class FragmentMain extends Fragment implements OnClickListener {
     private CheckBox imageNews;
     private CheckBox subject;
     private CheckBox expose;
-    private ArrayList<Fragment> selectedFragments;
     private static final String FIRST = "首页";
     private static final String IMPORTANT = "要闻";
     private static final String WIND = "党风";
@@ -81,22 +83,26 @@ public class FragmentMain extends Fragment implements OnClickListener {
     private static final String IMAGE = "图闻";
     private static final String SUBJECT = "专题";
     private static final String EXPOSE = "曝光";
-    private String firstLink;
-    private String importantLink;
-    private String windLink;
-    private String checkLink;
-    private String watchLink;
-    private String imageLink;
-    private String subjectLink;
-    private String exposeLink;
-    private boolean flag = false;
+    private StringBuilder builder = new StringBuilder();
+    boolean flag1 = false;
+    private SharedPreferences.Editor editor;
+    private ArrayList<Fragment> fragmentStored;
+    private ArrayList<String> titleStored;
+    private StringBuilder stringBuilder = new StringBuilder();
+    private String[] idArray = new String[10];
+    private String l;
+    private Context context;
+    private ArrayList<String> names;
+    private boolean indicatorIsTouched = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         listDataHelper = new ListDataHelper(getActivity());
         sharedPreferences = getActivity().getSharedPreferences("settings", Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
         SQLiteDatabase dbRead = listDataHelper.getReadableDatabase();
+        context = getActivity();
         Cursor cursor = dbRead.query("listData", null, null, null, null, null, null);
         while (cursor.moveToNext()) {
             String name = cursor.getString(cursor.getColumnIndex("name"));
@@ -109,11 +115,21 @@ public class FragmentMain extends Fragment implements OnClickListener {
         if (!MainActivity.isNetworkConnected(getActivity())) {
             indicatorData = loader.getJSONDate(storedJson);
         }
-        selectedFragments = new ArrayList<>();
-        FragmentFirstPage fragmentFirstPage = new FragmentFirstPage();
-        selectedFragments.add(fragmentFirstPage);
+        ArrayList<Fragment> selectedFragments = new ArrayList<>();
+        firstPage = new FragmentFirstPage();//初始化栏目数组为其添加内容首先将首页固定
+        fragmentStored = new ArrayList<>();
+        fragmentStored.add(firstPage);
+        titleStored = new ArrayList<>();
+        titleStored.add(FIRST);
         selectedTitle.add(FIRST);
+        fragments = new ArrayList<>();
+        fragments.clear();
+        names = new ArrayList<>();
+        names.clear();
+
+
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -171,46 +187,25 @@ public class FragmentMain extends Fragment implements OnClickListener {
         root = inflater.inflate(R.layout.fragment_main, container, false);
         viewPager = (ViewPager) root.findViewById(R.id.pager);
         fragments = new ArrayList<>();
-        firstPage = new FragmentFirstPage();//初始化栏目数组为其添加内容首先将首页固定
-        adapter = new FragmentViewPagerAdapter(getChildFragmentManager(),
-                fragments);
+
+        l = "http://api.jjjc.yn.gov.cn/jwapp/?service=Category.index&class_id=";
         ArrayList<String> names = new ArrayList<>();
-        fragments.add(firstPage);//
         if (indicatorData != null) {
-            names.add(FIRST);
-            for (int i = 1; i < indicatorData.getData().getCate().size(); i++) {
+
+            for (int i = 0; i < indicatorData.getData().getCate().size(); i++) {
                 String name = indicatorData.getData().getCate().get(i)
                         .getName();
                 String link = indicatorData.getData().getCate().get(i)
                         .getCate_link();
-                if (name.equals(IMPORTANT)) {
-                    importantLink = link;
-//                    importantNews.setChecked(true);
-//                    importantNews.setTextColor(getResources().getColor(R.color.dialog));
-                } else if (name.equals(WIND)) {
-                    windLink = link;
-//                    wind.setChecked(true);
-//                    wind.setTextColor(getResources().getColor(R.color.dialog));
-                } else if (name.equals(CHECK)) {
-                    checkLink = link;
-//                    check.setChecked(true);
-//                    check.setTextColor(getResources().getColor(R.color.dialog));
-                } else if (name.equals(WATCH)) {
-                    watchLink = link;
-//                    watch.setChecked(true);
-//                    watch.setTextColor(getResources().getColor(R.color.dialog));
-                } else if (name.equals(IMAGE)) {
-                    imageLink = link;
-//                    imageNews.setChecked(true);
-//                    imageNews.setTextColor(getResources().getColor(R.color.dialog));
-                } else if (name.equals(SUBJECT)) {
-                    subjectLink = link;
-//                    subject.setChecked(true);
-//                    subject.setTextColor(getResources().getColor(R.color.dialog));
-                } else if (name.equals(EXPOSE)) {
-                    exposeLink = link;
-//                    expose.setChecked(true);
-//                    expose.setTextColor(getResources().getColor(R.color.dialog));
+                Integer id = indicatorData.getData().getCate().get(i).getClass_id();
+                idArray[i] = String.valueOf(id);
+                builder.append(name);
+                builder.append(",");
+                if (id == null) {
+                    stringBuilder.append("");
+                } else {
+                    stringBuilder.append(id);
+                    stringBuilder.append(",");
                 }
                 Bundle bundle = new Bundle();
                 bundle.putString("name", name);
@@ -221,10 +216,98 @@ public class FragmentMain extends Fragment implements OnClickListener {
                 names.add(indicatorData.getData().getCate().get(i).getName());
             }
         }
-        adapter.setFragments(fragments);
+
+        String str = sharedPreferences.getString("id", "然并卵");
+        Log.e("str", str);
+        if (!str.equals("然并卵")) {
+            final String selectedLink = l + str;
+            l = selectedLink;
+            if (MainActivity.isNetworkConnected(context)) {
+                taskForUser = new AsyncTask<String, Void, IndicatorData>() {
+                    @Override
+                    protected IndicatorData doInBackground(String... params) {
+                        String json;
+                        IndicatorData data = null;
+                        try {
+                            json = loader.readURL(selectedLink);
+                            data = loader.getJSONDate(json);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+
+                        return data;
+                    }
+                };
+                taskForUser.execute();
+            }
+            IndicatorData data = null;
+            try {
+                data = taskForUser.get();
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
+            names.clear();
+            fragments.clear();
+            assert data != null;
+            for (int i = 0; i < data.getData().getCate().size(); i++) {
+                String name = data.getData().getCate().get(i).getName();
+                String link = data.getData().getCate().get(i).getCate_link();
+                names.add(name);
+                Bundle bundle = new Bundle();
+                bundle.putString("name", name);
+                bundle.putString("link", link);
+                FragmentAll all = new FragmentAll();
+                all.setArguments(bundle);
+                fragments.add(all);
+            }
+
+
+        } else {
+
+            l = l + stringBuilder.toString();
+        }
+//        strArray = str.split(","); //拆分字符为"," ,然后把结果交给数组strArray
+//        String id = sharedPreferences.getString("id", "hehe");
+//        idArray = id.split(",");
+        Log.e("", l);
+        for (int i = 0; i < names.size(); i++) {
+            switch (names.get(i)) {
+                case IMPORTANT:
+                    importantNews.setChecked(true);
+                    importantNews.setTextColor(getResources().getColor(R.color.dialog));
+                    break;
+                case WIND:
+                    wind.setChecked(true);
+                    wind.setTextColor(getResources().getColor(R.color.dialog));
+                    break;
+                case CHECK:
+                    check.setChecked(true);
+                    check.setTextColor(getResources().getColor(R.color.dialog));
+                    break;
+                case WATCH:
+                    watch.setChecked(true);
+                    watch.setTextColor(getResources().getColor(R.color.dialog));
+                    break;
+                case IMAGE:
+                    imageNews.setChecked(true);
+                    imageNews.setTextColor(getResources().getColor(R.color.dialog));
+                    break;
+                case SUBJECT:
+                    subject.setChecked(true);
+                    subject.setTextColor(getResources().getColor(R.color.dialog));
+                    break;
+                case EXPOSE:
+                    expose.setChecked(true);
+                    expose.setTextColor(getResources().getColor(R.color.dialog));
+                    break;
+            }
+
+        }
+        adapter = new FragmentViewPagerAdapter(getChildFragmentManager(),
+                fragments);
         adapter.setTitles(names);
         viewPager.setAdapter(adapter);
-
         indicator = (TabPageIndicator) root.findViewById(R.id.indicator);
         indicator.setViewPager(viewPager);// 将导航栏与栏目内容绑定
         indicator.setCurrentItem(0);
@@ -234,7 +317,6 @@ public class FragmentMain extends Fragment implements OnClickListener {
         showLeft.setOnClickListener(this);
         showRight = (ImageButton) root.findViewById(R.id.btnShowRight);
         showRight.setOnClickListener(this);
-
         add = (ImageButton) root.findViewById(R.id.btnAdd);
         add.setOnClickListener(this);
         //获取到touch事件动态判断左右侧栏的touchmode
@@ -242,51 +324,55 @@ public class FragmentMain extends Fragment implements OnClickListener {
             // ��touch�¼����жϾ���slidingmenu��touchmode
             @Override
             public boolean onTouch(MotionEvent ev) {
-                ViewPager vp = firstPage.getViewPager();
+                ViewPager vp = ((FragmentAll) fragments.get(0)).getViewPager();
+                layout = ((FragmentAll) fragments.get(0)).getLayout();
+                LinearLayout linearLayout = null;
+                ViewPager viewPager1 = null;
+                int viewPageSize = 0;
+                if (((FragmentAll) fragments.get(fragments.size() - 1)).isViewPagerCreated()) {
+                    linearLayout = ((FragmentAll) fragments.get(fragments.size() - 1)).getLayout();
+                    viewPager1 = ((FragmentAll) fragments.get(fragments.size() - 1)).getViewPager();
+                    viewPageSize = ((FragmentAll) fragments.get(fragments.size() - 1)).getViewPagerSize();
+                }
+
                 if (ev.getAction() == MotionEvent.ACTION_DOWN) {
-                    layout = firstPage.getLayout();
+                    indicatorIsTouched = isInChangeImageZone(indicator, (int) ev.getX(),
+                            (int) ev.getY());
                     if (layout != null) {
 
                         viewpagerIsTouched = isInChangeImageZone(layout,
                                 (int) ev.getX(), (int) ev.getY());
                     }
-                }
-
-                if (!mainActivity.isInFragmentFirstPage()
-                        || viewPager.getCurrentItem() == (fragments.size() - 1)) {
-                    slidingMenu2
-                            .setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
-                } else if (viewPager.getCurrentItem() != (fragments.size() - 1)) {
-                    slidingMenu2.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
-                }
-                if (flag && viewPager.getCurrentItem() == selectedFragments.size() - 1) {
-                    slidingMenu2
-                            .setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
-                }
-                if (viewPager.getCurrentItem() == 0 && !viewpagerIsTouched) {
-                    slidingMenu1
-                            .setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
-                }
-                if (!mainActivity.isInFragmentFirstPage()) {
-                    slidingMenu1
-                            .setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
-                } else if (viewPager.getCurrentItem() != 0) {
-                    slidingMenu1.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
-                }
-                if (layout != null) {
-                    if (vp.getCurrentItem() != 0
-                            && viewPager.getCurrentItem() != 0) {
-                        slidingMenu1
-                                .setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
-                    } else if (vp.getCurrentItem() != 0 && viewpagerIsTouched) {
-                        slidingMenu1
-                                .setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
-                    } else if (vp.getCurrentItem() == 0
-                            && viewPager.getCurrentItem() == 0) {
-                        slidingMenu1
-                                .setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+                    if (linearLayout != null) {
+                        flag1 = isInChangeImageZone(linearLayout, (int) ev.getX(), (int) ev.getY());
                     }
-
+                }
+                if (indicatorIsTouched) {
+                    slidingMenu1.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
+                    slidingMenu2.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
+                } else {
+                    if (viewPager.getCurrentItem() == 0 && !viewpagerIsTouched) {
+                        slidingMenu1.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+                    } else if (viewPager.getCurrentItem() == 0 && vp.getCurrentItem() == 0) {
+                        slidingMenu1.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+                    } else {
+                        slidingMenu1.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
+                    }
+                    if (linearLayout != null) {
+                        if (viewPager.getCurrentItem() == fragments.size() - 1 && !flag1) {
+                            slidingMenu2.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+                        } else if (viewPager1.getCurrentItem() == viewPageSize - 1 && flag1) {
+                            slidingMenu2.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+                        } else {
+                            slidingMenu2.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
+                        }
+                    } else {
+                        if (viewPager.getCurrentItem() == fragments.size() - 1) {
+                            slidingMenu2.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+                        } else {
+                            slidingMenu2.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
+                        }
+                    }
                 }
                 return true;
             }
@@ -297,20 +383,13 @@ public class FragmentMain extends Fragment implements OnClickListener {
         return root;
     }
 
-    FragmentAll importantFragment = new FragmentAll();
-    FragmentAll windFragment = new FragmentAll();
-    FragmentAll watchFragment = new FragmentAll();
-    FragmentAll checkFragment = new FragmentAll();
-    FragmentAll imageFragment = new FragmentAll();
-    FragmentAll subjectFragment = new FragmentAll();
-    FragmentAll exposeFragment = new FragmentAll();
     ArrayList<String> selectedTitle = new ArrayList<>();
 
     @Override
+
     public void onClick(View v) {
 
 
-        Bundle bundle = new Bundle();
         switch (v.getId()) {
             case R.id.btnShowLeft:
                 slidingMenu1.toggle();
@@ -322,176 +401,130 @@ public class FragmentMain extends Fragment implements OnClickListener {
                 dialog.show();
                 break;
             case R.id.btnDialogCancle:
-                viewPager.removeAllViews();
-                adapter.setFragments(selectedFragments);
-                adapter.setTitles(selectedTitle);
+                if (MainActivity.isNetworkConnected(context)) {
+                    taskForSelecting = new AsyncTask<String, Void, IndicatorData>() {
+                        @Override
+                        protected IndicatorData doInBackground(String... params) {
+                            String json;
+                            IndicatorData data = null;
+                            try {
+                                json = loader.readURL(l);
+                                data = loader.getJSONDate(json);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+
+                            return data;
+                        }
+                    };
+                    taskForSelecting.execute();
+                }
+                IndicatorData data = null;
+                try {
+                    data = taskForSelecting.get();
+                } catch (InterruptedException | ExecutionException e) {
+                    e.printStackTrace();
+                }
+                if (data != null) {
+                    names.clear();
+                    fragments.clear();
+                    for (int i = 0; i < data.getData().getCate().size(); i++) {
+                        String name = data.getData().getCate().get(i).getName();
+                        String link = data.getData().getCate().get(i).getCate_link();
+                        names.add(name);
+                        Bundle bundle = new Bundle();
+                        bundle.putString("name", name);
+                        bundle.putString("link", link);
+                        FragmentAll all = new FragmentAll();
+                        all.setArguments(bundle);
+                        fragments.add(all);
+                    }
+                }
+                String s = l.substring(65);
+                editor.putString("id", s);
+                editor.commit();
+                adapter.setFragments(fragments);
+                adapter.setTitles(names);
                 adapter.notifyDataSetChanged();
-                indicator.setViewPager(viewPager);
                 indicator.notifyDataSetChanged();
+                Log.e("", new Gson().toJson(data));
+                Log.e("data", sharedPreferences.getString("id", "id!!!"));
+                Log.e("sub", l.substring(65));
                 dialog.cancel();
-                flag = true;
                 break;
             case R.id.btnImportantNews:
-                bundle.clear();
-                bundle.putString("name", IMPORTANT);
-                bundle.putString("link", importantLink);
                 if (importantNews.isChecked()) {
                     importantNews.setTextColor(getActivity().getResources().getColor(R.color.dialog));
-                    if (!selectedFragments.contains(importantFragment)) {
-                        if (importantFragment.getArguments() == null) {
-                            importantFragment.setArguments(bundle);
-                        }
-                        selectedFragments.add(importantFragment);
-                        selectedTitle.add(IMPORTANT);
-                    }
+                    l = l + idArray[1] + ",";
                 } else {
                     importantNews.setTextColor(getActivity().getResources().getColor(R.color.black));
-                    if (selectedFragments.contains(importantFragment)) {
-                        selectedFragments.remove(importantFragment);
-                        selectedTitle.remove(IMPORTANT);
-                    }
+                    l = l.replace(idArray[1] + ",", "");
                 }
-                Log.e("size", String.valueOf(selectedFragments.size()));
-                Log.e("~~", String.valueOf(selectedTitle.size()));
+                Log.e("~~", l);
                 break;
             case R.id.btnWind:
-                bundle.clear();
-                bundle.putString("name", WIND);
-                bundle.putString("link", windLink);
                 if (wind.isChecked()) {
                     wind.setTextColor(getActivity().getResources().getColor(R.color.dialog));
-                    if (!selectedFragments.contains(windFragment)) {
-                        if (windFragment.getArguments() == null) {
-
-                            windFragment.setArguments(bundle);
-                        }
-                        selectedFragments.add(windFragment);
-                        selectedTitle.add(WIND);
-                    }
+                    l = l + idArray[4] + ",";
                 } else {
                     wind.setTextColor(getActivity().getResources().getColor(R.color.black));
-                    if (selectedFragments.contains(windFragment)) {
-                        selectedFragments.remove(windFragment);
-                        selectedTitle.remove(WIND);
-                    }
+                    l = l.replace(idArray[4] + ",", "");
                 }
-                Log.e("size", String.valueOf(selectedFragments.size()));
-                Log.e("~~", String.valueOf(selectedTitle.size()));
+                Log.e("~~", l);
                 break;
             case R.id.btnWatch:
-                bundle.clear();
-                bundle.putString("name", WATCH);
-                bundle.putString("link", watchLink);
                 if (watch.isChecked()) {
                     watch.setTextColor(getActivity().getResources().getColor(R.color.dialog));
-                    if (!selectedFragments.contains(watchFragment)) {
-                        if (watchFragment.getArguments() == null) {
-                            watchFragment.setArguments(bundle);
-                        }
-                        selectedFragments.add(watchFragment);
-                        selectedTitle.add(WATCH);
-                    }
+                    l = l + idArray[5] + ",";
+
                 } else {
                     watch.setTextColor(getActivity().getResources().getColor(R.color.black));
-                    if (selectedFragments.contains(watchFragment)) {
-                        selectedFragments.remove(watchFragment);
-                        selectedTitle.remove(WATCH);
-                    }
+                    l = l.replace(idArray[5] + ",", "");
                 }
-                Log.e("size", String.valueOf(selectedFragments.size()));
-                Log.e("~~", String.valueOf(selectedTitle.size()));
+                Log.e("~~", l);
                 break;
             case R.id.btnCheck:
-                bundle.clear();
-                bundle.putString("name", CHECK);
-                bundle.putString("link", checkLink);
                 if (check.isChecked()) {
                     check.setTextColor(getActivity().getResources().getColor(R.color.dialog));
-                    if (!selectedFragments.contains(checkFragment)) {
-                        if (checkFragment.getArguments() == null) {
-                            checkFragment.setArguments(bundle);
-                        }
-                        selectedFragments.add(checkFragment);
-                        selectedTitle.add(CHECK);
-                    }
+                    l = l + idArray[2] + ",";
+
                 } else {
                     check.setTextColor(getActivity().getResources().getColor(R.color.black));
-                    if (selectedFragments.contains(checkFragment)) {
-                        selectedFragments.remove(checkFragment);
-                        selectedTitle.remove(CHECK);
-                    }
+                    l = l.replace(idArray[2] + ",", "");
                 }
-                Log.e("size", String.valueOf(selectedFragments.size()));
-                Log.e("~~", String.valueOf(selectedTitle.size()));
+                Log.e("~~", l);
                 break;
             case R.id.btnImageNews:
-                bundle.clear();
-                bundle.putString("name", IMAGE);
-                bundle.putString("link", imageLink);
                 if (imageNews.isChecked()) {
                     imageNews.setTextColor(getActivity().getResources().getColor(R.color.dialog));
-                    if (!selectedFragments.contains(imageFragment)) {
-                        if (imageFragment.getArguments() == null) {
-                            imageFragment.setArguments(bundle);
-                        }
-                        selectedFragments.add(imageFragment);
-                        selectedTitle.add(IMAGE);
-                    }
+                    l = l + idArray[6] + ",";
                 } else {
                     imageNews.setTextColor(getActivity().getResources().getColor(R.color.black));
-                    if (selectedFragments.contains(imageFragment)) {
-                        selectedFragments.remove(imageFragment);
-                        selectedTitle.remove(IMAGE);
-                    }
+                    l = l.replace(idArray[6] + ",", "");
                 }
-                Log.e("size", String.valueOf(selectedFragments.size()));
-                Log.e("~~", String.valueOf(selectedTitle.size()));
+                Log.e("~~", l);
                 break;
             case R.id.btnSubject:
-                bundle.clear();
-                bundle.putString("name", SUBJECT);
-                bundle.putString("link", subjectLink);
                 if (subject.isChecked()) {
                     subject.setTextColor(getActivity().getResources().getColor(R.color.dialog));
-                    if (!selectedFragments.contains(subjectFragment)) {
-                        if (subjectFragment.getArguments() == null) {
-                            subjectFragment.setArguments(bundle);
-                        }
-                        selectedFragments.add(subjectFragment);
-                        selectedTitle.add(SUBJECT);
-                    }
+                    l = l + idArray[7] + ",";
+
                 } else {
                     subject.setTextColor(getActivity().getResources().getColor(R.color.black));
-                    if (selectedFragments.contains(subjectFragment)) {
-                        selectedFragments.remove(subjectFragment);
-                        selectedTitle.remove(SUBJECT);
-                    }
+                    l = l.replace(idArray[7] + ",", "");
                 }
-                Log.e("size", String.valueOf(selectedFragments.size()));
-                Log.e("~~", String.valueOf(selectedTitle.size()));
+                Log.e("~~", l);
                 break;
             case R.id.btnBaoGuang:
-                bundle.clear();
-                bundle.putString("name", EXPOSE);
-                bundle.putString("link", exposeLink);
                 if (expose.isChecked()) {
                     expose.setTextColor(getActivity().getResources().getColor(R.color.dialog));
-                    if (!selectedFragments.contains(exposeFragment)) {
-                        if (exposeFragment.getArguments() == null) {
-                            exposeFragment.setArguments(bundle);
-                        }
-                        selectedFragments.add(exposeFragment);
-                        selectedTitle.add(EXPOSE);
-                    }
+                    l = l + idArray[3] + ",";
+
                 } else {
                     expose.setTextColor(getActivity().getResources().getColor(R.color.black));
-                    if (selectedFragments.contains(exposeFragment)) {
-                        selectedFragments.remove(exposeFragment);
-                        selectedTitle.remove(EXPOSE);
-                    }
+                    l = l.replace(idArray[3] + ",", "");
                 }
-                Log.e("size", String.valueOf(selectedFragments.size()));
-                Log.e("~~", String.valueOf(selectedTitle.size()));
+                Log.e("~~", l);
                 break;
             default:
                 break;
