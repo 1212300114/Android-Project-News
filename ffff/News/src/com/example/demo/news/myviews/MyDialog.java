@@ -13,13 +13,13 @@ public class MyDialog extends Dialog {
 	public MyDialog(Context context, int theme) {
 		super(context, theme);
 		this.context = context;
-		this.setContentView(R.layout.dialog_style);
+		this.setContentView(R.layout.column_select_diaolog_layout);
 	}
 
 	public MyDialog(Context context) {
 		super(context);
 		this.context = context;
-		this.setContentView(R.layout.dialog_style);
+		this.setContentView(R.layout.column_select_diaolog_layout);
 	}
 
 	@Override

@@ -46,12 +46,17 @@ import java.util.concurrent.ExecutionException;
 public class SearchActivity extends Activity implements OnClickListener,
         IXListViewListener {
 
-    // 搜索也的内容
+    // 搜索页的内容
+    /*
+    view
+     */
     private ImageButton back;
     private Button cancle;
     private ImageButton delete;
     private EditText search;
+    private ProgressBar pb;
     private XListView lv;
+
     private String searchText = null;
     private SearchLoader loader = new SearchLoader();
     private AsyncTask<Integer, Void, SearchData> task;
@@ -61,13 +66,11 @@ public class SearchActivity extends Activity implements OnClickListener,
     private ArrayList<String> listTitles;
     private Handler mHandler;
     private int page = 1;
-    @SuppressWarnings("unused")
     private int pageCount = 0;
 
     private ArrayList<String> ListImageURL;
     private DisplayImageOptions options;
     private ImageLoader imageLoader;
-    private ProgressBar pb;
 
     // �������ݻ�ûʵ�־ͷ���2����ť��������
     @Override
@@ -76,14 +79,15 @@ public class SearchActivity extends Activity implements OnClickListener,
 
         setContentView(R.layout.activity_search);
 
+        mHandler = new Handler();
         imageLoader = ImageLoader.getInstance();
         options = new DisplayImageOptions.Builder()
                 .showImageOnLoading(R.drawable.news_list_bg)
                 .showImageForEmptyUri(R.drawable.news_list_bg)
                 .showImageOnFail(R.drawable.news_list_bg).cacheInMemory(true)
                 .cacheOnDisk(true).build();
+
         pb = (ProgressBar) findViewById(R.id.pb);
-        mHandler = new Handler();
         back = (ImageButton) findViewById(R.id.btnBack);
         back.setOnClickListener(this);
         cancle = (Button) findViewById(R.id.btnSearch);
@@ -121,10 +125,10 @@ public class SearchActivity extends Activity implements OnClickListener,
                 finish();
                 break;
             case R.id.btnSearch:
-                searchText = search.getText().toString().trim();
+                searchText = search.getText().toString();
                 System.out.println(searchText);
                 if (searchText.equals("")) {
-                    Toast.makeText(this, "请输入搜索内容", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SearchActivity.this, "请输入搜索内容", Toast.LENGTH_SHORT).show();
                 }else {
 
                     pb.setVisibility(View.VISIBLE);
@@ -213,7 +217,7 @@ public class SearchActivity extends Activity implements OnClickListener,
                             int content_id = data.getData().getList()
                                     .get(position - 1).getContent_id();
                             intent = new Intent(SearchActivity.this,
-                                    LooperViewDetailsActivity.class);
+                                    NewsDetailsActivity.class);
                             intent.putExtra("link", link);
                             intent.putExtra("content_id", content_id);
                             startActivity(intent);

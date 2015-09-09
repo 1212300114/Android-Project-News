@@ -19,7 +19,7 @@
             android:id="@+id/indicator"
             android:layout_width="fill_parent"
             android:layout_height="40dp"
-            android:layout_toLeftOf="@+id/btnAdd"/>
+            android:layout_toLeftOf="@+id/btnAdd" />
 
         <ImageButton
             android:id="@+id/btnAdd"
@@ -32,10 +32,23 @@
             android:scaleType="fitXY" />
     </RelativeLayout>
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/pager"
+    <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@+id/indicatorOut" />
+        android:layout_below="@+id/indicatorOut">
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/pager"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+
+        <TextView
+            android:id="@+id/tvNo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/noNetwork"
+            android:textSize="18sp" />
+    </RelativeLayout>
 
 </RelativeLayout><!-- From: file:/C:/Users/123456/ffff/News/res/layout/fragment_main.xml -->

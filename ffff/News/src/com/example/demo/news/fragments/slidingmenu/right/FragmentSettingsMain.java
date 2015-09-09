@@ -24,8 +24,8 @@ public class FragmentSettingsMain extends Fragment {
 		ImageButton btnBack = (ImageButton) root.findViewById(R.id.btnBack);
 		dialog = new Dialog(getActivity(), R.style.MyDialog1);
 		dialog2 = new Dialog(getActivity(), R.style.MyDialog1);
-		dialog2.setContentView(R.layout.check_update_dialog_style);
-		dialog.setContentView(R.layout.settings_dialog_style);
+		dialog2.setContentView(R.layout.check_update_dialog_layout);
+		dialog.setContentView(R.layout.settings_dialog_layout);
 		dialog.findViewById(R.id.dialogNo).setOnClickListener(
 				new OnClickListener() {
 					@Override

@@ -19,7 +19,6 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -80,7 +79,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
             editor.putBoolean("network", true);
         }
         editor.commit();
-        setContentView(R.layout.main_activity);
+        setContentView(R.layout.activity_main);
 
         main = new FragmentMain();
         if (savedInstanceState == null) {

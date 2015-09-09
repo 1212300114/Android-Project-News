@@ -1,6 +1,6 @@
 -- Merging decision tree log ---
 manifest
-ADDED from C:\Users\123456\ffff\News\AndroidManifest.xml:2:1-127:12
+ADDED from C:\Users\123456\ffff\News\AndroidManifest.xml:2:1-123:12
 	package
 		ADDED from C:\Users\123456\ffff\News\AndroidManifest.xml:3:5-33
 	android:versionName
@@ -51,7 +51,7 @@ ADDED from C:\Users\123456\ffff\News\AndroidManifest.xml:25:5-88
 	android:name
 		ADDED from C:\Users\123456\ffff\News\AndroidManifest.xml:25:30-85
 application
-ADDED from C:\Users\123456\ffff\News\AndroidManifest.xml:27:5-125:19
+ADDED from C:\Users\123456\ffff\News\AndroidManifest.xml:27:5-121:19
 MERGED from [ffff:SwipeMenuListView:unspecified] C:\Users\123456\ffff\News\build\intermediates\exploded-aar\ffff\SwipeMenuListView\unspecified\AndroidManifest.xml:11:5-15:19
 MERGED from [ffff:social_sdk_library_project:unspecified] C:\Users\123456\ffff\News\build\intermediates\exploded-aar\ffff\social_sdk_library_project\unspecified\AndroidManifest.xml:11:5-12:19
 	android:label
@@ -150,57 +150,51 @@ ADDED from C:\Users\123456\ffff\News\AndroidManifest.xml:86:9-89:20
 		ADDED from C:\Users\123456\ffff\News\AndroidManifest.xml:88:13-43
 	android:name
 		ADDED from C:\Users\123456\ffff\News\AndroidManifest.xml:87:13-75
-activity#com.example.demo.news.activity.DetailsActivity
-ADDED from C:\Users\123456\ffff\News\AndroidManifest.xml:90:9-93:20
-	android:theme
-		ADDED from C:\Users\123456\ffff\News\AndroidManifest.xml:92:13-43
-	android:name
-		ADDED from C:\Users\123456\ffff\News\AndroidManifest.xml:91:13-74
 activity#com.example.demo.news.activity.SplashActivity
-ADDED from C:\Users\123456\ffff\News\AndroidManifest.xml:94:9-103:20
+ADDED from C:\Users\123456\ffff\News\AndroidManifest.xml:90:9-99:20
 	android:label
-		ADDED from C:\Users\123456\ffff\News\AndroidManifest.xml:96:13-45
+		ADDED from C:\Users\123456\ffff\News\AndroidManifest.xml:92:13-45
 	android:theme
-		ADDED from C:\Users\123456\ffff\News\AndroidManifest.xml:97:13-43
+		ADDED from C:\Users\123456\ffff\News\AndroidManifest.xml:93:13-43
 	android:name
-		ADDED from C:\Users\123456\ffff\News\AndroidManifest.xml:95:13-73
+		ADDED from C:\Users\123456\ffff\News\AndroidManifest.xml:91:13-73
 intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
-ADDED from C:\Users\123456\ffff\News\AndroidManifest.xml:98:13-102:29
+ADDED from C:\Users\123456\ffff\News\AndroidManifest.xml:94:13-98:29
 action#android.intent.action.MAIN
-ADDED from C:\Users\123456\ffff\News\AndroidManifest.xml:99:17-69
+ADDED from C:\Users\123456\ffff\News\AndroidManifest.xml:95:17-69
 	android:name
-		ADDED from C:\Users\123456\ffff\News\AndroidManifest.xml:99:25-66
+		ADDED from C:\Users\123456\ffff\News\AndroidManifest.xml:95:25-66
 category#android.intent.category.LAUNCHER
-ADDED from C:\Users\123456\ffff\News\AndroidManifest.xml:101:17-77
+ADDED from C:\Users\123456\ffff\News\AndroidManifest.xml:97:17-77
 	android:name
-		ADDED from C:\Users\123456\ffff\News\AndroidManifest.xml:101:27-74
+		ADDED from C:\Users\123456\ffff\News\AndroidManifest.xml:97:27-74
 meta-data#UMENG_APPKEY
-ADDED from C:\Users\123456\ffff\News\AndroidManifest.xml:105:9-108:21
+ADDED from C:\Users\123456\ffff\News\AndroidManifest.xml:101:9-104:21
 	android:value
-		ADDED from C:\Users\123456\ffff\News\AndroidManifest.xml:107:13-53
+		ADDED from C:\Users\123456\ffff\News\AndroidManifest.xml:103:13-53
 	android:name
-		ADDED from C:\Users\123456\ffff\News\AndroidManifest.xml:106:13-40
+		ADDED from C:\Users\123456\ffff\News\AndroidManifest.xml:102:13-40
 activity#com.example.demo.news.activity.SubjectDetails
-ADDED from C:\Users\123456\ffff\News\AndroidManifest.xml:110:9-114:20
+ADDED from C:\Users\123456\ffff\News\AndroidManifest.xml:106:9-110:20
 	android:label
-		ADDED from C:\Users\123456\ffff\News\AndroidManifest.xml:112:13-67
+		ADDED from C:\Users\123456\ffff\News\AndroidManifest.xml:108:13-67
 	android:theme
-		ADDED from C:\Users\123456\ffff\News\AndroidManifest.xml:113:13-43
+		ADDED from C:\Users\123456\ffff\News\AndroidManifest.xml:109:13-43
 	android:name
-		ADDED from C:\Users\123456\ffff\News\AndroidManifest.xml:111:13-73
-activity#com.example.demo.news.activity.LooperViewDetailsActivity
-ADDED from C:\Users\123456\ffff\News\AndroidManifest.xml:115:9-119:20
+		ADDED from C:\Users\123456\ffff\News\AndroidManifest.xml:107:13-73
+activity#com.example.demo.news.activity.NewsDetailsActivity
+ADDED from C:\Users\123456\ffff\News\AndroidManifest.xml:111:9-115:20
 	android:label
-		ADDED from C:\Users\123456\ffff\News\AndroidManifest.xml:117:13-71
+		ADDED from C:\Users\123456\ffff\News\AndroidManifest.xml:113:13-71
 	android:theme
-		ADDED from C:\Users\123456\ffff\News\AndroidManifest.xml:118:13-43
+		ADDED from C:\Users\123456\ffff\News\AndroidManifest.xml:114:13-43
 	android:name
-		ADDED from C:\Users\123456\ffff\News\AndroidManifest.xml:116:13-84
+		ADDED from C:\Users\123456\ffff\News\AndroidManifest.xml:112:13-78
 activity#com.example.demo.news.activity.DynamicDetailActivity
-ADDED from C:\Users\123456\ffff\News\AndroidManifest.xml:120:9-124:20
+ADDED from C:\Users\123456\ffff\News\AndroidManifest.xml:116:9-120:20
 	android:label
-		ADDED from C:\Users\123456\ffff\News\AndroidManifest.xml:122:13-66
+		ADDED from C:\Users\123456\ffff\News\AndroidManifest.xml:118:13-66
 	android:theme
-		ADDED from C:\Users\123456\ffff\News\AndroidManifest.xml:123:13-43
+		ADDED from C:\Users\123456\ffff\News\AndroidManifest.xml:119:13-43
 	android:name
-		ADDED from C:\Users\123456\ffff\News\AndroidManifest.xml:121:13-80
+		ADDED from C:\Users\123456\ffff\News\AndroidManifest.xml:117:13-80

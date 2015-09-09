@@ -29,8 +29,6 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import net.xinhuamm.d0403.R;
 
-import org.w3c.dom.Text;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
@@ -289,7 +287,7 @@ public class SubjectDetails extends Activity implements IXListViewListener,
             convertView.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent i = new Intent(SubjectDetails.this, LooperViewDetailsActivity.class);
+                    Intent i = new Intent(SubjectDetails.this, NewsDetailsActivity.class);
                     int id = newsList.get(position).getContent_id();
                     String link = newsList.get(position).getInfo_link();
                     i.putExtra("content_id", id);

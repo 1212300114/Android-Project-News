@@ -7,7 +7,7 @@ import java.util.concurrent.ExecutionException;
 
 import net.xinhuamm.d0403.R;
 
-import com.example.demo.news.activity.LooperViewDetailsActivity;
+import com.example.demo.news.activity.NewsDetailsActivity;
 import com.example.demo.news.activity.MainActivity;
 import com.example.demo.news.databeans.importantnews.ImportantNewsData;
 import com.example.demo.news.databeans.importantnews.ImportantNewsList;
@@ -93,7 +93,7 @@ public class FragmentLaw extends Fragment implements OnClickListener,
                                         int position, long id) {
                     String link = newsList.get(position - 1).getInfo_link();
                     Intent intent = new Intent(getActivity(),
-                            LooperViewDetailsActivity.class);
+                            NewsDetailsActivity.class);
                     int contentId = newsList.get(position - 1).getContent_id();
                     intent.putExtra("content_id", contentId);
                     intent.putExtra("link", link);
@@ -109,8 +109,7 @@ public class FragmentLaw extends Fragment implements OnClickListener,
         String JSON = loader
                 .readURL("http://api.jjjc.yn.gov.cn//jwapp//?service=List.index&cid=43&page="
                         + i);
-        ImportantNewsData data = loader.getJSONDate(JSON);
-        return data;
+        return loader.getJSONDate(JSON);
 
     }
 
@@ -142,15 +141,12 @@ public class FragmentLaw extends Fragment implements OnClickListener,
                             data = task.get();
                             newsList = data.getData().getList();
                             pageCount = data.getData().getPagecount();
-                        } catch (InterruptedException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        } catch (ExecutionException e) {
+                        } catch (InterruptedException | ExecutionException e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
                         }
                     }
-                    listTitles = new ArrayList<String>();
+                    listTitles = new ArrayList<>();
                     listTitles.clear();
                     for (int i = 0; i < data.getData().getList().size(); i++) {
                         listTitles.add(data.getData().getList().get(i).getTitle());
@@ -196,7 +192,7 @@ public class FragmentLaw extends Fragment implements OnClickListener,
                         protected ArrayList<String> doInBackground(
                                 Integer... params) {
 
-                            ArrayList<String> titleList = new ArrayList<String>();
+                            ArrayList<String> titleList = new ArrayList<>();
                             try {
                                 ImportantNewsData data = getData(page);
                                 for (int i = 0; i < data.getData().getList().size(); i++) {
@@ -215,10 +211,7 @@ public class FragmentLaw extends Fragment implements OnClickListener,
                     ArrayList<String> list = null;
                     try {
                         list = task.get();
-                    } catch (InterruptedException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    } catch (ExecutionException e) {
+                    } catch (InterruptedException | ExecutionException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
@@ -293,7 +286,6 @@ public class FragmentLaw extends Fragment implements OnClickListener,
     public class XListViewAdapter extends BaseAdapter {
         // �б���ݵ��m����
         private LayoutInflater inflater;
-        private int count = 10;
         private ArrayList<String> listTitles;
 
         public LayoutInflater getInflater() {
@@ -304,9 +296,6 @@ public class FragmentLaw extends Fragment implements OnClickListener,
             this.inflater = inflater;
         }
 
-        public void setCount(int count) {
-            this.count = count;
-        }
 
         public XListViewAdapter(Context context) {
             this.inflater = LayoutInflater.from(context);
@@ -319,12 +308,6 @@ public class FragmentLaw extends Fragment implements OnClickListener,
 
         }
 
-        public void setCount(int countNumber, boolean isRefresh) {
-            if (!isRefresh) {
-                count = countNumber + count;
-            }
-
-        }
 
         @Override
         public int getCount() {
@@ -359,11 +342,9 @@ public class FragmentLaw extends Fragment implements OnClickListener,
             holder.tvTitle.setText(listTitles.get(position));
             return convertView;
         }
-
         public class ViewHolder {
             public ImageView iv;
             public TextView tvTitle;
-            public TextView tvDescription;
         }
 
     }

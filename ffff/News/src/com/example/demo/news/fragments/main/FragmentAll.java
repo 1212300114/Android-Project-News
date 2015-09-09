@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
@@ -16,7 +15,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -29,8 +27,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.demo.news.activity.LooperViewDetailsActivity;
 import com.example.demo.news.activity.MainActivity;
+import com.example.demo.news.activity.NewsDetailsActivity;
 import com.example.demo.news.activity.SubjectDetails;
 import com.example.demo.news.databasehelper.ListDataHelper;
 import com.example.demo.news.databeans.firstpage.FirstPageCate;
@@ -53,32 +51,42 @@ import java.util.concurrent.ExecutionException;
 import medusa.theone.waterdroplistview.view.WaterDropListView;
 
 public class FragmentAll extends Fragment implements IXListViewListener, WaterDropListView.IWaterDropListViewListener {
+    /*
+    view
+     */
     private View root;// fragment的主view
-    private WaterDropListView lv;// 新闻列表 使用的是水滴状下拉刷新的控件
-    private String link;// 从argument获取到的link用来获取拼接接口地址
     private ProgressBar bar;// ������Ϊ�������ʱ��ʾ�Ľ�����
+    private WaterDropListView lv;// 新闻列表 使用的是水滴状下拉刷新的控件
+    private TextView viewPagerTitle;// 显示轮播图标题的textview
     private ImageView[] imageViews = new ImageView[20];//imageview数组用来给轮播图放置内容
+    private LinearLayout layout;// 轮播图
+    private ArrayList<ImageView> imageSource = new ArrayList<>();//为填充viewpager的图片数组
+    private MyViewPager viewPager;// 轮播图的viewpager部分
+    private XListViewAdapter adapter;// 新闻列表的listview的适配器
     private LayoutInflater layoutInflater = null;
+    /*
+    task
+     */
     private AsyncTask<String, Void, FirstPageData> taskForSaving;// 获取网络数据用于保存数据字符串
     private AsyncTask<String, Void, FirstPageData> taskForRefresh;// 用来加载数据的task 不用同一个的原因是？？我忘记了好像可以只用一个。
+
     private FirstPageContentLoader loader = new FirstPageContentLoader();// 加载数据的loader也就是把加载的过程封装在一个类里面了
     private FirstPageData data = null;// 获取到的数据实体
+
+    /*
+    param
+     */
     private int pageCount = 0;//  新闻列表的页数
+    private String link;// 从argument获取到的link用来获取拼接接口地址
     private int page = 1;//  当前新闻页码
     private boolean viewPagerCreated = false;// 判断viewpager即轮播图是否已经创建的flag
     private int viewPagerSize = 0;// 轮播图的size 当为0的时候不添加轮播图当为1的时候不添加显示位置的点
-    private XListViewAdapter adapter;// 新闻列表的listview的适配器
     private Handler mHandler = null;
     private ArrayList<String> listTitles;// 新闻列表的标题字符串 数组
     private ArrayList<FirstpageLoopPager> newsList = new ArrayList<>();//新闻列表数据数组
     private ArrayList<FirstPageCate> cateList;//栏目数据数组主要是为了专题页 的分栏设计是获取数据
-    private LinearLayout layout;// 轮播图
-    private MyViewPager viewPager;// 轮播图的viewpager部分
     private ArrayList<View> dots;// 显示图片位置的点
-    private ArrayList<ImageView> imageSource = new ArrayList<>();//为填充viewpager的图片数组
-    private String[] titles;//轮播图的标题
-    private String[] titles1;
-    private TextView viewPagerTitle;// 显示轮播图标题的textview
+    private ArrayList<String> titles;
     private int oldPage = 0;
     private ImageLoader imageLoader;//imageloader加载图片··贼好使
     private DisplayImageOptions options;//加载图片的选项
@@ -86,8 +94,6 @@ public class FragmentAll extends Fragment implements IXListViewListener, WaterDr
     private ArrayList<String> bannerImageURL;//轮播图的图片地址字符串数组
     private String name;//当前栏目的标题
     private ListDataHelper listDataHelper;//数据库建立的helper
-    private SharedPreferences sharedPreferences;//其实没用到的 app保存数据
-    private boolean network = false;//判断网络状态的flag
     private String storedJson;//从数据库获取到的字符串
     private boolean subject = false;//判断当前栏目是否为专题的flag
     private Context context;
@@ -111,13 +117,11 @@ public class FragmentAll extends Fragment implements IXListViewListener, WaterDr
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context = getActivity();
         bannerImageURL = new ArrayList<>();
         cateList = new ArrayList<>();
-        sharedPreferences = getActivity().getSharedPreferences("settings", Context.MODE_PRIVATE);
-        network = sharedPreferences.getBoolean("network", false);
         Bundle bundle = getArguments();
         name = bundle.getString("name");
-        context = getActivity();
         link = bundle.getString("link");// ��ȡ��link�Ӷ���ȡ����ǰ��Ŀ������
         Log.e("link", link);
         imageLoader = ImageLoader.getInstance();
@@ -128,7 +132,7 @@ public class FragmentAll extends Fragment implements IXListViewListener, WaterDr
                 .cacheOnDisk(true).build();
         //初始化各种数据以及图片加载选项
         listDataHelper = new ListDataHelper(context);
-        if (network) {
+        if (MainActivity.isNetworkConnected(context)) {
             taskForSaving = new AsyncTask<String, Void, FirstPageData>() {
 
                 @Override
@@ -157,7 +161,7 @@ public class FragmentAll extends Fragment implements IXListViewListener, WaterDr
         dbRead.close();
         cursor.close();
         System.out.print("\n" + storedJson + "\n");
-        if (!network) {
+        if (!MainActivity.isNetworkConnected(context)) {
             System.out.print("--------------------");
             data = loader.getJSONDate(storedJson);//如果没用网络则调用数据库的数据
             System.out.print(new Gson().toJson(data));
@@ -176,14 +180,11 @@ public class FragmentAll extends Fragment implements IXListViewListener, WaterDr
         lv = (WaterDropListView) root.findViewById(R.id.lvFirstPage);
         bar = (ProgressBar) root.findViewById(R.id.pb);
         oldPage = 0;
-        viewPagerCreated = false;// ����ʱ�Ƚ��ֲ�ͼ����Ϊδ����
+        viewPagerCreated = false;// viewpager设置成为创建
         onRefresh();
         lv.setWaterDropListViewListener(this);
         lv.setPullLoadEnable(true);
-        if (newsList.size() < 9 || subject) {
-            Log.e("aaaaaaaaaa", "????????????????????????????");
-            lv.setPullLoadEnable(false);
-        }
+
         if (!subject) {
             //如果不知专题时新闻列表的点击事件
             lv.setOnItemClickListener(new OnItemClickListener() {
@@ -207,7 +208,7 @@ public class FragmentAll extends Fragment implements IXListViewListener, WaterDr
                             contentId = data.getData().getList().get(position - 1)
                                     .getContent_id();
                         }
-                        intent = new Intent(context, LooperViewDetailsActivity.class);
+                        intent = new Intent(context, NewsDetailsActivity.class);
                         intent.putExtra("link", link);
                         intent.putExtra("content_id", contentId);
                         startActivityForResult(intent, 1);
@@ -314,6 +315,9 @@ public class FragmentAll extends Fragment implements IXListViewListener, WaterDr
                 cateList = data.getData().getCate();
                 listImageURL = new ArrayList<>();
 
+                if (newsList.size() < 10 || subject) {
+                    lv.setPullLoadEnable(false);
+                }
                 listTitles = new ArrayList<>();
                 if (!subject) {//针对是否为专题获取不同的数据来呈现不同的列表
                     for (int i = 0; i < data.getData().getList().size(); i++) {
@@ -441,11 +445,9 @@ public class FragmentAll extends Fragment implements IXListViewListener, WaterDr
         MyPageChangeListener listener = new MyPageChangeListener();
         viewPager.setOnPageChangeListener(listener);
         // �����õ��ֲ�ͼ������
-        titles = new String[]{"���ǵ�1��ͼƬ", "���ǵ�2��ͼƬ", "���ǵ�3��ͼƬ", "���ǵ�4��ͼƬ",
-                "���ǵ�5��ͼƬ"};
-        titles1 = new String[100];
+        titles = new ArrayList<>();
         for (int i = 0; i < viewPagerSize; i++) {
-            titles1[i] = data.getData().getBanner().get(i).getTitle();
+            titles.add(data.getData().getBanner().get(i).getTitle());
         }
         // ��ʼ��������ʾ��ǰ�ֲ�ͼλ�õĵ�����������7��
         dots = new ArrayList<>();
@@ -475,25 +477,19 @@ public class FragmentAll extends Fragment implements IXListViewListener, WaterDr
         }
         //缩短title的做法
         viewPagerTitle = (TextView) layout.findViewById(R.id.title);
-        if (titles1 != null) {
 
-            if (titles1 != null) {
+        if (titles.size() != 0) {
 
-                if (titles1[0].length() > 13) {
-                    char[] t = titles1[0].toCharArray();
-                    char[] tt = new char[13];
-                    System.arraycopy(t, 0, tt, 0, 13);
+            if (titles.get(0).length() > 13) {
+                char[] t = titles.get(0).toCharArray();
+                char[] tt = new char[13];
+                System.arraycopy(t, 0, tt, 0, 13);
 
-                    viewPagerTitle.setText(String.valueOf(tt) + "...");
-                } else {
-                    viewPagerTitle.setText(titles1[0]);
-                }
-
+                viewPagerTitle.setText(String.valueOf(tt) + "...");
             } else {
-                viewPagerTitle.setText(titles[0]);
+                viewPagerTitle.setText(titles.get(0));
             }
-        } else {
-            viewPagerTitle.setText(titles[0]);
+
         }
         return layout;
     }
@@ -516,20 +512,18 @@ public class FragmentAll extends Fragment implements IXListViewListener, WaterDr
             // ����ʾ��ͼƬ�����仯֮��
             // ���ñ���
 
-            if (titles1 != null) {
+            if (titles.get(position) != null) {
 
-                if (titles1[position].length() > 13) {
-                    char[] t = titles1[position].toCharArray();
+                if (titles.get(position).length() > 13) {
+                    char[] t = titles.get(position).toCharArray();
                     char[] tt = new char[13];
                     System.arraycopy(t, 0, tt, 0, 13);
 
                     viewPagerTitle.setText(String.valueOf(tt) + "...");
                 } else {
-                    viewPagerTitle.setText(titles1[position]);
+                    viewPagerTitle.setText(titles.get(position));
                 }
 
-            } else {
-                viewPagerTitle.setText(titles[position]);
             }
             // �ı���״̬
             dots.get(position).setBackgroundResource(R.drawable.dot_focused);
@@ -587,7 +581,7 @@ public class FragmentAll extends Fragment implements IXListViewListener, WaterDr
                     infoLink = data.getData().getBanner()
                             .get(viewPager.getCurrentItem()).getInfo_link();
                     Intent intent = new Intent(context,
-                            LooperViewDetailsActivity.class);
+                            NewsDetailsActivity.class);
                     intent.putExtra("link", infoLink);
                     intent.putExtra("content_id", data.getData().getBanner()
                             .get(viewPager.getCurrentItem()).getContent_id());
@@ -603,7 +597,6 @@ public class FragmentAll extends Fragment implements IXListViewListener, WaterDr
     public class XListViewAdapter extends BaseAdapter {
         //新闻列表的适配器
         private LayoutInflater inflater;
-        private int count = 10;
         private ArrayList<String> listTitles;
 
         public LayoutInflater getInflater() {
@@ -614,14 +607,6 @@ public class FragmentAll extends Fragment implements IXListViewListener, WaterDr
             this.inflater = inflater;
         }
 
-        public void setCount(int count) {
-            this.count = count;
-        }
-
-        public XListViewAdapter(Context context) {
-            this.inflater = LayoutInflater.from(context);
-
-        }
 
         public XListViewAdapter(Context context, ArrayList<String> listTitles) {
             this.inflater = LayoutInflater.from(context);
@@ -629,12 +614,6 @@ public class FragmentAll extends Fragment implements IXListViewListener, WaterDr
 
         }
 
-        public void setCount(int countNumber, boolean isRefresh) {
-            if (!isRefresh) {
-                count = countNumber + count;
-            }
-
-        }
 
         @Override
         public int getCount() {
@@ -699,7 +678,6 @@ public class FragmentAll extends Fragment implements IXListViewListener, WaterDr
         public class ViewHolder {
             public ImageView iv;
             public TextView tvTitle;
-            public TextView tvDescription;
         }
 
     }

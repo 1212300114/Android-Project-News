@@ -1,25 +1,21 @@
 package com.example.demo.news.activity;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.BaseAdapter;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.demo.news.adapters.DynamicListAdapter;
 import com.example.demo.news.databeans.dynamic.detail.DynamicDetailData;
 import com.example.demo.news.databeans.dynamic.detail.DynamicDetailList;
 import com.example.demo.news.dataloaders.DynamicDetailLoader;
@@ -36,38 +32,49 @@ import java.util.concurrent.ExecutionException;
 
 public class DynamicDetailActivity extends Activity implements OnClickListener,
         IXListViewListener {
-
+    //专题栏列表页
+    /*
+    view
+     */
     private XListView listView;
+    private TextView textView;
+    private DynamicListAdapter adapter;
     private ProgressBar pb;
+
+    /*
+    task
+     */
     private AsyncTask<String, Void, DynamicDetailData> taskForGet = null;
     private AsyncTask<String, Void, DynamicDetailData> taskForRefresh = null;
     private Handler mHandler = new Handler();
+    /*
+    network abouts
+     */
     private DynamicDetailLoader loader;
     private DynamicDetailData data;
+    /*
+    param
+     */
     private String link;
     private ArrayList<String> listTitle;//新闻列表的标题
-    private int page = 1;
-    private XListViewAdapter adapter;
     private ArrayList<DynamicDetailList> newsList = null;
+    private int page = 1;
     private int pageCount = 0;
     private TextView title;
     private String titleString;
-    private ImageLoader imageLoader;
-    private DisplayImageOptions options;
-    private TextView textView;
+    /*
+        imageLoader
+     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        imageLoader = ImageLoader.getInstance();
-        options = new DisplayImageOptions.Builder()
-                .showImageOnLoading(R.drawable.news_list_bg)
-                .showImageForEmptyUri(R.drawable.news_list_bg)
-                .showImageOnFail(R.drawable.news_list_bg).cacheInMemory(true)
-                .cacheOnDisk(true).build();
+        //init imageLoader
+
         setContentView(R.layout.activity_dynamic_detail);
         ImageButton btnBack = (ImageButton) findViewById(R.id.btnBack);
         btnBack.setOnClickListener(this);
+
         link = getIntent().getExtras().getString("link");
         if (link != null) {
             Log.e("link", link);
@@ -88,13 +95,15 @@ public class DynamicDetailActivity extends Activity implements OnClickListener,
             }
         };
         taskForGet.execute();
+
         listView = (XListView) findViewById(R.id.lv);
         pb = (ProgressBar) findViewById(R.id.pb);
         textView = (TextView) findViewById(R.id.noData);
         textView.setVisibility(View.GONE);
+
         loader = new DynamicDetailLoader();
         mHandler = new Handler();
-        listView = (XListView) findViewById(R.id.lv);
+
         try {
             data = taskForGet.get();
             titleString = data.getData().getCate_name();
@@ -112,10 +121,12 @@ public class DynamicDetailActivity extends Activity implements OnClickListener,
         }
         title = (TextView) findViewById(R.id.tvTitle);
         title.setText(titleString);
+
         onRefresh();
         listView.setXListViewListener(this);
         listView.setPullLoadEnable(true);
         listView.setPullRefreshEnable(true);
+
         if (data.getData().getList().size() < 10) {
             listView.setPullLoadEnable(false);
         }
@@ -129,7 +140,7 @@ public class DynamicDetailActivity extends Activity implements OnClickListener,
                     String link = newsList.get(position - 1).getInfo_link();
                     int content_id = newsList.get(position - 1).getContent_id();
                     Intent intent = new Intent(DynamicDetailActivity.this,
-                            LooperViewDetailsActivity.class);
+                            NewsDetailsActivity.class);
                     intent.putExtra("link", link);
                     intent.putExtra("content_id", content_id);
                     startActivity(intent);
@@ -197,7 +208,7 @@ public class DynamicDetailActivity extends Activity implements OnClickListener,
                     listTitle.add(data.getData().getList().get(i).getTitle());
                 }
 
-                adapter = new XListViewAdapter(getApplicationContext());
+                adapter = new DynamicListAdapter(DynamicDetailActivity.this, listTitle, newsList);
                 listView.setAdapter(adapter);
 
                 listView.setVisibility(View.VISIBLE);
@@ -222,43 +233,8 @@ public class DynamicDetailActivity extends Activity implements OnClickListener,
             @Override
             public void run() {
 
-                AsyncTask<Integer, Void, ArrayList<String>> task = new AsyncTask<Integer, Void, ArrayList<String>>() {
 
-                    @Override
-                    protected ArrayList<String> doInBackground(
-                            Integer... params) {
-                        page++;
-                        ArrayList<String> titleList = new ArrayList<>();
-                        try {
-                            DynamicDetailData data = getData(page, link);
-                            for (int i = 0; i < data.getData().getList().size(); i++) {
-                                titleList.add(data.getData().getList().get(i)
-                                        .getTitle());
-                            }
-                        } catch (IOException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        }
-
-                        return titleList;
-                    }
-                };
-                task.execute();
-                ArrayList<String> list = null;
-                try {
-                    list = task.get();
-                } catch (InterruptedException | ExecutionException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-                if (page <= pageCount) {
-
-                    if (list != null) {
-                        listTitle.addAll(list);
-                    }
-                }
-
-                AsyncTask<String, Void, DynamicDetailData> task2 = new AsyncTask<String, Void, DynamicDetailData>() {
+                AsyncTask<String, Void, DynamicDetailData> task = new AsyncTask<String, Void, DynamicDetailData>() {
 
                     @Override
                     protected DynamicDetailData doInBackground(String... params) {
@@ -272,96 +248,32 @@ public class DynamicDetailActivity extends Activity implements OnClickListener,
                         return data;
                     }
                 };
-                task2.execute();
+                task.execute();
                 data = null;
                 try {
-                    data = task2.get();
+                    data = task.get();
                 } catch (InterruptedException | ExecutionException e) {
                     e.printStackTrace();
                 }
                 if (data != null) {
                     if (page <= pageCount) {
                         newsList.addAll(data.getData().getList());
+                        for (int i = 0; i < data.getData().getList().size(); i++) {
+                            listTitle.add(data.getData().getList().get(i)
+                                    .getTitle());
+                        }
                     }
                 }
                 if (page > pageCount) {
                     Toast.makeText(getApplicationContext(), "没有更多了",
                             Toast.LENGTH_SHORT).show();
                 }
+                adapter.setNewsList(newsList);
+                adapter.setListTitle(listTitle);
                 adapter.notifyDataSetChanged();
                 onLoad();
             }
         }, 1000);
     }
 
-    public class XListViewAdapter extends BaseAdapter {
-        // �б���ݵ��m����
-        private LayoutInflater inflater;
-        private int count = 10;
-
-        public LayoutInflater getInflater() {
-            return inflater;
-        }
-
-        public void setInflater(LayoutInflater inflater) {
-            this.inflater = inflater;
-        }
-
-        public void setCount(int count) {
-            this.count = count;
-        }
-
-        public XListViewAdapter(Context context) {
-            this.inflater = LayoutInflater.from(context);
-
-        }
-
-        public void setCount(int countNumber, boolean isRefresh) {
-            if (!isRefresh) {
-                count = countNumber + count;
-            }
-
-        }
-
-        @Override
-        public int getCount() {
-            // TODO Auto-generated method stub
-            return listTitle.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            // TODO Auto-generated method stub
-            return null;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            // TODO Auto-generated method stub
-            return 0;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder holder;
-            if (convertView == null) {
-                convertView = inflater.inflate(R.layout.item_list, null);
-                holder = new ViewHolder();
-                holder.iv = (ImageView) convertView.findViewById(R.id.iv);
-                holder.tvTitle = (TextView) convertView
-                        .findViewById(R.id.tvTitle);
-                convertView.setTag(holder);
-            } else {
-                holder = (ViewHolder) convertView.getTag();
-            }
-            imageLoader.displayImage(newsList.get(position).getImage(), holder.iv, options);
-            holder.tvTitle.setText(listTitle.get(position));
-            return convertView;
-        }
-
-        public class ViewHolder {
-            public ImageView iv;
-            public TextView tvTitle;
-        }
-    }
 }
