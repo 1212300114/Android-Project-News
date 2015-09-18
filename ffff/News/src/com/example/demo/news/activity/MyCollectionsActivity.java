@@ -1,24 +1,15 @@
 package com.example.demo.news.activity;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.BaseAdapter;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.baoyz.swipemenulistview.SwipeMenu;
@@ -26,39 +17,76 @@ import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.baoyz.swipemenulistview.SwipeMenuListView.OnMenuItemClickListener;
+import com.example.demo.news.adapters.CollectionListAdapter;
 import com.example.demo.news.databasehelper.DataBaseHelper;
-import com.example.demo.news.databeans.search.SearchData;
-import com.example.demo.news.dataloaders.SearchLoader;
+import com.example.demo.news.databeans.ColumnEntity;
+import com.example.demo.news.utils.Constants;
+import com.example.demo.news.utils.NetworkRequest;
 import com.google.gson.Gson;
+import com.loopj.android.http.TextHttpResponseHandler;
 
 import net.xinhuamm.d0403.R;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.concurrent.ExecutionException;
+import org.apache.http.Header;
 
-public class MyCollectionsActivity extends Activity {
+import java.util.ArrayList;
+
+public class MyCollectionsActivity extends Activity implements OnClickListener {
     //收藏页
-    private SwipeMenuListView mListView;// ���Ի���ɾ����Ŀ��listview
-    private ListViewAdapter adapter;// ������
+    private SwipeMenuListView mListView;// 可横向滑动删除item的listview
+    private CollectionListAdapter adapter;//  listview的适配器
     private ArrayList<Integer> collection;//收藏的news的id的数组
-    private ArrayList<Integer> ids = new ArrayList<>();
-    private String time;
-    private String urlString;
-    private SearchLoader loader;
-    ArrayList<String> titles = new ArrayList<>();//收藏内容标题
+    private String urlString = Constants.CLTNURL;// 收藏接口地址
     private ArrayList<String> times = new ArrayList<>();//收藏内容时间
-    SearchData data;//获取到的数据
-    DataBaseHelper db;//数据库
+    private DataBaseHelper db;//数据库helper
+    private TextView textView;// 显示无收藏内容时的tv
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_collections);
-        ImageButton back = (ImageButton) findViewById(R.id.btnBack);
-        mListView = (SwipeMenuListView) findViewById(R.id.list_view);
         db = new DataBaseHelper(this);
+        getIds();
+        initView();
+        initSlideMenu();
+        overridePendingTransition(0, 0);
+        if (collection.size() != 0) {
+            for (int i = 0; i < collection.size(); i++) {
+                //生成收藏内容接口地址
+                urlString = urlString + collection.get(i) + ",";
+            }
+            System.out.println(urlString);
+            if (NetworkRequest.isNetworkConnected(this)) {
+                NetworkRequest.get(urlString, new TextHttpResponseHandler() {
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                    }
+
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                        parseJson(responseString);//调用方法项view填充数据
+                    }
+                });
+            }
+        } else {
+            //无数据显示提示tv
+            textView.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btnBack:
+                finish();
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void getIds() {
+        //从数据库取出收藏内容的id以及time
         SQLiteDatabase dbRead = db.getReadableDatabase();
         Cursor c = dbRead.query("id", null, null, null, null, null, null);
         collection = new ArrayList<>();
@@ -67,84 +95,35 @@ public class MyCollectionsActivity extends Activity {
             int contentID = c.getInt(c.getColumnIndex("contentId"));
             if (contentID > 0) {
                 collection.add(contentID);
-                time = c.getString(c.getColumnIndex("time"));
+                String time = c.getString(c.getColumnIndex("time"));
                 times.add(time);
             }
         }
-        if (collection.size() != 0) {
+        c.close();
+        dbRead.close();
+    }
 
-            urlString = "http://api.jjjc.yn.gov.cn/jwapp/?service=Favorites.index&content_ids=";
-            for (int i = 0; i < collection.size(); i++) {
-                //生成收藏内容接口地址
-                urlString = urlString + collection.get(i) + ",";
-            }
-            System.out.println(urlString);
-            adapter = new ListViewAdapter(this);
-            mListView.setAdapter(adapter);
-            initSlideMenu();
-            loader = new SearchLoader();
-            AsyncTask<String, Void, SearchData> task = new AsyncTask<String, Void, SearchData>() {
-
-                @Override
-                protected SearchData doInBackground(String... params) {
-                    String json = null;
-                    try {
-                        json = loader.readURL(urlString);
-                    } catch (IOException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
-                    SearchData data;
-                    data = loader.getJSONDate(json);
-                    return data;
-                }
-            };
-            task.execute();
-
-            try {
-                data = task.get();
-                System.out.println(new Gson().toJson(data));
-                for (int i = 0; i < data.getData().getList().size(); i++) {
-                    titles.add(data.getData().getList().get(i).getTitle());
-                    ids.add(data.getData().getList().get(i).getContent_id());
-                }
-                System.out.println(ids);
-
-            } catch (InterruptedException | ExecutionException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+    private void parseJson(String response) {
+        //填充数据的回调方法
+        ColumnEntity entity = new Gson().fromJson(response, ColumnEntity.class);
+        if (entity.getData().getList() != null) {
+            adapter.setData(times, entity);
         }
-        mListView.setOnItemClickListener(new OnItemClickListener() {
+    }
 
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                String link;
-                Intent intent;
-                Integer contentId;
+    private void initView() {
 
-                link = data.getData().getList().get(position).getInfo_link();
-                contentId = data.getData().getList().get(position)
-                        .getContent_id();
-                intent = new Intent(MyCollectionsActivity.this, NewsDetailsActivity.class);
-                intent.putExtra("link", link);
-                intent.putExtra("content_id", contentId);
-                startActivityForResult(intent, 1);
-            }
-        });
-        back.setOnClickListener(new OnClickListener() {
+        //初始化view-未填充数据
+        findViewById(R.id.btnBack).setOnClickListener(this);
+        mListView = (SwipeMenuListView) findViewById(R.id.list_view);
+        adapter = new CollectionListAdapter(this);
+        mListView.setAdapter(adapter);
+        textView = (TextView) findViewById(R.id.tvNoFile);
 
-            @Override
-            public void onClick(View v) {
-
-                finish();
-            }
-        });
     }
 
     private void initSlideMenu() {
-        // ��ʼ�ɻ���ɾ����Ŀlistview��������menu����
+        //初始化swipeMenu的menu
         SwipeMenuCreator creator = new SwipeMenuCreator() {
 
             @Override
@@ -160,24 +139,23 @@ public class MyCollectionsActivity extends Activity {
 
             }
         };
-        // ��menu�󶨵�listview
         mListView.setMenuCreator(creator);
-        // ��������menu�����¼�����
         mListView.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-
+            //menu的click侦听 执行删除数据库内容操作以及删除列表项的操作
             @Override
             public boolean onMenuItemClick(int position, SwipeMenu menu,
                                            int index) {
 
                 switch (index) {
                     case 0:
-                        titles.remove(position);// ����position���Ƴ�����
-                        adapter.notifyDataSetChanged();
+                        Log.e("---------------------", String.valueOf(times.size()));
+                        adapter.removeItem(position);
+
                         SQLiteDatabase dbWrite = db.getWritableDatabase();
                         String sql = "delete from id where contentId  = "
-                                + ids.get(position);
+                                + collection.get(position);
                         dbWrite.execSQL(sql);
-
+                        dbWrite.close();
                         break;
 
                     default:
@@ -188,73 +166,8 @@ public class MyCollectionsActivity extends Activity {
         });
     }
 
-    // ���������ݾ������ݲ�л��
-    private  class ListViewAdapter extends BaseAdapter {
-
-        private Context context;
-
-        public ListViewAdapter(Context context) {
-            this.context = context;
-        }
-
-        @Override
-        public int getCount() {
-            // return list.size();
-            return titles.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return titles.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @SuppressLint("InflateParams")
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder holder;
-            if (convertView == null) {
-                convertView = LayoutInflater.from(context).inflate(
-                        R.layout.item, null);
-                holder = new ViewHolder();
-                holder.title = (TextView) convertView
-                        .findViewById(R.id.tv_title);
-                holder.time = (TextView) convertView.findViewById(R.id.tvTime);
-                convertView.setTag(holder);
-
-            } else {
-                holder = (ViewHolder) convertView.getTag();
-            }
-            holder.time.setText(times.get(position));
-
-            if (titles != null) {
-                if (titles.get(position).length() > 20) {
-                    char[] t = titles.get(position).toCharArray();
-                    char[] tt = new char[20];
-                    System.arraycopy(t, 0, tt, 0, 20);
-                    holder.title.setText(String.valueOf(tt) + "...");
-                } else {
-                    holder.title.setText(titles.get(position));
-                }
-            }
-
-            return convertView;
-        }
-
-        public class ViewHolder {
-            private TextView title;
-            private TextView time;
-
-        }
-    }
-
     private int dp2px(int dp) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
                 getResources().getDisplayMetrics());
     }
-
 }

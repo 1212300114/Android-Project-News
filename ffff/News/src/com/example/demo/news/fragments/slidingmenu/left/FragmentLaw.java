@@ -1,67 +1,55 @@
 package com.example.demo.news.fragments.slidingmenu.left;
 
-import java.io.IOException;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
-
-import net.xinhuamm.d0403.R;
-
-import com.example.demo.news.activity.NewsDetailsActivity;
-import com.example.demo.news.activity.MainActivity;
-import com.example.demo.news.databeans.importantnews.ImportantNewsData;
-import com.example.demo.news.databeans.importantnews.ImportantNewsList;
-import com.example.demo.news.dataloaders.ImportantNewsLoader;
-import com.example.demo.news.xlistviewsource.XListView;
-import com.example.demo.news.xlistviewsource.XListView.IXListViewListener;
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
-
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
+
+import com.example.demo.news.activity.MainActivity;
+import com.example.demo.news.adapters.LawListAdapter;
+import com.example.demo.news.databeans.ColumnEntity;
+import com.example.demo.news.utils.Constants;
+import com.example.demo.news.utils.NetworkRequest;
+import com.google.gson.Gson;
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+import com.loopj.android.http.TextHttpResponseHandler;
+
+import net.xinhuamm.d0403.R;
+
+import org.apache.http.Header;
+
+import java.lang.reflect.Field;
+
+import medusa.theone.waterdroplistview.view.WaterDropListView;
 
 //党纪法规栏目内容
 @SuppressLint("InflateParams")
-public class FragmentLaw extends Fragment implements OnClickListener,
-        IXListViewListener {
-    private SlidingMenu slidingMenu1;
-    private SlidingMenu slidingMenu2;
-    private ImageButton showLeft;
-    private ImageButton showRight;
+public class FragmentLaw extends Fragment implements OnClickListener, WaterDropListView.IWaterDropListViewListener {
+    //党纪法规栏的内容 就是一个只有标题的列表。
     private View root;
-    private XListView lv;
-    private ProgressBar pb;
-    private XListViewAdapter ListAdapter;
-    private Handler mHandler = new Handler();
-    private ImportantNewsLoader loader = new ImportantNewsLoader();
-    private ImportantNewsData data;// Ҫ��ҳ��ȡ����������
-    private AsyncTask<String, Void, ImportantNewsData> task;// ����Ҫ�ŵ�task
-    private ArrayList<String> listTitles;// �б����title
-    private int page = 1;// ��ǰ�б����ҳ��
-    private ArrayList<ImportantNewsList> newsList = null;
-    private Context context;
+    private SlidingMenu menu;
+    private MainActivity mainActivity;
+    private WaterDropListView lv;
+    private LawListAdapter adapter;
+    private ColumnEntity entity;
+    private ProgressBar bar;
+    private Handler mHandler;
+
     private int pageCount = 0;
+    private int page = 1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        context = getActivity().getApplicationContext();
-
+        mHandler = new Handler();
+        mainActivity = (MainActivity) getActivity();
+        menu = mainActivity.getSlidingMenu1();
         super.onCreate(savedInstanceState);
     }
 
@@ -69,195 +57,87 @@ public class FragmentLaw extends Fragment implements OnClickListener,
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_law, container, false);
-        slidingMenu1 = ((MainActivity) getActivity()).getSlidingMenu1();
-        slidingMenu2 = ((MainActivity) getActivity()).getSlidingMenu2();
-        slidingMenu1.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
-        slidingMenu2.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
-        showLeft = (ImageButton) root.findViewById(R.id.btnShowLeft);
-        showLeft.setOnClickListener(this);
-        showRight = (ImageButton) root.findViewById(R.id.btnShowRight);
-        showRight.setOnClickListener(this);
-
-        lv = (XListView) root.findViewById(R.id.lvFirstPage);
+        initView();
         onRefresh();
-
-        lv.setXListViewListener(this);
-        lv.setPullLoadEnable(true);
-        lv.setPullRefreshEnable(true);
-        lv.setVisibility(View.GONE);
-        if (MainActivity.isNetworkConnected(getActivity())) {
-            lv.setOnItemClickListener(new OnItemClickListener() {
-
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view,
-                                        int position, long id) {
-                    String link = newsList.get(position - 1).getInfo_link();
-                    Intent intent = new Intent(getActivity(),
-                            NewsDetailsActivity.class);
-                    int contentId = newsList.get(position - 1).getContent_id();
-                    intent.putExtra("content_id", contentId);
-                    intent.putExtra("link", link);
-                    startActivity(intent);
-                }
-            });
-        }
         return root;
-    }
-
-    private ImportantNewsData getData(int i) throws IOException {
-
-        String JSON = loader
-                .readURL("http://api.jjjc.yn.gov.cn//jwapp//?service=List.index&cid=43&page="
-                        + i);
-        return loader.getJSONDate(JSON);
-
     }
 
     @Override
     public void onRefresh() {
 
-        if (MainActivity.isNetworkConnected(getActivity())) {
-            mHandler.postDelayed(new Runnable() {
+        page = 1;
+        if (NetworkRequest.isNetworkConnected(mainActivity)) {
+            NetworkRequest.get(Constants.LAWURL + "&page=" + page, new TextHttpResponseHandler() {
                 @Override
-                public void run() {
-                    page = 1;
-                    task = new AsyncTask<String, Void, ImportantNewsData>() {
+                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
 
-                        @Override
-                        protected ImportantNewsData doInBackground(String... params) {
-                            ImportantNewsData data = null;
-                            try {
-                                data = getData(1);
-                            } catch (IOException e) {
-                                // TODO Auto-generated catch block
-                                e.printStackTrace();
-                            }
-                            return data;
-                        }
-                    };
-                    task.execute();
-                    if (task != null) {
-                        try {
-                            data = task.get();
-                            newsList = data.getData().getList();
-                            pageCount = data.getData().getPagecount();
-                        } catch (InterruptedException | ExecutionException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        }
-                    }
-                    listTitles = new ArrayList<>();
-                    listTitles.clear();
-                    for (int i = 0; i < data.getData().getList().size(); i++) {
-                        listTitles.add(data.getData().getList().get(i).getTitle());
-                    }
-                    System.out.println("listsize=" + listTitles.size());
-                    ListAdapter = new XListViewAdapter(context, listTitles);
-                    lv.setAdapter(ListAdapter);
-                    pb = (ProgressBar) root.findViewById(R.id.pb);
-                    lv.setVisibility(View.VISIBLE);
-                    pb.setVisibility(View.GONE);
-                    ListAdapter.notifyDataSetChanged();
-                    onLoad();
                 }
-            }, 2000);
+
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, final String responseString) {
+                    mHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            parseFirstJson(responseString);
+                            bar.setVisibility(View.GONE);
+                            lv.setVisibility(View.VISIBLE);
+                            lv.stopRefresh();
+                        }
+                    }, 500);
+                }
+            });
         } else {
-            Toast.makeText(getActivity(), "请检查您的网络后继续", Toast.LENGTH_SHORT).show();
-            onLoad();
+            Toast.makeText(mainActivity, "请检查您的网络", Toast.LENGTH_SHORT).show();
+            lv.stopRefresh();
         }
-
     }
 
-    private void onLoad() {
-        lv.stopRefresh();
-        lv.stopLoadMore();
-        lv.setRefreshTime("刚刚");
-    }
 
     @Override
     public void onLoadMore() {
-
         page++;
-        if (page >= pageCount) {
-            Toast.makeText(getActivity(), "没有更多了", Toast.LENGTH_SHORT).show();
-            onLoad();
+        Log.e("", page + "---------" + pageCount);
+        if (page <= pageCount) {
+            if (NetworkRequest.isNetworkConnected(mainActivity)) {
+                NetworkRequest.get(Constants.LAWURL + "&page=" + page, new TextHttpResponseHandler() {
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, final String responseString) {
+                        mHandler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                parseMoreJson(responseString);
+                                lv.stopLoadMore();
+                            }
+                        }, 500);
+
+                    }
+                });
+            } else {
+                Toast.makeText(mainActivity, "请检查您的网络", Toast.LENGTH_SHORT).show();
+                lv.stopLoadMore();
+            }
+
         } else {
-            mHandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-
-                    AsyncTask<Integer, Void, ArrayList<String>> task = new AsyncTask<Integer, Void, ArrayList<String>>() {
-
-                        @Override
-                        protected ArrayList<String> doInBackground(
-                                Integer... params) {
-
-                            ArrayList<String> titleList = new ArrayList<>();
-                            try {
-                                ImportantNewsData data = getData(page);
-                                for (int i = 0; i < data.getData().getList().size(); i++) {
-                                    titleList.add(data.getData().getList().get(i)
-                                            .getTitle());
-                                }
-                            } catch (IOException e) {
-                                // TODO Auto-generated catch block
-                                e.printStackTrace();
-                            }
-
-                            return titleList;
-                        }
-                    };
-                    task.execute();
-                    ArrayList<String> list = null;
-                    try {
-                        list = task.get();
-                    } catch (InterruptedException | ExecutionException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
-                    listTitles.addAll(list);
-
-                    AsyncTask<String, Void, ImportantNewsData> task2 = new AsyncTask<String, Void, ImportantNewsData>() {
-
-                        @Override
-                        protected ImportantNewsData doInBackground(String... params) {
-                            ImportantNewsData data = null;
-                            try {
-                                data = getData(page);
-                            } catch (IOException e) {
-                                // TODO Auto-generated catch block
-                                e.printStackTrace();
-                            }
-                            return data;
-                        }
-                    };
-                    task2.execute();
-                    ImportantNewsData data = null;
-                    try {
-                        data = task2.get();
-                    } catch (InterruptedException | ExecutionException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
-                    if (data != null) {
-
-                        newsList.addAll(data.getData().getList());
-                    }
-                    ListAdapter.notifyDataSetChanged();
-                    onLoad();
-                }
-            }, 2000);
+            Toast.makeText(mainActivity, "没有更多了", Toast.LENGTH_SHORT).show();
+            lv.stopLoadMore();
         }
+
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnShowLeft:
-                slidingMenu1.toggle();
+                menu.showMenu();
                 break;
             case R.id.btnShowRight:
-                slidingMenu2.toggle();
+                menu.showSecondaryMenu();
+                ;
                 break;
 
             default:
@@ -268,84 +148,38 @@ public class FragmentLaw extends Fragment implements OnClickListener,
     @Override
     public void onDetach() {
         super.onDetach();
-        super.onDetach();
         try {
             Field childFragmentManager = Fragment.class
                     .getDeclaredField("mChildFragmentManager");
             childFragmentManager.setAccessible(true);
             childFragmentManager.set(this, null);
 
-        } catch (NoSuchFieldException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
+        } catch (NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
 
     }
 
-    public class XListViewAdapter extends BaseAdapter {
-        // �б���ݵ��m����
-        private LayoutInflater inflater;
-        private ArrayList<String> listTitles;
+    private void initView() {
+        root.findViewById(R.id.btnShowLeft).setOnClickListener(this);
+        root.findViewById(R.id.btnShowRight).setOnClickListener(this);
+        lv = (WaterDropListView) root.findViewById(R.id.lvLaw);
+        lv.setWaterDropListViewListener(this);
+        adapter = new LawListAdapter(mainActivity);
+        lv.setAdapter(adapter);
+        lv.setPullLoadEnable(true);
+        bar = (ProgressBar) root.findViewById(R.id.pb);
+        bar.setVisibility(View.VISIBLE);
+    }
 
-        public LayoutInflater getInflater() {
-            return inflater;
-        }
+    private void parseFirstJson(String response) {
+        entity = new Gson().fromJson(response, ColumnEntity.class);
+        adapter.setEntities(entity.getData().getList(), true);
+        pageCount = entity.getData().getPagecount();
+    }
 
-        public void setInflater(LayoutInflater inflater) {
-            this.inflater = inflater;
-        }
-
-
-        public XListViewAdapter(Context context) {
-            this.inflater = LayoutInflater.from(context);
-
-        }
-
-        public XListViewAdapter(Context context, ArrayList<String> listTitles) {
-            this.inflater = LayoutInflater.from(context);
-            this.listTitles = listTitles;
-
-        }
-
-
-        @Override
-        public int getCount() {
-            // TODO Auto-generated method stub
-            return listTitles.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            // TODO Auto-generated method stub
-            return null;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            // TODO Auto-generated method stub
-            return 0;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder holder;
-            if (convertView == null) {
-                convertView = inflater.inflate(R.layout.item_law, null);
-                holder = new ViewHolder();
-                holder.tvTitle = (TextView) convertView
-                        .findViewById(R.id.tvTitle);
-                convertView.setTag(holder);
-            } else {
-                holder = (ViewHolder) convertView.getTag();
-            }
-            holder.tvTitle.setText(listTitles.get(position));
-            return convertView;
-        }
-        public class ViewHolder {
-            public ImageView iv;
-            public TextView tvTitle;
-        }
-
+    private void parseMoreJson(String response) {
+        ColumnEntity entity = new Gson().fromJson(response, ColumnEntity.class);
+        adapter.setEntities(entity.getData().getList(), false);
     }
 }

@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class ListDataHelper extends SQLiteOpenHelper {
 
-
+//准备存储各个栏目的json数据。
     public ListDataHelper(Context context) {
         super(context, "listData", null, 1);
     }

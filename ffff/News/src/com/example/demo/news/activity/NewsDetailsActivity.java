@@ -1,27 +1,29 @@
 package com.example.demo.news.activity;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.CheckBox;
-import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.demo.news.databasehelper.DataBaseHelper;
-import com.example.demo.news.databeans.content.ContentData;
+import com.example.demo.news.databeans.ContentEntity;
+import com.example.demo.news.utils.Constants;
+import com.example.demo.news.utils.NetworkRequest;
 import com.google.gson.Gson;
+import com.loopj.android.http.TextHttpResponseHandler;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.controller.UMServiceFactory;
 import com.umeng.socialize.controller.UMSocialService;
@@ -35,98 +37,59 @@ import com.umeng.socialize.weixin.controller.UMWXHandler;
 
 import net.xinhuamm.d0403.R;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import org.apache.http.Header;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.concurrent.ExecutionException;
 
 
 public class NewsDetailsActivity extends Activity implements OnClickListener {
     //新闻详情内容
     final UMSocialService mController = UMServiceFactory
             .getUMSocialService("com.umeng.share");//获取到友盟分享控制器
-    private static String appID = "wx967daebe835fbeac";
-    private static String appSecret = "5595ea1667e58e486200553a";
-    private int contentId;//详情内容的id
+    private String contentId;//详情内容的id
     private CheckBox collection;//收藏按钮
-    private ImageButton share;//分享按钮
-    private ImageButton back;//返回按钮
-    private AsyncTask<Void, Void, String> task;//获取详情内容的task
-    private ContentData dataGot;//
-    private ProgressBar pb;
-    private TextView tvLoad;
 
-    @SuppressWarnings("static-access")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_PROGRESS);// 让进度条显示在标题栏上
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_looper_view_details);
+        setContentView(R.layout.activity_news_details);
         //从Intent 获取到详情的id
-        contentId = getIntent().getExtras().getInt("content_id");
+        contentId = getIntent().getExtras().getString("content_id");
         //详情内容的link构造
+        Log.e("", contentId);
         final StringBuilder builder = new StringBuilder();
-        builder.append("http://api.jjjc.yn.gov.cn/jwapp/?service=Info.index&cid=18&id=");
+        builder.append(Constants.CONTENTURL);
         builder.append(contentId);
+        overridePendingTransition(0, 0);
 
-        //获取到详情内容的task定义
-        task = new AsyncTask<Void, Void, String>() {
+        if (NetworkRequest.isNetworkConnected(this)) {
+            NetworkRequest.get(builder.toString(), new TextHttpResponseHandler() {
+                @Override
+                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
 
-            @Override
-            protected String doInBackground(Void... params) {
-                URL url;
-                String result = null;
-                try {
-                    url = new URL(builder.toString());
-                    HttpURLConnection connection = (HttpURLConnection) url
-                            .openConnection();
-                    InputStream inputStream = connection.getInputStream();
-                    int length;
-                    byte[] data = new byte[1024];
-                    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                    while ((length = inputStream.read(data)) != -1) {
-                        outputStream.write(data, 0, length);
-                    }
-                    inputStream.close();
-                    result = new String(outputStream.toByteArray());
-
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
                 }
 
-                return result;
-            }
-        };
-        task.execute();
-        try {
-            if (task.get() != null) {
-                String jsString = task.get();
-                System.out.println(jsString);
-                dataGot = new Gson().fromJson(jsString, ContentData.class);
-                //获取到详情页内容的数据
-            }
-        } catch (InterruptedException | ExecutionException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                    parseJson(responseString);
+                }
+            });
         }
-        //获取到详情内容的link 以及图片资源作为分享的内容使用
-        String shareLink = dataGot.getData().getShare_link();
-        String shareImage = dataGot.getData().getShare_image();
-        String title = dataGot.getData().getTitle();
-        //判断分享内容标题的长度并且修改大于15个字的标题内容
-        if (title.length() > 15) {
-            char[] t = title.toCharArray();
-            char[] tt = new char[15];
-            System.arraycopy(t, 0, tt, 0, 15);
-            title = String.valueOf(tt) + "...";
-        }
-        initShareOptions(title, shareLink, shareImage);
+        initView();
+        initCollectedState();
 
+    }
+
+    private void parseJson(String response) {
+        ContentEntity data = new Gson().fromJson(response, ContentEntity.class);
+        initShareOptions(data.getData().getTitle(), data.getData().getShare_link(), data.getData().getShare_image());
+    }
+
+    private void initView() {
+        final ProgressBar pb;
+        final TextView tvLoad;
         pb = (ProgressBar) findViewById(R.id.pb);
         tvLoad = (TextView) findViewById(R.id.tvLoad);
         WebView webView = (WebView) findViewById(R.id.webView1);
@@ -157,13 +120,15 @@ public class NewsDetailsActivity extends Activity implements OnClickListener {
         webView.setWebViewClient(client);
         webView.loadUrl(getIntent().getExtras().getString("link"));
         //初始化各个按钮
-        back = (ImageButton) findViewById(R.id.btnBack);
-        back.setOnClickListener(this);
-        share = (ImageButton) findViewById(R.id.btnShare);
-        share.setOnClickListener(this);
+        findViewById(R.id.btnBack).setOnClickListener(this);
+        findViewById(R.id.btnShare).setOnClickListener(this);
         collection = (CheckBox) findViewById(R.id.btnCollect);
         collection.setOnClickListener(this);
 
+        //获取到本地数据库判断该条内容是否已经被收藏从而改变收藏按钮的状态
+    }
+
+    private void initCollectedState() {
         //获取到本地数据库判断该条内容是否已经被收藏从而改变收藏按钮的状态
         DataBaseHelper db = new DataBaseHelper(this);
         SQLiteDatabase dbRead = db.getReadableDatabase();
@@ -172,12 +137,13 @@ public class NewsDetailsActivity extends Activity implements OnClickListener {
             int contentID = c.getInt(c.getColumnIndex("contentId"));
             String time = c.getString(c.getColumnIndex("time"));
             System.out.println(time);
-            if (contentID == contentId) {
+            if (String.valueOf(contentID).equals(contentId)) {
                 collection.setChecked(true);
             }
         }
         c.close();
         dbRead.close();
+
     }
 
     private void initShareOptions(String title, String shareLink, String shareImage) {
@@ -198,12 +164,12 @@ public class NewsDetailsActivity extends Activity implements OnClickListener {
                 SHARE_MEDIA.WEIXIN, SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE,
                 SHARE_MEDIA.SINA, SHARE_MEDIA.EMAIL, SHARE_MEDIA.SMS);
         // ���΢��ƽ̨
-        UMWXHandler wxHandler = new UMWXHandler(NewsDetailsActivity.this, appID,
-                appSecret);
+        UMWXHandler wxHandler = new UMWXHandler(NewsDetailsActivity.this, Constants.APPID,
+                Constants.APPSECRET);
         wxHandler.addToSocialSDK();
         // ֧��΢������Ȧ
         UMWXHandler wxCircleHandler = new UMWXHandler(NewsDetailsActivity.this,
-                appID, appSecret);
+                Constants.APPID, Constants.APPSECRET);
         wxCircleHandler.setToCircle(true);
         wxCircleHandler.addToSocialSDK();
         // ���email
@@ -235,7 +201,6 @@ public class NewsDetailsActivity extends Activity implements OnClickListener {
         }
     }
 
-    @SuppressLint("SimpleDateFormat")
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -247,37 +212,48 @@ public class NewsDetailsActivity extends Activity implements OnClickListener {
                 // �����������
                 break;
             case R.id.btnCollect:
-                //收藏内容的按钮侦听设置 动态的修改本地数据库根据数据库是否存在该条数据决定是否添加数据根据按钮状态决定是添加数据还是删除数据
-                SimpleDateFormat formatter = new SimpleDateFormat(
-                        "yyyy-MM-dd    HH:mm:ss     ");
-                Date curDate = new Date(System.currentTimeMillis());//获取到收藏被按下的时间
-                String str = formatter.format(curDate);
-                DataBaseHelper dataBaseHelper = new DataBaseHelper(this);
-                SQLiteDatabase dbWriteDatabase = dataBaseHelper.getWritableDatabase();
-                ContentValues values = new ContentValues();
-                Cursor cc = dbWriteDatabase.query("id", null, null, null, null, null,
-                        null);
-                values.put("contentId", contentId);
-                values.put("time", str);
-                if (collection.isChecked()) {
-                    dbWriteDatabase.insert("id", null, values);
-                } else {
-                    while (cc.moveToNext()) {
-                        int contentID = cc.getInt(cc.getColumnIndex("contentId"));
-                        if (contentID == contentId) {
-                            String sql = "delete from id where contentId  = "
-                                    + contentId;
-                            dbWriteDatabase.execSQL(sql);
-                        }
-                    }
-                }
-                cc.close();
-                dbWriteDatabase.close();
+                doSql();
                 break;
 
             default:
                 break;
         }
+    }
+
+    private void doSql() {
+        //更新收藏内容
+        SimpleDateFormat formatter = new SimpleDateFormat(
+                "yyyy-MM-dd    HH:mm:ss     ");
+        Date curDate = new Date(System.currentTimeMillis());//获取到收藏被按下的时间
+        String str = formatter.format(curDate);
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(this);
+        SQLiteDatabase dbWriteDatabase = dataBaseHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        Cursor cc = dbWriteDatabase.query("id", null, null, null, null, null,
+                null);
+        values.put("contentId", contentId);
+        values.put("time", str);
+        if (collection.isChecked()) {
+            dbWriteDatabase.insert("id", null, values);
+        } else {
+            while (cc.moveToNext()) {
+                int contentID = cc.getInt(cc.getColumnIndex("contentId"));
+                if (String.valueOf(contentID).equals(contentId)) {
+                    String sql = "delete from id where contentId  = "
+                            + contentId;
+                    dbWriteDatabase.execSQL(sql);
+                }
+            }
+        }
+        cc.close();
+        dbWriteDatabase.close();
+    }
+
+    @Override
+    public void finish() {
+        ViewGroup view = (ViewGroup) getWindow().getDecorView();
+        view.removeAllViews();
+        super.finish();
     }
 
 }

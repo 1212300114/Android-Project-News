@@ -10,7 +10,6 @@ package com.example.demo.news.xlistviewsource;
 
 
 import net.xinhuamm.d0403.R;
-
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -290,13 +289,13 @@ public class XListView extends ListView implements OnScrollListener {
 			mLastY = ev.getRawY();
 			if (getFirstVisiblePosition() == 0
 					&& (mHeaderView.getVisiableHeight() > 0 || deltaY > 0)) {
-				// the first item is showing, header has shown or pull down.
+				// the first item_collection is showing, header has shown or pull down.
 				updateHeaderHeight(deltaY / OFFSET_RADIO);
 				invokeOnScrolling();
 			} else if (getLastVisiblePosition() == mTotalItemCount - 1
 					&& (mFooterView.getBottomMargin() > 0 || deltaY < 0)) {
 				mFooterView.setVisibility(View.VISIBLE);
-				// last item, already pulled up or want to pull up.
+				// last item_collection, already pulled up or want to pull up.
 				updateFooterHeight(-deltaY / OFFSET_RADIO);
 			}
 			break;

@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 
 public class SplashActivity extends Activity {
-	// ������������ͨ��һ����ʱ������activity��ʵ��Ч��������Ϊ�����һЩ����Ч����
+	// 启动图
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

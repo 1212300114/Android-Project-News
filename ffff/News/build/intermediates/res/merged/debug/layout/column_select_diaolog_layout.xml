@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="400dp"
-    android:background="@drawable/dialog_background">
+    android:layout_height="wrap_content"
+    android:background="#ffffff">
 
     <TextView
         android:id="@+id/tvDialogTitle"
@@ -23,149 +23,22 @@
         android:layout_marginTop="10dip"
         android:src="@drawable/dialog_fenge" />
 
-    <RelativeLayout
-        android:id="@+id/first"
-        android:layout_width="wrap_content"
+    <ListView
+        android:id="@+id/lvColumnSelect"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/line"
-        android:layout_centerHorizontal="true">
+        android:layout_marginTop="5dp"
+        android:divider="@null" />
 
-        <CheckBox
-            android:id="@+id/btnFirstPage"
-            android:layout_width="80dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="25dp"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/dialog_button_selector"
-            android:button="@null"
-            android:checked="true"
-            android:gravity="center"
-            android:text="@string/firstpage1"
-            android:textColor="#cf0808"
-            android:textSize="15sp" />
-
-        <CheckBox
-            android:id="@+id/btnImportantNews"
-            android:layout_width="80dp"
-            android:layout_height="40dp"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="25dp"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/dialog_button_selector"
-            android:button="@null"
-            android:gravity="center"
-            android:text="@string/improtantnews"
-            android:textColor="#121212"
-            android:textSize="15sp" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/second"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/first"
-        android:layout_centerHorizontal="true">
-
-        <CheckBox
-            android:id="@+id/btnWind"
-            android:layout_width="80dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="25dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/dialog_button_selector"
-            android:button="@null"
-            android:gravity="center"
-            android:text="@string/wind"
-            android:textColor="#121212"
-            android:textSize="15sp" />
-
-        <CheckBox
-            android:id="@+id/btnCheck"
-            android:layout_width="80dp"
-            android:layout_height="40dp"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="25dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/dialog_button_selector"
-            android:button="@null"
-            android:gravity="center"
-            android:text="@string/check"
-            android:textColor="#121212"
-            android:textSize="15sp" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/third"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/second"
-        android:layout_centerHorizontal="true">
-
-        <CheckBox
-            android:id="@+id/btnWatch"
-            android:layout_width="80dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="25dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/dialog_button_selector"
-            android:button="@null"
-            android:gravity="center"
-            android:text="@string/watch"
-            android:textColor="#121212"
-            android:textSize="15sp" />
-
-        <CheckBox
-            android:id="@+id/btnImageNews"
-            android:layout_width="80dp"
-            android:layout_height="40dp"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="25dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/dialog_button_selector"
-            android:button="@null"
-            android:gravity="center"
-            android:text="@string/imagenews"
-            android:textColor="#121212"
-            android:textSize="15sp" />
-
-        <CheckBox
-            android:id="@+id/btnBaoGuang"
-            android:layout_width="80dp"
-            android:layout_height="40dp"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/btnWatch"
-            android:layout_marginRight="25dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/dialog_button_selector"
-            android:button="@null"
-            android:gravity="center"
-            android:text="@string/baoguang"
-            android:textColor="#121212"
-            android:textSize="15sp" />
-
-        <CheckBox
-            android:id="@+id/btnSubject"
-            android:layout_width="80dp"
-            android:layout_height="40dp"
-            android:layout_below="@+id/btnWatch"
-            android:layout_marginLeft="25dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/dialog_button_selector"
-            android:button="@null"
-            android:gravity="center"
-            android:text="@string/subject"
-            android:textColor="#121212"
-            android:textSize="15sp" />
-    </RelativeLayout>
 
     <ImageButton
         android:id="@+id/btnDialogCancle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/third"
+        android:layout_below="@+id/lvColumnSelect"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20sp"
-        android:background="#FFFFFf"
-        android:src="@drawable/dialog_cancle_selector" />
+        android:background="@drawable/dialog_cancle_selector" />
 
 </RelativeLayout><!-- From: file:/C:/Users/123456/ffff/News/res/layout/column_select_diaolog_layout.xml -->

@@ -3,5 +3,4 @@
     
     <item android:drawable="@drawable/back_pressed" android:state_pressed="true"></item>
     <item android:drawable="@drawable/back_nomal" android:state_pressed="false"></item>
-
 </selector>

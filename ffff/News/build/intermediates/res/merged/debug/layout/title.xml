@@ -2,16 +2,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="10dp"
-    android:paddingLeft="5dp" 
-    android:paddingRight="5dp"
-    android:paddingBottom="0dp">
+    android:paddingBottom="0dp"
+    android:paddingTop="10dp">
 
     <ImageButton
         android:id="@+id/btnShowLeft"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
+        android:layout_marginLeft="5dp"
         android:background="@drawable/showletf_selector" />
 
     <ImageView
@@ -20,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:adjustViewBounds="true"
-        android:maxHeight="23dp"
+        android:scaleType="fitXY"
         android:src="@drawable/appname" />
 
     <ImageButton
@@ -29,6 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
+        android:layout_marginRight="5dp"
         android:background="@drawable/showright_selector" />
 
     <ImageView
@@ -36,7 +36,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/btnShowLeft"
-        android:layout_marginTop="5sp"
-        android:background="@drawable/fenge" />
+        android:layout_marginTop="5dp"
+        android:background="@drawable/fenge"
+        android:scaleType="fitXY" />
 
 </RelativeLayout><!-- From: file:/C:/Users/123456/ffff/News/res/layout/title.xml -->

@@ -1,0 +1,72 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.demo.news.activity.NewsDetailsActivity">
+
+    <ImageButton
+        android:id="@+id/btnBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/back_state_selector"
+        android:contentDescription="@null"
+        android:scaleType="fitXY" />
+
+    <ImageButton
+        android:id="@+id/btnShare"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/share_selector"
+        android:contentDescription="@null"
+        android:scaleType="fitXY" />
+
+    <CheckBox
+        android:id="@+id/btnCollect"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_toLeftOf="@+id/btnShare"
+        android:background="@drawable/collect_selector"
+        android:button="@null"
+        android:checked="false" />
+
+    <ImageView
+        android:id="@+id/line"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnBack"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:contentDescription="@null"
+        android:scaleType="fitXY"
+        android:src="@drawable/fenge" />
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/line">
+
+        <WebView
+            android:id="@+id/webView1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <ProgressBar
+            android:id="@+id/pb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tvLoad"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/pb"
+            android:layout_centerHorizontal="true"
+            android:text="@string/Loading"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+</RelativeLayout><!-- From: file:/C:/Users/123456/ffff/News/res/layout/activity_news_details.xml -->

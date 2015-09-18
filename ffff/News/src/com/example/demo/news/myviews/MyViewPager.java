@@ -4,17 +4,29 @@ import android.content.Context;
 import android.graphics.PointF;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.view.DragEvent;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.example.demo.news.activity.MainActivity;
+
 public class MyViewPager extends ViewPager {
+    //viewpager主要想处理事件分发然
+    private MainActivity activity = null;
 
     public MyViewPager(Context context) {
         super(context);
+
+        if (context instanceof MainActivity) {
+            activity = (MainActivity) context;
+        }
     }
 
     public MyViewPager(Context context, AttributeSet attrs) {
         super(context, attrs);
+        if (context instanceof MainActivity) {
+            activity = (MainActivity) context;
+        }
     }
 
     PointF downPoint = new PointF();
@@ -29,25 +41,29 @@ public class MyViewPager extends ViewPager {
                 downPoint.y = evt.getY();
                 if (this.getChildCount() > 1) { // 有内容，多于1个时
                     // 通知其父控件，现在进行的是本控件的操作，不允许拦�?
-                    getParent().getParent().getParent().getParent().getParent().getParent().getParent().getParent().getParent().getParent().getParent().requestDisallowInterceptTouchEvent(true);
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
                 if (this.getChildCount() > 1) { // 有内容，多于1个时
                     // 通知其父控件，现在进行的是本控件的操作，不允许拦�?
-                    getParent().getParent().getParent().getParent().getParent().getParent().getParent().getParent().getParent().getParent().getParent().requestDisallowInterceptTouchEvent(true);
                 }
                 break;
             case MotionEvent.ACTION_UP:
                 // 在up时判断是否按下和松手的坐标为�?个点
-                if (PointF.length(evt.getX() - downPoint.x, evt.getY()
-                        - downPoint.y) < (float) 5.0) {
-                    onSingleTouch(this);
-                    return true;
-                }
                 break;
         }
         return super.onTouchEvent(evt);
+    }
+
+
+    @Override
+    protected boolean dispatchHoverEvent(MotionEvent event) {
+        return true;
+    }
+
+    @Override
+    public boolean dispatchDragEvent(DragEvent event) {
+        return true;
     }
 
     public void onSingleTouch(View v) {

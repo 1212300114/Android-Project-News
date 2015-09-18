@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/ivMap"
@@ -14,7 +14,7 @@
         android:layout_width="fill_parent"
         android:layout_height="50dp"
         android:layout_below="@+id/ivMap"
-        android:layout_marginTop="30dp" >
+        android:layout_marginTop="30dp">
 
         <ImageButton
             android:id="@+id/btnSA"
@@ -45,11 +45,13 @@
 
         <ImageView
             android:id="@+id/lineFirst"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/ivSearch"
-            android:layout_marginLeft="40dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
             android:layout_marginTop="10dp"
+            android:scaleType="fitXY"
             android:src="@drawable/right_henfenge" />
     </RelativeLayout>
 
@@ -57,7 +59,7 @@
         android:id="@+id/layoutCO"
         android:layout_width="fill_parent"
         android:layout_height="50dp"
-        android:layout_below="@+id/layoutSA" >
+        android:layout_below="@+id/layoutSA">
 
         <ImageButton
             android:id="@+id/btnCO"
@@ -88,11 +90,13 @@
 
         <ImageView
             android:id="@+id/lineSecond"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/ivCollections"
-            android:layout_marginLeft="40dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
             android:layout_marginTop="10dp"
+            android:scaleType="fitXY"
             android:src="@drawable/right_henfenge" />
     </RelativeLayout>
 
@@ -100,7 +104,7 @@
         android:id="@+id/layoutSE"
         android:layout_width="fill_parent"
         android:layout_height="50dp"
-        android:layout_below="@+id/layoutCO" >
+        android:layout_below="@+id/layoutCO">
 
         <ImageButton
             android:id="@+id/btnSE"
@@ -131,11 +135,13 @@
 
         <ImageView
             android:id="@+id/lineThird"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/ivSettings"
-            android:layout_marginLeft="40dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
             android:layout_marginTop="10dp"
+            android:scaleType="fitXY"
             android:src="@drawable/right_henfenge" />
     </RelativeLayout>
 
@@ -143,7 +149,7 @@
         android:id="@+id/layoutYN"
         android:layout_width="fill_parent"
         android:layout_height="50dp"
-        android:layout_below="@+id/layoutSE" >
+        android:layout_below="@+id/layoutSE">
 
         <ImageButton
             android:id="@+id/btnYN"
@@ -174,11 +180,13 @@
 
         <ImageView
             android:id="@+id/lineForth"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/ivYunNan"
-            android:layout_marginLeft="40dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
             android:layout_marginTop="10dp"
+            android:scaleType="fitXY"
             android:src="@drawable/right_henfenge" />
     </RelativeLayout>
 
@@ -187,8 +195,10 @@
         android:layout_width="wrap_content"
         android:layout_height="280dp"
         android:layout_below="@+id/ivMap"
+        android:layout_marginBottom="20dp"
         android:layout_marginLeft="90dp"
         android:layout_marginTop="20dp"
+        android:scaleType="fitXY"
         android:src="@drawable/right_shufenge" />
 
     <ImageView

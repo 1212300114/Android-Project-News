@@ -14,7 +14,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5sp"
-            android:background="@drawable/back_state_selector" />
+            android:background="@drawable/back_state_selector"
+            android:contentDescription="@null" />
 
         <TextView
             android:id="@+id/tvTitle"
@@ -22,7 +23,6 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_marginTop="3dp"
-            android:text="标题"
             android:textSize="25sp" />
     </RelativeLayout>
 

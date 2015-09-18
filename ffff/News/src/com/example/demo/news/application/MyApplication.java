@@ -1,6 +1,7 @@
 package com.example.demo.news.application;
 
-import java.io.File;
+import android.app.Application;
+import android.content.Context;
 
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
@@ -11,19 +12,9 @@ import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 import com.nostra13.universalimageloader.utils.StorageUtils;
 
-import android.app.Application;
-import android.content.Context;
+import java.io.File;
 
 public class MyApplication extends Application {
-    private boolean get = false;
-
-    public boolean isGet() {
-        return get;
-    }
-
-    public void setGet(boolean get) {
-        this.get = get;
-    }
 
     @Override
     public void onCreate() {
@@ -34,21 +25,22 @@ public class MyApplication extends Application {
     }
 
     public static void initImageLoader(Context context) {
-        // �����ļ���Ŀ¼
+        // 初始化imageloader的选项
         File cacheDir = StorageUtils.getOwnCacheDirectory(context,
-                "universalimageloader/Cache");
+                "JW/Cache");
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
                 context)
                 .memoryCacheExtraOptions(480, 800)
                         // max width, max height���������ÿ�������ļ�����󳤿�
-                .threadPoolSize(3)
+                .threadPoolSize(2)
                         // �̳߳����̵߳�����
                 .threadPriority(Thread.NORM_PRIORITY - 2)
                 .denyCacheImageMultipleSizesInMemory()
                 .diskCacheFileNameGenerator(new Md5FileNameGenerator())
                         // �������ʱ���URI������MD5 ����
-                .memoryCache(new UsingFreqLimitedMemoryCache(2 * 1024 * 1024))
-                .memoryCacheSize(2 * 1024 * 1024) // �ڴ滺������ֵ
+                .memoryCache(new UsingFreqLimitedMemoryCache(1 * 1024 *
+                        1024))
+                .memoryCacheSize(1024 * 1024) // �ڴ滺������ֵ
                 .diskCacheSize(50 * 1024 * 1024) // SD����������ֵ
                 .tasksProcessingOrder(QueueProcessingType.LIFO)
                         // ��ԭ�ȵ�discCache -> diskCache

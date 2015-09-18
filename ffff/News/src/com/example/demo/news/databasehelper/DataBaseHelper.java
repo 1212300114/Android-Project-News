@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
-
+	//收藏内容 写入了数据库
 	public DataBaseHelper(Context context) {
 		super(context, "id", null, 1);
 		// TODO Auto-generated constructor stub

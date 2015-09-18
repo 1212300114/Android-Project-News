@@ -6,9 +6,9 @@
 
     <ImageView
         android:id="@+id/iv"
-        android:padding="5dp"
         android:layout_width="fill_parent"
         android:layout_height="180dp"
+        android:padding="5dp"
         android:scaleType="fitXY" />
 
     <TextView
@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="5dp"
-        android:background="#20000000"
+        android:background="#99000000"
         android:padding="5dp"
         android:text="就是这个"
         android:textColor="@android:color/white"

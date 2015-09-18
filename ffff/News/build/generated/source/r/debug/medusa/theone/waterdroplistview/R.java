@@ -21,22 +21,22 @@ public final class R {
 		public static final int activity_vertical_margin = 0x7f080001;
 	}
 	public static final class drawable {
-		public static final int refresh_arrow = 0x7f02006b;
+		public static final int refresh_arrow = 0x7f02006f;
 	}
 	public static final class id {
-		public static final int action_settings = 0x7f0b0154;
-		public static final int progresslayout = 0x7f0b0145;
-		public static final int txt_progresstext = 0x7f0b0147;
-		public static final int waterdroplist_header_progressbar = 0x7f0b014a;
-		public static final int waterdroplist_waterdrop = 0x7f0b0149;
-		public static final int waterdroplistview_footer_content = 0x7f0b0144;
-		public static final int waterdroplistview_footer_hint_textview = 0x7f0b0148;
-		public static final int waterdroplistview_footer_progressbar = 0x7f0b0146;
+		public static final int action_settings = 0x7f0b013c;
+		public static final int progresslayout = 0x7f0b012d;
+		public static final int txt_progresstext = 0x7f0b012f;
+		public static final int waterdroplist_header_progressbar = 0x7f0b0132;
+		public static final int waterdroplist_waterdrop = 0x7f0b0131;
+		public static final int waterdroplistview_footer_content = 0x7f0b012c;
+		public static final int waterdroplistview_footer_hint_textview = 0x7f0b0130;
+		public static final int waterdroplistview_footer_progressbar = 0x7f0b012e;
 	}
 	public static final class layout {
-		public static final int activity_main = 0x7f040002;
-		public static final int waterdroplistview_footer = 0x7f04004c;
-		public static final int waterdroplistview_header = 0x7f04004d;
+		public static final int activity_main = 0x7f040001;
+		public static final int waterdroplistview_footer = 0x7f040050;
+		public static final int waterdroplistview_header = 0x7f040051;
 	}
 	public static final class menu {
 		public static final int menu_main = 0x7f0e0004;
@@ -48,10 +48,10 @@ public final class R {
 	public static final class string {
 		public static final int action_settings = 0x7f0d0004;
 		public static final int app_name = 0x7f0d0005;
-		public static final int listfooterview_normal = 0x7f0d0038;
-		public static final int listfooterview_ready = 0x7f0d0039;
-		public static final int onLoad = 0x7f0d003d;
-		public static final int title_activity_second = 0x7f0d004e;
+		public static final int listfooterview_normal = 0x7f0d003a;
+		public static final int listfooterview_ready = 0x7f0d003b;
+		public static final int onLoad = 0x7f0d0040;
+		public static final int title_activity_second = 0x7f0d0056;
 	}
 	public static final class styleable {
 		public static final int[] WaterDropView = { 0x7f01002d, 0x7f01002e, 0x7f01002f, 0x7f010030, 0x7f010031, 0x7f010032, 0x7f010033 };

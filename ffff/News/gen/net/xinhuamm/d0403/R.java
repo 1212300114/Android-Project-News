@@ -418,7 +418,7 @@ theme attribute (in the form
 containing a value of this type.
          */
         public static final int radius=0x7f010018;
-        /**  Whether or not the selected item is displayed as bold. 
+        /**  Whether or not the selected item_collection is displayed as bold.
          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
 <p>This may also be a reference to a resource (in the form
 "<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
@@ -2358,7 +2358,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
            <tr><td><code>{@link #TitlePageIndicator_footerLineHeight net.xinhuamm.d0403:footerLineHeight}</code></td><td> Height of the footer line.</td></tr>
            <tr><td><code>{@link #TitlePageIndicator_footerPadding net.xinhuamm.d0403:footerPadding}</code></td><td> Padding between the bottom of the title and the footer.</td></tr>
            <tr><td><code>{@link #TitlePageIndicator_linePosition net.xinhuamm.d0403:linePosition}</code></td><td> Position of the line.</td></tr>
-           <tr><td><code>{@link #TitlePageIndicator_selectedBold net.xinhuamm.d0403:selectedBold}</code></td><td> Whether or not the selected item is displayed as bold.</td></tr>
+           <tr><td><code>{@link #TitlePageIndicator_selectedBold net.xinhuamm.d0403:selectedBold}</code></td><td> Whether or not the selected item_collection is displayed as bold.</td></tr>
            <tr><td><code>{@link #TitlePageIndicator_selectedColor net.xinhuamm.d0403:selectedColor}</code></td><td> Color of the selected title.</td></tr>
            <tr><td><code>{@link #TitlePageIndicator_titlePadding net.xinhuamm.d0403:titlePadding}</code></td><td> Padding between titles when bumping into each other.</td></tr>
            <tr><td><code>{@link #TitlePageIndicator_topPadding net.xinhuamm.d0403:topPadding}</code></td><td> Padding between titles and the top of the View.</td></tr>
@@ -2561,7 +2561,7 @@ containing a value of this type.
         /**
           <p>
           @attr description
-           Whether or not the selected item is displayed as bold. 
+           Whether or not the selected item_collection is displayed as bold.
 
 
           <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".

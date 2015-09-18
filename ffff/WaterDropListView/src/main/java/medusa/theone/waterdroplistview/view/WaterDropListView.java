@@ -62,7 +62,7 @@ public class WaterDropListView extends ListView implements OnScrollListener, Wat
     private final static int PULL_LOAD_MORE_DELTA = 50; // when pull up >= 50px
     // at bottom, trigger
     // load more.
-    private final static float OFFSET_RADIO = 1.8f; // support iOS like pull
+    private final static float OFFSET_RADIO = 1.2f; // support iOS like pull
     private boolean mPullRefreshing = false;
 
     private enum ScrollBack {

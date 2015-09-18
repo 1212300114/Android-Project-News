@@ -185,10 +185,11 @@
     <string name="about_us_name">云南省纪委省监察厅网站</string>
     <string name="action_settings">Settings</string>
     <string name="app_name">省监察厅网站</string>
-    <string name="baoguang">曝光</string>
+    <string name="cache_size">缓存大小</string>
     <string name="check">审查</string>
+    <string name="check_update">检查更新</string>
     <string name="chose">频道选择</string>
-    <string name="click_me">Show AnotherFragment</string>
+    <string name="clear_cache">清理缓存</string>
     <!-- From: file:/C:/Users/123456/ffff/News/build/intermediates/exploded-aar/ffff/social_sdk_library_project/unspecified/res/values/values.xml -->
     <eat-comment/>
     <string name="com_facebook_dialogloginactivity_ok_button">OK</string>
@@ -213,9 +214,10 @@
     <string name="com_facebook_tooltip_default">New! You\'re in control - choose what info you want to share with apps.</string>
     <!-- From: file:/C:/Users/123456/ffff/News/res/values/strings.xml -->
     <eat-comment/>
-    <string name="description">独家</string>
-    <string name="firstpage">首                    页</string>
-    <string name="firstpage1">首页</string>
+    <string name="current_version">当前版本</string>
+    <string name="current_version_state">已经是最新版本</string>
+    <string name="expose">曝光</string>
+    <string name="firstPage">首页</string>
     <!-- From: file:/C:/Users/123456/ffff/News/build/intermediates/exploded-aar/ffff/social_sdk_library_project/unspecified/res/values/values.xml -->
     <eat-comment/>
     <string name="flickr_content">Flickr只支持图片分享</string>
@@ -229,8 +231,8 @@
     <string name="fragment3">Fragment3</string>
     <string name="hello">Hello</string>
     <string name="hello_world">Hello world!</string>
-    <string name="imagenews">图闻</string>
-    <string name="improtantnews">要闻</string>
+    <string name="imageNews">图闻</string>
+    <string name="importantNews">要闻</string>
     <!-- From: file:/C:/Users/123456/ffff/News/build/intermediates/exploded-aar/ffff/social_sdk_library_project/unspecified/res/values/values.xml -->
     <eat-comment/>
     <string name="kakao_content">Kakao Talk只支持图片、文本分享</string>
@@ -259,7 +261,8 @@
     <string name="messenger_send_button_text">Send</string>
     <!-- From: file:/C:/Users/123456/ffff/News/res/values/strings.xml -->
     <eat-comment/>
-    <string name="noNetwork">请检查您的网络状态后重试</string>
+    <string name="no_collections">没有收藏内容</string>
+    <string name="no_network">请检查您的网络状态后重试</string>
     <!-- From: file:/C:/Users/123456/ffff/News/build/intermediates/exploded-aar/ffff/WaterDropListView/unspecified/res/values/values.xml -->
     <eat-comment/>
     <string name="onLoad">正在加载中</string>
@@ -274,11 +277,16 @@
     <string name="pull_to_refresh_tap_label" translatable="false">点击刷新</string>
     <!-- From: file:/C:/Users/123456/ffff/News/res/values/strings.xml -->
     <eat-comment/>
+    <string name="reflect">意见反馈</string>
+    <string name="search_button">搜索</string>
     <string name="show_list">Show List</string>
+    <string name="spalsh_text_three">全面</string>
+    <string name="splash_text_four">生动</string>
+    <string name="splash_text_one">及时</string>
+    <string name="splash_text_two">准确</string>
     <string name="state">州市动态</string>
     <string name="statement">网站声明</string>
     <string name="subject">专题</string>
-    <string name="textview_another_fragment">This is another fragment</string>
     <string name="title">Title</string>
     <string name="title_activity_details">DetailsActivity</string>
     <string name="title_activity_dynamic_detail">DynamicDetail</string>
@@ -502,7 +510,7 @@
     <style name="MyDialog1" parent="@android:Theme.Dialog">
         <item name="android:windowFrame">@null</item>
         <item name="android:windowNoTitle">true</item>
-        <item name="android:windowBackground">@color/white</item>
+        <item name="android:windowBackground">@drawable/dialog_shape</item>
         <item name="android:windowIsFloating">true</item>
         <item name="android:windowContentOverlay">@null</item>
     </style>
@@ -524,7 +532,7 @@
         <item name="android:paddingTop">8dp</item>
         <item name="android:paddingBottom">8dp</item>
         <item name="android:textAppearance">@style/MyTextAppearance.TabPageIndicator</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">15sp</item>
         <item name="android:dividerPadding">8dp</item>
         <item name="android:showDividers">middle</item>
         <item name="android:fadingEdge">horizontal</item>

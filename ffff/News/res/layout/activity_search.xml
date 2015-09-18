@@ -5,10 +5,12 @@
     tools:context="com.example.demo.news.activity.Search">
 
     <ImageButton
+        android:layout_marginTop="5dp"
         android:id="@+id/btnBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/back_state_selector" />
+        android:background="@drawable/back_state_selector"
+        android:contentDescription="@null" />
 
     <ImageView
         android:id="@+id/AppName"
@@ -16,18 +18,22 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerInParent="true"
-        android:layout_marginTop="8sp"
+        android:layout_marginTop="8dp"
         android:adjustViewBounds="true"
+        android:contentDescription="@null"
         android:maxHeight="20sp"
+        android:scaleType="fitXY"
         android:src="@drawable/appname" />
 
     <ImageView
         android:id="@+id/lineFirst"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/AppName"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20sp"
+        android:layout_marginTop="10dp"
+        android:contentDescription="@null"
+        android:scaleType="fitXY"
         android:src="@drawable/fenge" />
 
     <RelativeLayout
@@ -39,28 +45,34 @@
 
         <ImageView
             android:id="@+id/glass"
-            android:layout_width="wrap_content"
-            android:layout_height="30dip"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_alignParentLeft="true"
+            android:contentDescription="@null"
+            android:scaleType="fitXY"
             android:src="@drawable/search_glass" />
 
         <EditText
             android:id="@+id/etSearch"
             android:layout_width="wrap_content"
-            android:layout_height="30dip"
-            android:layout_marginRight="10sp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:layout_toLeftOf="@+id/btnSearch"
             android:layout_toRightOf="@+id/glass"
-            android:background="@drawable/search_input_nomal" />
+            android:background="@drawable/search_input_nomal"
+            android:inputType="text" />
 
         <ImageButton
+
             android:id="@+id/btnDelete"
-            android:layout_width="28dip"
-            android:layout_height="28dip"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_centerVertical="true"
             android:layout_marginRight="10sp"
             android:layout_toLeftOf="@+id/btnSearch"
-            android:background="@drawable/search_delete_selector" />
+            android:background="@drawable/search_delete_selector"
+            android:contentDescription="@null" />
 
         <Button
             android:id="@+id/btnSearch"
@@ -70,7 +82,7 @@
             android:layout_marginRight="10sp"
             android:background="@drawable/search_yes"
             android:scaleType="fitXY"
-            android:text="搜索" />
+            android:text="@string/search_button" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -78,7 +90,7 @@
         android:layout_height="fill_parent"
         android:layout_below="@+id/linear">
 
-        <com.example.demo.news.xlistviewsource.XListView
+        <medusa.theone.waterdroplistview.view.WaterDropListView
             android:id="@+id/lvSearch"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" />

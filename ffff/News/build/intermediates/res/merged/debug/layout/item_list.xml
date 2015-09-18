@@ -2,24 +2,25 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="100dp"
-    android:padding="10dp" >
+    android:padding="5dp">
 
     <ImageView
         android:id="@+id/iv"
         android:layout_width="92dp"
         android:layout_height="69dp"
-        android:layout_alignParentLeft="true" 
-        android:scaleType="fitXY"
-        android:layout_centerVertical="true"/>
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:scaleType="fitXY" />
 
     <TextView
-        android:layout_marginLeft="10dp"
         android:id="@+id/tvTitle"
-        android:layout_marginRight="5dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="80dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="5dp"
         android:layout_toRightOf="@+id/iv"
-        android:text="我反正没想到方法，知道的朋友们。"
+        android:ellipsize="end"
+        android:maxLines="2"
         android:textColor="#121212"
         android:textSize="18sp" />
 

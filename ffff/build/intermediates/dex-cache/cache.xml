@@ -2,11 +2,11 @@
 <items version="2" >
 
     <item
-        jar="C:\Users\123456\ffff\News\build\intermediates\exploded-aar\ffff\WaterDropListView\unspecified\jars\classes.jar"
+        jar="C:\Users\123456\.gradle\caches\modules-2\files-2.1\com.loopj.android\android-async-http\1.4.8\77bbfe240e437ecb396d982afa0d3bd4f9090ba7\android-async-http-1.4.8.jar"
         jumboMode="false"
         revision="23.0.0"
-        sha1="973be903ed2ec0150d8771129e1aef2b8d6dbdf2">
-        <dex dex="C:\Users\123456\ffff\News\build\intermediates\pre-dexed\debug\classes-04a84da9de6e959e7528cebc41b92014f4712331.jar" />
+        sha1="77bbfe240e437ecb396d982afa0d3bd4f9090ba7">
+        <dex dex="C:\Users\123456\ffff\News\build\intermediates\pre-dexed\debug\android-async-http-1.4.8-085ab3ab3948d2462c36aa1a595ad1db32cb92ee.jar" />
     </item>
 
 </items>

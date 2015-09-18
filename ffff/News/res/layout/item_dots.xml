@@ -1,0 +1,12 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rlMain"
+    android:layout_width="10dp"
+    android:layout_height="10dp">
+
+    <ImageView
+        android:id="@+id/dot1"
+        android:layout_width="5dp"
+        android:layout_height="5dp"
+        android:layout_gravity="center"
+        android:src="@drawable/dot_focused" />
+</RelativeLayout>

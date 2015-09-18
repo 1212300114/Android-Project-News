@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="oval" >
-    <corners android:radius="5dip"/>
-    <solid android:color="#aaffffff"/>
+    android:shape="oval">
+    <!-- 定义边框颜色 -->
+    <solid android:color="#7bb3f8" />
+    <!-- 定义圆角弧度 -->
+    <corners
+        android:bottomLeftRadius="4dp"
+        android:bottomRightRadius="4dp"
+        android:topLeftRadius="4dp"
+        android:topRightRadius="4dp" />
+
 </shape>

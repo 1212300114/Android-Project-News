@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="net.xinhuamm.d0403"
     android:versionCode="1"
-    android:versionName="1.0" >
+    android:versionName="1.0">
 
     <uses-sdk
         android:minSdkVersion="14"
@@ -22,14 +22,14 @@
     <!-- QQ、QQ空间所需权限 -->
     <uses-permission android:name="android.permission.GET_TASKS" />
 
-    <android:uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:name="com.example.demo.news.application.MyApplication"
         android:allowBackup="true"
         android:icon="@drawable/left_logo"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
 
         <!-- ###################注册SDK使用的Activity###################### -->
         <!-- 分享编辑页 -->
@@ -39,14 +39,13 @@
             android:launchMode="singleTask"
             android:noHistory="true"
             android:theme="@style/Theme.UMDialog"
-            android:windowSoftInputMode="stateVisible|adjustResize" >
-        </activity>
+            android:windowSoftInputMode="stateVisible|adjustResize" />
 
         <!-- ############ QQ空间和QQ SSO授权的Activity注册 ############ -->
         <activity
             android:name="com.tencent.tauth.AuthActivity"
             android:launchMode="singleTask"
-            android:noHistory="true" >
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -59,8 +58,7 @@
         <activity
             android:name="com.tencent.connect.common.AssistActivity"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
-        </activity>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <!-- 微信的分享 -->
         <activity
             android:name="com.example.demo.news.wx.wxapi.WXEntryActivity"
@@ -72,25 +70,19 @@
         <!-- 我的activity -->
         <activity
             android:name="com.example.demo.news.activity.MainActivity"
-            android:label="@string/app_name"
-            android:theme="@style/MyTheme" >
-        </activity>
+            android:theme="@style/MyTheme" />
         <activity
             android:name="com.example.demo.news.activity.SearchActivity"
-            android:theme="@style/MyTheme" >
-        </activity>
+            android:theme="@style/MyTheme" />
         <activity
             android:name="com.example.demo.news.activity.MyCollectionsActivity"
-            android:theme="@style/MyTheme" >
-        </activity>
+            android:theme="@style/MyTheme" />
         <activity
             android:name="com.example.demo.news.activity.SettingsActivity"
-            android:theme="@style/MyTheme" >
-        </activity>
+            android:theme="@style/MyTheme" />
         <activity
             android:name="com.example.demo.news.activity.SplashActivity"
-            android:label="@string/app_name"
-            android:theme="@style/MyTheme" >
+            android:theme="@style/MyTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -100,24 +92,14 @@
         <!-- 友盟的key配置 -->
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="5595ea1667e58e486200553a" >
-        </meta-data>
+            android:value="5595ea1667e58e486200553a" />
 
         <activity
-            android:name="com.example.demo.news.activity.SubjectDetails"
-            android:label="@string/title_activity_subject_details"
-            android:theme="@style/MyTheme" >
-        </activity>
+            android:name="com.example.demo.news.activity.SubjectDetailsActivity"
+            android:theme="@style/MyTheme" />
         <activity
             android:name="com.example.demo.news.activity.NewsDetailsActivity"
-            android:label="@string/title_activity_looper_view_details"
-            android:theme="@style/MyTheme" >
-        </activity>
-        <activity
-            android:name="com.example.demo.news.activity.DynamicDetailActivity"
-            android:label="@string/title_activity_dynamic_detail"
-            android:theme="@style/MyTheme" >
-        </activity>
+            android:theme="@style/MyTheme" />
     </application>
 
 </manifest>

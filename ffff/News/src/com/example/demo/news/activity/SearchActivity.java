@@ -1,122 +1,63 @@
 package com.example.demo.news.activity;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.demo.news.databeans.search.SearchData;
-import com.example.demo.news.databeans.search.SearchList;
-import com.example.demo.news.dataloaders.SearchLoader;
-import com.example.demo.news.xlistviewsource.XListView;
-import com.example.demo.news.xlistviewsource.XListView.IXListViewListener;
+import com.example.demo.news.adapters.ColumnListAdapter;
+import com.example.demo.news.databeans.ColumnEntity;
+import com.example.demo.news.utils.Constants;
+import com.example.demo.news.utils.NetworkRequest;
 import com.google.gson.Gson;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
+import com.loopj.android.http.TextHttpResponseHandler;
 
 import net.xinhuamm.d0403.R;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
+import org.apache.http.Header;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
+import medusa.theone.waterdroplistview.view.WaterDropListView;
 
-public class SearchActivity extends Activity implements OnClickListener,
-        IXListViewListener {
-
+public class SearchActivity extends Activity implements OnClickListener, WaterDropListView.IWaterDropListViewListener {
     // 搜索页的内容
-    /*
-    view
-     */
-    private ImageButton back;
-    private Button cancle;
-    private ImageButton delete;
     private EditText search;
     private ProgressBar pb;
-    private XListView lv;
-
-    private String searchText = null;
-    private SearchLoader loader = new SearchLoader();
-    private AsyncTask<Integer, Void, SearchData> task;
-    private SearchData data;
-    private XListViewAdapter adapter;
-    private ArrayList<SearchList> newsList;
-    private ArrayList<String> listTitles;
+    private WaterDropListView lv;
+    private ColumnListAdapter adapter;
+    private String link;
     private Handler mHandler;
     private int page = 1;
     private int pageCount = 0;
 
-    private ArrayList<String> ListImageURL;
-    private DisplayImageOptions options;
-    private ImageLoader imageLoader;
 
-    // �������ݻ�ûʵ�־ͷ���2����ť��������
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_search);
-
         mHandler = new Handler();
-        imageLoader = ImageLoader.getInstance();
-        options = new DisplayImageOptions.Builder()
-                .showImageOnLoading(R.drawable.news_list_bg)
-                .showImageForEmptyUri(R.drawable.news_list_bg)
-                .showImageOnFail(R.drawable.news_list_bg).cacheInMemory(true)
-                .cacheOnDisk(true).build();
+        initView();
+    }
 
+    private void initView() {
+        //初始化view
         pb = (ProgressBar) findViewById(R.id.pb);
-        back = (ImageButton) findViewById(R.id.btnBack);
-        back.setOnClickListener(this);
-        cancle = (Button) findViewById(R.id.btnSearch);
-        cancle.setOnClickListener(this);
-        delete = (ImageButton) findViewById(R.id.btnDelete);
-        delete.setOnClickListener(this);
+        findViewById(R.id.btnBack).setOnClickListener(this);
+        findViewById(R.id.btnSearch).setOnClickListener(this);
+        findViewById(R.id.btnDelete).setOnClickListener(this);
         search = (EditText) findViewById(R.id.etSearch);
-        lv = (XListView) findViewById(R.id.lvSearch);
-        lv.setXListViewListener(this);
+        lv = (WaterDropListView) findViewById(R.id.lvSearch);
         lv.setVisibility(View.GONE);
+        lv.setWaterDropListViewListener(this);
         lv.setPullLoadEnable(true);
-        lv.setPullRefreshEnable(true);
-        // 1fΪ��ʱ
-
+        adapter = new ColumnListAdapter(this, false);
+        lv.setAdapter(adapter);
     }
 
-    private SearchData getResource(String text, int i) throws IOException {
-        String te = text + "";
-        String urlString = "http://api.jjjc.yn.gov.cn/jwapp/?service=Search.index&title="
-                + te + "&page=" + i;
-        HttpGet get = new HttpGet(urlString);
-        HttpClient client = new DefaultHttpClient();
-        HttpResponse response = client.execute(get);
-        String resultString = EntityUtils.toString(response.getEntity());
-        System.out.println(resultString);
-        SearchData data = loader.getJSONDate(resultString);
-        System.out.println(new Gson().toJson(data));
-        return data;
-    }
 
     @Override
     public void onClick(View v) {
@@ -125,16 +66,16 @@ public class SearchActivity extends Activity implements OnClickListener,
                 finish();
                 break;
             case R.id.btnSearch:
-                searchText = search.getText().toString();
+                //搜索内容获取并显示到listview
+                String searchText = search.getText().toString();
                 System.out.println(searchText);
                 if (searchText.equals("")) {
                     Toast.makeText(SearchActivity.this, "请输入搜索内容", Toast.LENGTH_SHORT).show();
-                }else {
-
+                } else {
                     pb.setVisibility(View.VISIBLE);
+                    link = Constants.SEARCHURL + searchText;
+                    onRefresh();
                 }
-                lv.setVisibility(View.GONE);
-                onRefresh();
 
                 break;
             case R.id.btnDelete:
@@ -147,232 +88,88 @@ public class SearchActivity extends Activity implements OnClickListener,
 
     @Override
     public void onRefresh() {
-
+        //刷新操作
         page = 1;
-        mHandler.postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
-                task = new AsyncTask<Integer, Void, SearchData>() {
-
-                    @Override
-                    protected SearchData doInBackground(Integer... params) {
-                        SearchData data = null;
-                        try {
-                            data = getResource(searchText, params[0]);
-                        } catch (IOException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        }
-
-                        return data;
-                    }
-                };
-                task.execute(1);
-                try {
-                    data = task.get();
-                    if (data == null) {
-                        Toast.makeText(SearchActivity.this, "查询无结果",
-                                Toast.LENGTH_SHORT).show();
-                        pb.setVisibility(View.GONE);
-                    }
-                } catch (InterruptedException | ExecutionException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-                if (!searchText.equals("") && data != null) {
-                    newsList = new ArrayList<>();
-                    newsList.clear();
-                    newsList = data.getData().getList();
-                    ListImageURL = new ArrayList<>();
-                    ListImageURL.clear();
-                    for (int i = 0; i < data.getData().getList().size(); i++) {
-                        ListImageURL.add(data.getData().getList().get(i)
-                                .getImage());
-                    }
-
-                    listTitles = new ArrayList<>();
-                    listTitles.clear();
-                    for (int i = 0; i < data.getData().getList().size(); i++) {
-                        listTitles.add(data.getData().getList().get(i)
-                                .getTitle());
-                    }
-                    adapter = new XListViewAdapter(SearchActivity.this,
-                            listTitles);
-                    lv.setAdapter(adapter);
-
-                    adapter.notifyDataSetChanged();
-                    lv.setVisibility(View.VISIBLE);
+        if (NetworkRequest.isNetworkConnected(this)) {
+            NetworkRequest.get(link + "&page=" + page, new TextHttpResponseHandler() {
+                @Override
+                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                    Toast.makeText(SearchActivity.this, "查询无结果", Toast.LENGTH_SHORT).show();
                     pb.setVisibility(View.GONE);
-                    lv.setOnItemClickListener(new OnItemClickListener() {
-
-                        @Override
-                        public void onItemClick(AdapterView<?> parent,
-                                                View view, int position, long id) {
-                            String link;
-                            Intent intent;
-
-                            link = data.getData().getList().get(position - 1)
-                                    .getInfo_link();
-                            int content_id = data.getData().getList()
-                                    .get(position - 1).getContent_id();
-                            intent = new Intent(SearchActivity.this,
-                                    NewsDetailsActivity.class);
-                            intent.putExtra("link", link);
-                            intent.putExtra("content_id", content_id);
-                            startActivity(intent);
-                        }
-                    });
-
+                    adapter.clearData();
                 }
-                onLoad();
 
-            }
-        }, 1000);
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, final String responseString) {
+                    mHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            parseFirstJson(responseString);
+                            Log.e("----------------", "+++++++++++++++++++++++++++");
+                            lv.stopRefresh();
+                        }
+                    }, 500);
+                }
+            });
+        }
+    }
+
+    private void parseFirstJson(String response) {
+       //加载第一次获取到数据
+
+        ColumnEntity entity = null;
+        Log.e("", response);
+        if (null != response) {
+            entity = new Gson().fromJson(response, ColumnEntity.class);
+            Log.e("", new Gson().toJson(entity));
+            pageCount = entity.getData().getPagecount();
+            adapter.setData(entity, true);
+            pb.setVisibility(View.GONE);
+            lv.setVisibility(View.VISIBLE);
+        }
 
     }
 
     @Override
     public void onLoadMore() {
-
+        //加载更多操作
         page++;
-        mHandler.postDelayed(new Runnable() {
+        if (NetworkRequest.isNetworkConnected(this)) {
+            if (page <= pageCount) {
+                NetworkRequest.get(link + "&page=" + page, new TextHttpResponseHandler() {
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
 
-            @Override
-            public void run() {
-                AsyncTask<Integer, Void, SearchData> task = new AsyncTask<Integer, Void, SearchData>() {
+                    }
 
                     @Override
-                    protected SearchData doInBackground(Integer... params) {
-                        SearchData data = null;
-                        try {
-                            data = getResource(searchText, page);
-                        } catch (IOException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        }
-
-                        return data;
+                    public void onSuccess(int statusCode, Header[] headers, final String responseString) {
+                        mHandler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                parseMoreJson(responseString);
+                                lv.stopLoadMore();
+                            }
+                        }, 500);
                     }
-                };
-                task.execute();
-                try {
-                    SearchData data = task.get();
-                    newsList.addAll(data.getData().getList());
-                    for (int i = 0; i < data.getData().getList().size(); i++) {
-                        listTitles.add(data.getData().getList().get(i)
-                                .getTitle());
-                        ListImageURL.add(data.getData().getList().get(i)
-                                .getImage());
-                    }
-
-                } catch (InterruptedException | ExecutionException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-
-                adapter.notifyDataSetChanged();
-                onLoad();
-
-            }
-        }, 1000);
-
-    }
-
-    private void onLoad() {
-        lv.stopRefresh();
-        lv.stopLoadMore();
-        lv.setRefreshTime("刚刚");
-    }
-
-    public class XListViewAdapter extends BaseAdapter {
-        // �б���ݵ��m����
-        private LayoutInflater inflater;
-        private int count = 10;
-        private ArrayList<String> listTitles;
-
-        public LayoutInflater getInflater() {
-            return inflater;
-        }
-
-        public void setInflater(LayoutInflater inflater) {
-            this.inflater = inflater;
-        }
-
-        public void setCount(int count) {
-            this.count = count;
-        }
-
-        public XListViewAdapter(Context context) {
-            this.inflater = LayoutInflater.from(context);
-
-        }
-
-        public XListViewAdapter(Context context, ArrayList<String> listTitles) {
-            this.inflater = LayoutInflater.from(context);
-            this.listTitles = listTitles;
-        }
-
-        public void setCount(int countNumber, boolean isRefresh) {
-            if (!isRefresh) {
-                count = countNumber + count;
-            }
-
-        }
-
-        @Override
-        public int getCount() {
-            // TODO Auto-generated method stub
-            return listTitles.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            // TODO Auto-generated method stub
-            return null;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            // TODO Auto-generated method stub
-            return 0;
-        }
-
-        @SuppressLint("InflateParams")
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder holder;
-            if (convertView == null) {
-                convertView = inflater.inflate(R.layout.item_list, null);
-                holder = new ViewHolder();
-                holder.iv = (ImageView) convertView.findViewById(R.id.iv);
-                holder.tvTitle = (TextView) convertView
-                        .findViewById(R.id.tvTitle);
-                convertView.setTag(holder);
+                });
             } else {
-                holder = (ViewHolder) convertView.getTag();
+                Toast.makeText(this, "没有更多了", Toast.LENGTH_SHORT).show();
+                lv.stopLoadMore();
             }
-            imageLoader.displayImage(ListImageURL.get(position), holder.iv,
-                    options);
-
-            if (listTitles.get(position).length() > 25) {
-                char[] t = listTitles.get(position).toCharArray();
-                char[] tt = new char[25];
-                System.arraycopy(t, 0, tt, 0, 25);
-                holder.tvTitle.setText(String.valueOf(tt) + "...");
-            } else {
-
-                holder.tvTitle.setText(listTitles.get(position));
-            }
-            return convertView;
+        } else {
+            Toast.makeText(this, "请检查您的网络", Toast.LENGTH_SHORT).show();
+            lv.stopLoadMore();
         }
-
-        public class ViewHolder {
-            public ImageView iv;
-            public TextView tvTitle;
-            public TextView tvDescription;
-        }
-
     }
+
+    private void parseMoreJson(String response) {
+        //加载更多数据的方法
+        if (null != response) {
+            ColumnEntity entity = new Gson().fromJson(response, ColumnEntity.class);
+            adapter.setData(entity, false);
+        }
+    }
+
 
 }

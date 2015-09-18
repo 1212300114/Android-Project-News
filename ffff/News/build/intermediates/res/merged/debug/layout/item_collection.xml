@@ -1,0 +1,41 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp">
+
+
+    <ImageView
+        android:id="@+id/iv"
+        android:layout_width="92dp"
+        android:layout_height="69dp"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:scaleType="fitXY" />
+
+    <TextView
+        android:text="111"
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="5dp"
+        android:layout_toRightOf="@+id/iv"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:textColor="#121212"
+        android:textSize="18sp" />
+
+
+    <TextView
+        android:layout_toRightOf="@+id/iv"
+        android:id="@+id/tvTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvTitle"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:text="time"
+        android:textColor="#999999"
+        android:textSize="12sp" />
+
+</RelativeLayout><!-- From: file:/C:/Users/123456/ffff/News/res/layout/item_collection.xml -->

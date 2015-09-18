@@ -1,4 +1,4 @@
-apply plugin: 'android'
+apply plugin: 'com.android.application'
 
 dependencies {
     compile fileTree(include: '*.jar', dir: 'libs')
@@ -7,6 +7,7 @@ dependencies {
     compile project(':SwipeMenuListView')
     compile project(':social_sdk_library_project')
     compile project(':WaterDropListView')
+    compile 'com.loopj.android:android-async-http:1.4.8'
 }
 
 android {

@@ -102,7 +102,7 @@
         </meta-data>
 
         <activity
-            android:name="com.example.demo.news.activity.SubjectDetails"
+            android:name="com.example.demo.news.activity.SubjectDetailsActivity"
             android:label="@string/title_activity_subject_details"
             android:theme="@style/MyTheme" >
         </activity>

@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent">
 
     <include
         android:id="@+id/title"
-        layout="@layout/title" >
-    </include>
+        layout="@layout/title" />
 
     <ProgressBar
         android:id="@+id/pb"
@@ -14,11 +13,11 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true" />
 
-    <com.example.demo.news.xlistviewsource.XListView
-        android:id="@+id/lvFirstPage"
+    <medusa.theone.waterdroplistview.view.WaterDropListView
+        android:id="@+id/lvLaw"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@+id/title" >
-    </com.example.demo.news.xlistviewsource.XListView>
+        android:layout_below="@+id/title"
+        android:visibility="gone" />
 
 </RelativeLayout><!-- From: file:/C:/Users/123456/ffff/News/res/layout/fragment_law.xml -->

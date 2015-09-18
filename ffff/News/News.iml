@@ -88,6 +88,7 @@
     <orderEntry type="library" exported="" name="android-support-v4" level="project" />
     <orderEntry type="library" exported="" name="SocialSDK_WeiXin_1" level="project" />
     <orderEntry type="library" exported="" name="SocialSDK_WeiXin_2" level="project" />
+    <orderEntry type="library" exported="" name="android-async-http-1.4.8" level="project" />
     <orderEntry type="library" exported="" name="universal-image-loader-1.9.3" level="project" />
     <orderEntry type="module" module-name="ViewPageIndicatorLibrary" exported="" />
     <orderEntry type="module" module-name="social_sdk_library_project" exported="" />
