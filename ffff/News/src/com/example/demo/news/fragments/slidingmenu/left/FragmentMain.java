@@ -1,7 +1,9 @@
 package com.example.demo.news.fragments.slidingmenu.left;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -13,6 +15,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.demo.news.activity.MainActivity;
@@ -49,6 +52,8 @@ public class FragmentMain extends Fragment implements OnClickListener {
     private MainActivity mainActivity;
     private FragmentViewPagerAdapter adapter;// 栏目内容viewpager的适配器
     private ColumnSelectDialogAdapter selectAdapter;
+    private ProgressBar barMain;
+    private TextView textView;
     /*
        data saving abouts
      */
@@ -90,8 +95,11 @@ public class FragmentMain extends Fragment implements OnClickListener {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, String responseString) {
                     parseData(responseString);
+                    barMain.setVisibility(View.GONE);
                 }
             });
+        } else {
+            barMain.setVisibility(View.GONE);
         }
         return root;
 
@@ -101,7 +109,7 @@ public class FragmentMain extends Fragment implements OnClickListener {
     private void parseData(String result) {
         ColumnEntity entity = new Gson().fromJson(result, ColumnEntity.class);
         selectAdapter.setData(entity.getData().getCate());
-        String storedNames[] = null;
+        String storedNames[];
         String storedColumn = sharedPreferences.getString("id", "");
         Log.e("", storedColumn + "~~~");
         //根据是否有保存的栏目选择来添加fragment数组
@@ -149,7 +157,7 @@ public class FragmentMain extends Fragment implements OnClickListener {
         add = (ImageButton) root.findViewById(R.id.btnAdd);
         add.setVisibility(View.GONE);
         add.setOnClickListener(this);
-        TextView textView = (TextView) root.findViewById(R.id.tvNo);
+        textView = (TextView) root.findViewById(R.id.tvNo);
         if (!NetworkRequest.isNetworkConnected(context)) {
             textView.setVisibility(View.VISIBLE);
         } else {
@@ -158,7 +166,9 @@ public class FragmentMain extends Fragment implements OnClickListener {
         adapter = new FragmentViewPagerAdapter(getChildFragmentManager());
         viewPager.setAdapter(adapter);
         indicator.setViewPager(viewPager);
-
+        barMain = (ProgressBar) root.findViewById(R.id.pbMain);
+        barMain.setVisibility(View.VISIBLE);
+        textView.setOnClickListener(this);
     }
 
     /*
@@ -193,10 +203,35 @@ public class FragmentMain extends Fragment implements OnClickListener {
                 }
                 columnSetChanged();
                 break;
+            case R.id.tvNo:
+                textView.setVisibility(View.GONE);
+                barMain.setVisibility(View.VISIBLE);
+                if (NetworkRequest.isNetworkConnected(context)) {
+                    NetworkRequest.get(Constants.COLUMNINDICATORURL, new TextHttpResponseHandler() {
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                            barMain.setVisibility(View.GONE);
+                            textView.setVisibility(View.VISIBLE);
+
+                        }
+
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                            parseData(responseString);
+                            barMain.setVisibility(View.GONE);
+                        }
+
+                    });
+                } else {
+                    textView.setVisibility(View.VISIBLE);
+                    barMain.setVisibility(View.GONE);
+                }
+                break;
             default:
                 break;
         }
     }
+
     //栏目选择完毕 改变view 的方法
     private void columnSetChanged() {
         ArrayList<Fragment> fragmentAlls = new ArrayList<>();
@@ -220,6 +255,7 @@ public class FragmentMain extends Fragment implements OnClickListener {
         indicator.notifyDataSetChanged();
     }
 
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     @Override
     public void onDetach() {
         super.onDetach();
@@ -236,7 +272,7 @@ public class FragmentMain extends Fragment implements OnClickListener {
 
     }
 
-        //viewpager变化侦听
+    //viewpager变化侦听
     private class MyPageChangeListener implements OnPageChangeListener {
 
         @Override

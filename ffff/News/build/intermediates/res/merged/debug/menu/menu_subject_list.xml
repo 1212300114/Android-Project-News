@@ -4,4 +4,4 @@
     <item android:id="@+id/action_settings" android:title="@string/action_settings"
         android:orderInCategory="100" android:showAsAction="never" />
 </menu>
-<!-- From: file:/C:/Users/123456/ffff/News/res/menu/menu_subject_list.xml -->
+<!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/News/res/menu/menu_subject_list.xml -->

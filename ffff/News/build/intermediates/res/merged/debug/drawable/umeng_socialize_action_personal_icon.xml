@@ -5,4 +5,4 @@
     <item android:drawable="@drawable/umeng_socialize_action_personal_selected" android:state_pressed="true" android:state_window_focused="true"/>
     <item android:drawable="@drawable/umeng_socialize_action_personal_selected" android:state_focused="true"/>
 
-</selector><!-- From: file:/C:/Users/123456/ffff/social_sdk_library_project/res/drawable/umeng_socialize_action_personal_icon.xml --><!-- From: file:/C:/Users/123456/ffff/News/build/intermediates/exploded-aar/ffff/social_sdk_library_project/unspecified/res/drawable/umeng_socialize_action_personal_icon.xml -->
+</selector><!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/social_sdk_library_project/res/drawable/umeng_socialize_action_personal_icon.xml --><!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/exploded-aar/ffff/social_sdk_library_project/unspecified/res/drawable/umeng_socialize_action_personal_icon.xml -->

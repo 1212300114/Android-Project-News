@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- From: file:/C:/Users/123456/ffff/News/build/intermediates/exploded-aar/ffff/ViewPageIndicatorLibrary/unspecified/res/values/values.xml -->
+    <!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/exploded-aar/ffff/ViewPageIndicatorLibrary/unspecified/res/values/values.xml -->
     <eat-comment/>
     <attr format="boolean" name="centered"/>
     <attr format="color" name="selectedColor"/>
@@ -11,7 +11,7 @@
     <bool name="default_line_indicator_centered">true</bool>
     <bool name="default_title_indicator_selected_bold">true</bool>
     <bool name="default_underline_indicator_fades">true</bool>
-    <!-- From: file:/C:/Users/123456/ffff/News/res/values/color.xml -->
+    <!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/News/res/values/color.xml -->
     <eat-comment/>
     <color name="bg">#FFF39200</color>
     <color name="bg_gray">#FFE3E3E7</color>
@@ -23,7 +23,7 @@
     <color name="buttom_top">#1e1e1e</color>
     <color name="click_color">#2b72d6</color>
     <color name="coffee">#622f1b</color>
-    <!-- From: file:/C:/Users/123456/ffff/News/build/intermediates/exploded-aar/ffff/social_sdk_library_project/unspecified/res/values/values.xml -->
+    <!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/exploded-aar/ffff/social_sdk_library_project/unspecified/res/values/values.xml -->
     <eat-comment/>
     <color name="com_facebook_blue">#3B5998</color>
     <color name="com_facebook_button_background_color">#415dae</color>
@@ -38,7 +38,7 @@
     <color name="com_facebook_likeboxcountview_text_color">#6a7180</color>
     <color name="com_facebook_likeview_text_color">#6a7180</color>
     <color name="com_facebook_share_button_text_color">#FFFFFF</color>
-    <!-- From: file:/C:/Users/123456/ffff/News/build/intermediates/exploded-aar/ffff/ViewPageIndicatorLibrary/unspecified/res/values/values.xml -->
+    <!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/exploded-aar/ffff/ViewPageIndicatorLibrary/unspecified/res/values/values.xml -->
     <eat-comment/>
     <color name="default_circle_indicator_fill_color">#FFFFFFFF</color>
     <color name="default_circle_indicator_page_color">#00000000</color>
@@ -49,7 +49,7 @@
     <color name="default_title_indicator_selected_color">#FFFFFFFF</color>
     <color name="default_title_indicator_text_color">#BBFFFFFF</color>
     <color name="default_underline_indicator_selected_color">#FF33B5E5</color>
-    <!-- From: file:/C:/Users/123456/ffff/News/res/values/color.xml -->
+    <!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/News/res/values/color.xml -->
     <eat-comment/>
     <color name="dialog">#cf0808</color>
     <color name="gray">#ff333333</color>
@@ -75,7 +75,7 @@
     <color name="txt_blue">#FF007CB0</color>
     <color name="txt_gray">#FF575756</color>
     <color name="txt_orange">#FFEB6100</color>
-    <!-- From: file:/C:/Users/123456/ffff/News/build/intermediates/exploded-aar/ffff/social_sdk_library_project/unspecified/res/values/values.xml -->
+    <!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/exploded-aar/ffff/social_sdk_library_project/unspecified/res/values/values.xml -->
     <eat-comment/>
     <color name="umeng_socialize_color_group">#2c3035</color>
     <color name="umeng_socialize_comments_bg">#F4F4F4</color>
@@ -90,7 +90,7 @@
     <color name="umeng_socialize_text_title">#464f61</color>
     <color name="umeng_socialize_text_ucenter">#595959</color>
     <color name="umeng_socialize_ucenter_bg">#EEEEEE</color>
-    <!-- From: file:/C:/Users/123456/ffff/News/build/intermediates/exploded-aar/ffff/ViewPageIndicatorLibrary/unspecified/res/values/values.xml -->
+    <!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/exploded-aar/ffff/ViewPageIndicatorLibrary/unspecified/res/values/values.xml -->
     <eat-comment/>
     <color name="vpi__background_holo_dark">#ff000000</color>
     <color name="vpi__background_holo_light">#fff3f3f3</color>
@@ -100,7 +100,7 @@
     <color name="vpi__bright_foreground_holo_light">@color/vpi__background_holo_dark</color>
     <color name="vpi__bright_foreground_inverse_holo_dark">@color/vpi__bright_foreground_holo_light</color>
     <color name="vpi__bright_foreground_inverse_holo_light">@color/vpi__bright_foreground_holo_dark</color>
-    <!-- From: file:/C:/Users/123456/ffff/News/res/values/color.xml -->
+    <!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/News/res/values/color.xml -->
     <eat-comment/>
     <color name="wangyibg">#f0f0f0</color>
     <color name="wangyibg2">#E0E0E0</color>
@@ -119,11 +119,11 @@
     <declare-styleable name="com_facebook_like_view"><attr format="color" name="com_facebook_foreground_color"/><attr format="string" name="com_facebook_object_id"/><attr name="com_facebook_object_type"><enum name="unknown" value="0"/><enum name="open_graph" value="1"/><enum name="page" value="2"/></attr><attr name="com_facebook_style"><enum name="standard" value="0"/><enum name="button" value="1"/><enum name="box_count" value="2"/></attr><attr name="com_facebook_auxiliary_view_position"><enum name="bottom" value="0"/><enum name="inline" value="1"/><enum name="top" value="2"/></attr><attr name="com_facebook_horizontal_alignment"><enum name="center" value="0"/><enum name="left" value="1"/><enum name="right" value="2"/></attr></declare-styleable>
     <declare-styleable name="com_facebook_login_view"><attr format="boolean" name="com_facebook_confirm_logout"/><attr format="string" name="com_facebook_login_text"/><attr format="string" name="com_facebook_logout_text"/><attr name="com_facebook_tooltip_mode"><enum name="automatic" value="0"/><enum name="display_always" value="1"/><enum name="never_display" value="2"/></attr></declare-styleable>
     <declare-styleable name="com_facebook_profile_picture_view"><attr name="com_facebook_preset_size"><enum name="small" value="-2"/><enum name="normal" value="-3"/><enum name="large" value="-4"/></attr><attr format="boolean" name="com_facebook_is_cropped"/></declare-styleable>
-    <!-- From: file:/C:/Users/123456/ffff/News/res/values/dimens.xml -->
+    <!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/News/res/values/dimens.xml -->
     <eat-comment/>
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-    <!-- From: file:/C:/Users/123456/ffff/News/build/intermediates/exploded-aar/ffff/social_sdk_library_project/unspecified/res/values/values.xml -->
+    <!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/exploded-aar/ffff/social_sdk_library_project/unspecified/res/values/values.xml -->
     <eat-comment/>
     <dimen name="alphabet_size">12dip</dimen>
     <dimen name="com_facebook_likeboxcountview_border_radius">3dp</dimen>
@@ -145,7 +145,7 @@
     <dimen name="com_facebook_share_button_padding_top">12dp</dimen>
     <dimen name="com_facebook_share_button_text_size">16.0sp</dimen>
     <dimen name="com_facebook_tooltip_horizontal_padding">10dp</dimen>
-    <!-- From: file:/C:/Users/123456/ffff/News/build/intermediates/exploded-aar/ffff/ViewPageIndicatorLibrary/unspecified/res/values/values.xml -->
+    <!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/exploded-aar/ffff/ViewPageIndicatorLibrary/unspecified/res/values/values.xml -->
     <eat-comment/>
     <dimen name="default_circle_indicator_radius">3dp</dimen>
     <dimen name="default_circle_indicator_stroke_width">1dp</dimen>
@@ -160,24 +160,24 @@
     <dimen name="default_title_indicator_text_size">15dp</dimen>
     <dimen name="default_title_indicator_title_padding">5dp</dimen>
     <dimen name="default_title_indicator_top_padding">7dp</dimen>
-    <!-- From: file:/C:/Users/123456/ffff/News/res/values/dimens.xml -->
+    <!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/News/res/values/dimens.xml -->
     <eat-comment/>
     <dimen name="sliding_menu_offset">70dip</dimen>
-    <!-- From: file:/C:/Users/123456/ffff/News/build/intermediates/exploded-aar/ffff/social_sdk_library_project/unspecified/res/values/values.xml -->
+    <!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/exploded-aar/ffff/social_sdk_library_project/unspecified/res/values/values.xml -->
     <eat-comment/>
     <dimen name="umeng_socialize_pad_window_height">350dip</dimen>
     <dimen name="umeng_socialize_pad_window_width">580dip</dimen>
-    <!-- From: file:/C:/Users/123456/ffff/News/build/intermediates/exploded-aar/ffff/SlidingMenu/unspecified/res/values/values.xml -->
+    <!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/exploded-aar/ffff/SlidingMenu/unspecified/res/values/values.xml -->
     <eat-comment/>
     <item name="selected_view" type="id"/>
-    <!-- From: file:/C:/Users/123456/ffff/News/build/intermediates/exploded-aar/ffff/ViewPageIndicatorLibrary/unspecified/res/values/values.xml -->
+    <!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/exploded-aar/ffff/ViewPageIndicatorLibrary/unspecified/res/values/values.xml -->
     <eat-comment/>
     <integer name="default_circle_indicator_orientation">0</integer>
     <integer name="default_title_indicator_footer_indicator_style">2</integer>
     <integer name="default_title_indicator_line_position">0</integer>
     <integer name="default_underline_indicator_fade_delay">300</integer>
     <integer name="default_underline_indicator_fade_length">400</integer>
-    <!-- From: file:/C:/Users/123456/ffff/News/res/values/strings.xml -->
+    <!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/News/res/values/strings.xml -->
     <eat-comment/>
     <string name="Loading">正在加载中。。。</string>
     <string name="NoData">暂无数据</string>
@@ -190,7 +190,7 @@
     <string name="check_update">检查更新</string>
     <string name="chose">频道选择</string>
     <string name="clear_cache">清理缓存</string>
-    <!-- From: file:/C:/Users/123456/ffff/News/build/intermediates/exploded-aar/ffff/social_sdk_library_project/unspecified/res/values/values.xml -->
+    <!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/exploded-aar/ffff/social_sdk_library_project/unspecified/res/values/values.xml -->
     <eat-comment/>
     <string name="com_facebook_dialogloginactivity_ok_button">OK</string>
     <string name="com_facebook_image_download_unknown_error">Unexpected error while downloading an image.</string>
@@ -212,19 +212,19 @@
     <string name="com_facebook_send_button_text">Send</string>
     <string name="com_facebook_share_button_text">Share</string>
     <string name="com_facebook_tooltip_default">New! You\'re in control - choose what info you want to share with apps.</string>
-    <!-- From: file:/C:/Users/123456/ffff/News/res/values/strings.xml -->
+    <!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/News/res/values/strings.xml -->
     <eat-comment/>
     <string name="current_version">当前版本</string>
     <string name="current_version_state">已经是最新版本</string>
     <string name="expose">曝光</string>
     <string name="firstPage">首页</string>
-    <!-- From: file:/C:/Users/123456/ffff/News/build/intermediates/exploded-aar/ffff/social_sdk_library_project/unspecified/res/values/values.xml -->
+    <!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/exploded-aar/ffff/social_sdk_library_project/unspecified/res/values/values.xml -->
     <eat-comment/>
     <string name="flickr_content">Flickr只支持图片分享</string>
     <string name="flickr_no_client">未安装Flickr客户端</string>
     <string name="flickr_no_content">请设置分享内容</string>
     <string name="flickr_showword">Flickr</string>
-    <!-- From: file:/C:/Users/123456/ffff/News/res/values/strings.xml -->
+    <!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/News/res/values/strings.xml -->
     <eat-comment/>
     <string name="fragment1">Fragment1</string>
     <string name="fragment2">Fragment2</string>
@@ -233,16 +233,16 @@
     <string name="hello_world">Hello world!</string>
     <string name="imageNews">图闻</string>
     <string name="importantNews">要闻</string>
-    <!-- From: file:/C:/Users/123456/ffff/News/build/intermediates/exploded-aar/ffff/social_sdk_library_project/unspecified/res/values/values.xml -->
+    <!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/exploded-aar/ffff/social_sdk_library_project/unspecified/res/values/values.xml -->
     <eat-comment/>
     <string name="kakao_content">Kakao Talk只支持图片、文本分享</string>
     <string name="kakao_no_client">未安装Kakao Talk客户端</string>
     <string name="kakao_no_content">请设置分享内容</string>
     <string name="kakao_showword">Kakao Talk</string>
-    <!-- From: file:/C:/Users/123456/ffff/News/res/values/strings.xml -->
+    <!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/News/res/values/strings.xml -->
     <eat-comment/>
     <string name="law">党纪法规</string>
-    <!-- From: file:/C:/Users/123456/ffff/News/build/intermediates/exploded-aar/ffff/social_sdk_library_project/unspecified/res/values/values.xml -->
+    <!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/exploded-aar/ffff/social_sdk_library_project/unspecified/res/values/values.xml -->
     <eat-comment/>
     <string name="line_content">Line只支持文本，图片</string>
     <string name="line_no_client">未安装Line客户端</string>
@@ -251,22 +251,22 @@
     <string name="linkedin_content">linked只支持纯文本分享</string>
     <string name="linkedin_no_client">未安装LinkedIn客户端</string>
     <string name="linkedin_showword">LinkedIn</string>
-    <!-- From: file:/C:/Users/123456/ffff/News/res/values/strings.xml -->
+    <!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/News/res/values/strings.xml -->
     <eat-comment/>
     <string name="listfooterview_normal">查看更多</string>
     <string name="listfooterview_ready">松开载入更多</string>
     <string name="message_open">信息公开</string>
-    <!-- From: file:/C:/Users/123456/ffff/News/build/intermediates/exploded-aar/ffff/social_sdk_library_project/unspecified/res/values/values.xml -->
+    <!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/exploded-aar/ffff/social_sdk_library_project/unspecified/res/values/values.xml -->
     <eat-comment/>
     <string name="messenger_send_button_text">Send</string>
-    <!-- From: file:/C:/Users/123456/ffff/News/res/values/strings.xml -->
+    <!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/News/res/values/strings.xml -->
     <eat-comment/>
     <string name="no_collections">没有收藏内容</string>
     <string name="no_network">请检查您的网络状态后重试</string>
-    <!-- From: file:/C:/Users/123456/ffff/News/build/intermediates/exploded-aar/ffff/WaterDropListView/unspecified/res/values/values.xml -->
+    <!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/exploded-aar/ffff/WaterDropListView/unspecified/res/values/values.xml -->
     <eat-comment/>
     <string name="onLoad">正在加载中</string>
-    <!-- From: file:/C:/Users/123456/ffff/News/build/intermediates/exploded-aar/ffff/social_sdk_library_project/unspecified/res/values/values.xml -->
+    <!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/exploded-aar/ffff/social_sdk_library_project/unspecified/res/values/values.xml -->
     <eat-comment/>
     <string name="pocket_content">pocket只支持网页链接分享</string>
     <string name="pocket_no_client">未安装pocket客户端</string>
@@ -275,7 +275,7 @@
     <string name="pull_to_refresh_refreshing_label" translatable="false">加载中…</string>
     <string name="pull_to_refresh_release_label" translatable="false">松开可以刷新</string>
     <string name="pull_to_refresh_tap_label" translatable="false">点击刷新</string>
-    <!-- From: file:/C:/Users/123456/ffff/News/res/values/strings.xml -->
+    <!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/News/res/values/strings.xml -->
     <eat-comment/>
     <string name="reflect">意见反馈</string>
     <string name="search_button">搜索</string>
@@ -295,7 +295,7 @@
     <string name="title_activity_splash">Splash</string>
     <string name="title_activity_subject_details">SubjectDetails</string>
     <string name="title_activity_subject_list">SubjectListActivity</string>
-    <!-- From: file:/C:/Users/123456/ffff/News/build/intermediates/exploded-aar/ffff/social_sdk_library_project/unspecified/res/values/values.xml -->
+    <!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/exploded-aar/ffff/social_sdk_library_project/unspecified/res/values/values.xml -->
     <eat-comment/>
     <string name="tumblr_content">Tumblr只支持文本，图片，图文分享</string>
     <string name="tumblr_no_client">未安装Tumblr客户端</string>
@@ -361,18 +361,18 @@
     <string name="umeng_socialize_tip_loginfailed" translatable="false">登录失败…</string>
     <string name="umeng_socialize_ucenter_login_title_guide" translatable="false">游客登录</string>
     <string name="umeng_socialize_ucenter_login_title_platform" translatable="false">登录帐号</string>
-    <!-- From: file:/C:/Users/123456/ffff/News/res/values/strings.xml -->
+    <!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/News/res/values/strings.xml -->
     <eat-comment/>
     <string name="update">版本更新</string>
     <string name="update_question">您是否要更新为最新版本？</string>
     <string name="watch">巡视</string>
-    <!-- From: file:/C:/Users/123456/ffff/News/build/intermediates/exploded-aar/ffff/social_sdk_library_project/unspecified/res/values/values.xml -->
+    <!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/exploded-aar/ffff/social_sdk_library_project/unspecified/res/values/values.xml -->
     <eat-comment/>
     <string name="whatsapp_content">有道云笔记只支持文本，图片</string>
     <string name="whatsapp_no_client">未安装有WhatsApp客户端</string>
     <string name="whatsapp_no_content">请设置分享内容</string>
     <string name="whatsapp_showword">WhatsApp</string>
-    <!-- From: file:/C:/Users/123456/ffff/News/res/values/strings.xml -->
+    <!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/News/res/values/strings.xml -->
     <eat-comment/>
     <string name="wind">党风</string>
     <string name="xlistview_footer_hint_normal">查看更多</string>
@@ -381,13 +381,13 @@
     <string name="xlistview_header_hint_normal">下拉刷新</string>
     <string name="xlistview_header_hint_ready">松开刷新数据</string>
     <string name="xlistview_header_last_time">上次更新时间：</string>
-    <!-- From: file:/C:/Users/123456/ffff/News/build/intermediates/exploded-aar/ffff/social_sdk_library_project/unspecified/res/values/values.xml -->
+    <!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/exploded-aar/ffff/social_sdk_library_project/unspecified/res/values/values.xml -->
     <eat-comment/>
     <string name="ynote_content">有道云笔记只支持文本，图片，图文分享</string>
     <string name="ynote_no_client">未安装有道云笔记客户端</string>
     <string name="ynote_no_content">请设置分享内容</string>
     <string name="ynote_showword">有道云笔记</string>
-    <!-- From: file:/C:/Users/123456/ffff/News/res/values/styles.xml -->
+    <!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/News/res/values/styles.xml -->
     <eat-comment/>
     <style name="AppBaseTheme" parent="android:Theme.Light">
         <!--
@@ -426,7 +426,7 @@
         <item name="fadeLength">1000</item>
         <item name="fadeDelay">1000</item>
     </style>
-    <!-- From: file:/C:/Users/123456/ffff/News/build/intermediates/exploded-aar/ffff/social_sdk_library_project/unspecified/res/values/values.xml -->
+    <!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/exploded-aar/ffff/social_sdk_library_project/unspecified/res/values/values.xml -->
     <eat-comment/>
     <style name="Dialog_Fullscreen">
 
@@ -499,7 +499,7 @@
     <style name="MessengerButtonText.White.Small">
     <item name="android:drawableLeft">@drawable/messenger_bubble_small_blue</item>
   </style>
-    <!-- From: file:/C:/Users/123456/ffff/News/res/values/styles.xml -->
+    <!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/News/res/values/styles.xml -->
     <eat-comment/>
     <style name="MyDialog" parent="@android:Theme.Dialog">
         <item name="android:windowFrame">@null</item>
@@ -539,13 +539,13 @@
         <item name="android:fadingEdgeLength">8dp</item>
         <item name="android:maxLines">1</item>
     </style>
-    <!-- From: file:/C:/Users/123456/ffff/News/build/intermediates/exploded-aar/ffff/social_sdk_library_project/unspecified/res/values/values.xml -->
+    <!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/exploded-aar/ffff/social_sdk_library_project/unspecified/res/values/values.xml -->
     <eat-comment/>
     <style name="Notitle_Fullscreen">
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowNoTitle">true</item>
     </style>
-    <!-- From: file:/C:/Users/123456/ffff/News/build/intermediates/exploded-aar/ffff/ViewPageIndicatorLibrary/unspecified/res/values/values.xml -->
+    <!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/exploded-aar/ffff/ViewPageIndicatorLibrary/unspecified/res/values/values.xml -->
     <eat-comment/>
     <style name="TextAppearance.TabPageIndicator" parent="Widget">
         <item name="android:textStyle">bold</item>
@@ -555,14 +555,14 @@
         <item name="vpiIconPageIndicatorStyle">@style/Widget.IconPageIndicator</item>
         <item name="vpiTabPageIndicatorStyle">@style/Widget.TabPageIndicator</item>
     </style>
-    <!-- From: file:/C:/Users/123456/ffff/News/build/intermediates/exploded-aar/ffff/social_sdk_library_project/unspecified/res/values/values.xml -->
+    <!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/exploded-aar/ffff/social_sdk_library_project/unspecified/res/values/values.xml -->
     <eat-comment/>
     <style name="Theme.UMDefault" parent="android:style/Theme.NoTitleBar"/>
     <style name="Theme.UMDialog" parent="android:style/Theme.Dialog">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
-    <!-- From: file:/C:/Users/123456/ffff/News/build/intermediates/exploded-aar/ffff/ViewPageIndicatorLibrary/unspecified/res/values/values.xml -->
+    <!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/exploded-aar/ffff/ViewPageIndicatorLibrary/unspecified/res/values/values.xml -->
     <eat-comment/>
     <style name="Widget">
     </style>
@@ -581,7 +581,7 @@
         <item name="android:textSize">12sp</item>
         <item name="android:maxLines">1</item>
     </style>
-    <!-- From: file:/C:/Users/123456/ffff/News/build/intermediates/exploded-aar/ffff/social_sdk_library_project/unspecified/res/values/values.xml -->
+    <!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/exploded-aar/ffff/social_sdk_library_project/unspecified/res/values/values.xml -->
     <eat-comment/>
     <style name="com_facebook_button" parent="@android:style/Widget.Button">
         <item name="android:background">@drawable/com_facebook_button_background</item>

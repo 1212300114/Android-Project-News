@@ -24,14 +24,14 @@ public final class R {
 		public static final int refresh_arrow = 0x7f02006f;
 	}
 	public static final class id {
-		public static final int action_settings = 0x7f0b013c;
-		public static final int progresslayout = 0x7f0b012d;
-		public static final int txt_progresstext = 0x7f0b012f;
-		public static final int waterdroplist_header_progressbar = 0x7f0b0132;
-		public static final int waterdroplist_waterdrop = 0x7f0b0131;
-		public static final int waterdroplistview_footer_content = 0x7f0b012c;
-		public static final int waterdroplistview_footer_hint_textview = 0x7f0b0130;
-		public static final int waterdroplistview_footer_progressbar = 0x7f0b012e;
+		public static final int action_settings = 0x7f0b013d;
+		public static final int progresslayout = 0x7f0b012e;
+		public static final int txt_progresstext = 0x7f0b0130;
+		public static final int waterdroplist_header_progressbar = 0x7f0b0133;
+		public static final int waterdroplist_waterdrop = 0x7f0b0132;
+		public static final int waterdroplistview_footer_content = 0x7f0b012d;
+		public static final int waterdroplistview_footer_hint_textview = 0x7f0b0131;
+		public static final int waterdroplistview_footer_progressbar = 0x7f0b012f;
 	}
 	public static final class layout {
 		public static final int activity_main = 0x7f040001;

@@ -78,4 +78,4 @@
         android:visibility="invisible"
         android:src="@drawable/umeng_socialize_location_ic"/>
     
-</RelativeLayout><!-- From: file:/C:/Users/123456/ffff/social_sdk_library_project/res/layout/umeng_socialize_comment_item.xml --><!-- From: file:/C:/Users/123456/ffff/News/build/intermediates/exploded-aar/ffff/social_sdk_library_project/unspecified/res/layout/umeng_socialize_comment_item.xml -->
+</RelativeLayout><!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/social_sdk_library_project/res/layout/umeng_socialize_comment_item.xml --><!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/exploded-aar/ffff/social_sdk_library_project/unspecified/res/layout/umeng_socialize_comment_item.xml -->

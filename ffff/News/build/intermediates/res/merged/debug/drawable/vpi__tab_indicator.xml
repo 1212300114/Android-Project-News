@@ -32,4 +32,4 @@
     <item android:state_focused="true" android:state_selected="false" android:state_pressed="true" android:drawable="@drawable/vpi__tab_unselected_pressed_holo" />
     <item android:state_focused="true" android:state_selected="true"  android:state_pressed="true" android:drawable="@drawable/vpi__tab_selected_pressed_holo" />
 </selector>
-<!-- From: file:/C:/Users/123456/ffff/ViewPageIndicatorLibrary/res/drawable/vpi__tab_indicator.xml --><!-- From: file:/C:/Users/123456/ffff/News/build/intermediates/exploded-aar/ffff/ViewPageIndicatorLibrary/unspecified/res/drawable/vpi__tab_indicator.xml -->
+<!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/ViewPageIndicatorLibrary/res/drawable/vpi__tab_indicator.xml --><!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/exploded-aar/ffff/ViewPageIndicatorLibrary/unspecified/res/drawable/vpi__tab_indicator.xml -->

@@ -4,4 +4,4 @@
     <item android:drawable="@drawable/umeng_socialize_oauth_check_off" android:state_checked="false"/>
     <item android:drawable="@drawable/umeng_socialize_oauth_check_on" android:state_checked="true"/>
 
-</selector><!-- From: file:/C:/Users/123456/ffff/social_sdk_library_project/res/drawable/umeng_socialize_oauth_check.xml -->
+</selector><!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/social_sdk_library_project/res/drawable/umeng_socialize_oauth_check.xml -->

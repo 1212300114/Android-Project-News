@@ -2,11 +2,179 @@
 <items version="2" >
 
     <item
-        jar="C:\Users\123456\.gradle\caches\modules-2\files-2.1\com.loopj.android\android-async-http\1.4.8\77bbfe240e437ecb396d982afa0d3bd4f9090ba7\android-async-http-1.4.8.jar"
+        jar="/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/exploded-aar/ffff/social_sdk_library_project/unspecified/jars/libs/SocialSDK_WeiXin_2.jar"
         jumboMode="false"
-        revision="23.0.0"
+        revision="23.0.1"
+        sha1="4aa8d4cde1e2201e5360daaae4bd9fdbf4194d2a">
+        <dex dex="/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/pre-dexed/debug/SocialSDK_WeiXin_2-f7c18efa66b0e98323c591deb3ec8e4d1e2f3607.jar" />
+    </item>
+    <item
+        jar="/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/exploded-aar/ffff/social_sdk_library_project/unspecified/jars/libs/SocialSDK_QQZone_1.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="c184c69f43b1fe46390f7123717c65bd844bccb6">
+        <dex dex="/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/pre-dexed/debug/SocialSDK_QQZone_1-256c6fa4b6015ddb7b3b9ca22d06bd0b99d68620.jar" />
+    </item>
+    <item
+        jar="/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/exploded-aar/ffff/social_sdk_library_project/unspecified/jars/libs/SocialSDK_sms.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="4f882b1ea613cb16bab42987864d59b9ce1232c8">
+        <dex dex="/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/pre-dexed/debug/SocialSDK_sms-488bae175e5f934e6c1fb73a63a89d779a4e443b.jar" />
+    </item>
+    <item
+        jar="/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/exploded-aar/ffff/social_sdk_library_project/unspecified/jars/libs/SocialSDK_QQZone_2.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="4a69b33758dcba3ef519cbd4b6c8af5f41603c4f">
+        <dex dex="/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/pre-dexed/debug/SocialSDK_QQZone_2-83063f19df90112b368e753606d5604ed0a77323.jar" />
+    </item>
+    <item
+        jar="/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/exploded-aar/ffff/social_sdk_library_project/unspecified/jars/libs/SocialSDK_tencentWB_2.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="6f744074067eb201171c9c8ff1ca45ed821a76a8">
+        <dex dex="/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/pre-dexed/debug/SocialSDK_tencentWB_2-f86e51607d08c61d385d0d9dcf93711f1924690d.jar" />
+    </item>
+    <item
+        jar="/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/exploded-aar/ffff/social_sdk_library_project/unspecified/jars/libs/SocialSDK_email.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="c454b3ad270b66a6ca749aa1e0370ff54d16b44e">
+        <dex dex="/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/pre-dexed/debug/SocialSDK_email-3d80e3c5b20f7e65803e133f61fee524d897e78b.jar" />
+    </item>
+    <item
+        jar="/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/exploded-aar/ffff/social_sdk_library_project/unspecified/jars/libs/umeng_social_sdk.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="03e186fabdab66983e2b2aa42a2b2de7cb37dc4a">
+        <dex dex="/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/pre-dexed/debug/umeng_social_sdk-d5f44966447f165654670a5b65990f70c02cb2ab.jar" />
+    </item>
+    <item
+        jar="/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/exploded-aar/ffff/social_sdk_library_project/unspecified/jars/libs/SocialSDK_tencentWB_1.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="328c5351cae13f2ab29450d22b6c02d0ac88a855">
+        <dex dex="/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/pre-dexed/debug/SocialSDK_tencentWB_1-61d0b15fcb477ad9f29d9ed946a16f31ed44915c.jar" />
+    </item>
+    <item
+        jar="/Users/jijunjie/StudioProjectNews/ffff/News/libs/gson-2.2.4.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="973e832af433b44c3ed11c426f2f390b29f3f3f8">
+        <dex dex="/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/pre-dexed/debug/gson-2.2.4-41e6e2b933385c81888727847fbddd0a7406bbec.jar" />
+    </item>
+    <item
+        jar="/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/exploded-aar/ffff/social_sdk_library_project/unspecified/jars/libs/bolts-android-1.1.4.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="129874135e6081269ace2312092031558865de12">
+        <dex dex="/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/pre-dexed/debug/bolts-android-1.1.4-10eb5e472b5535c03f5a2b9e3125778de4ef3fa1.jar" />
+    </item>
+    <item
+        jar="/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/exploded-aar/ffff/social_sdk_library_project/unspecified/jars/libs/android-support-v4.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="cb6883d96005bc85b3e868f204507ea5b4fa9bbf">
+        <dex dex="/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/pre-dexed/debug/android-support-v4-ca6da1f9fc051083978d674ed1480036859569bb.jar" />
+    </item>
+    <item
+        jar="/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/exploded-aar/ffff/social_sdk_library_project/unspecified/jars/libs/SocialSDK_tencentWB_3.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="8180c00c6056e1a8e10159f7bf50eac1f4a85449">
+        <dex dex="/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/pre-dexed/debug/SocialSDK_tencentWB_3-13835df484f4fc7094002ddfe6a2f61d7567625a.jar" />
+    </item>
+    <item
+        jar="/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/exploded-aar/ffff/social_sdk_library_project/unspecified/jars/libs/SocialSDK_WeiXin_1.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="47f4993168154fa73377d7470b9f6887d48a8023">
+        <dex dex="/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/pre-dexed/debug/SocialSDK_WeiXin_1-688ddad175114ff81e8279ef690162a4e88b88be.jar" />
+    </item>
+    <item
+        jar="/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/exploded-aar/ffff/social_sdk_library_project/unspecified/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="082ea97dcc39d9ce2f036857dbd828571ef6306a">
+        <dex dex="/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/pre-dexed/debug/classes-97075387d91c5403c59352fe2b79f3c99985c9c6.jar" />
+    </item>
+    <item
+        jar="/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/exploded-aar/ffff/ViewPageIndicatorLibrary/unspecified/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="1c9528688a670c0209d461b50072435c1cf5bb26">
+        <dex dex="/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/pre-dexed/debug/classes-b9fce94f8ff4065e934969ab333662e73f87bbae.jar" />
+    </item>
+    <item
+        jar="/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/exploded-aar/ffff/social_sdk_library_project/unspecified/jars/libs/SocialSDK_actionbarview.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="a66c96619cf1e196c1f436f934cda51f9f35f530">
+        <dex dex="/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/pre-dexed/debug/SocialSDK_actionbarview-3c054e5fa5bb103052138754e7491e4e927abcb0.jar" />
+    </item>
+    <item
+        jar="/Users/jijunjie/.gradle/caches/modules-2/files-2.1/com.loopj.android/android-async-http/1.4.8/77bbfe240e437ecb396d982afa0d3bd4f9090ba7/android-async-http-1.4.8.jar"
+        jumboMode="false"
+        revision="23.0.1"
         sha1="77bbfe240e437ecb396d982afa0d3bd4f9090ba7">
-        <dex dex="C:\Users\123456\ffff\News\build\intermediates\pre-dexed\debug\android-async-http-1.4.8-085ab3ab3948d2462c36aa1a595ad1db32cb92ee.jar" />
+        <dex dex="/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/pre-dexed/debug/android-async-http-1.4.8-d53dc5ff8d55639cf9fefa3cd5f4776652e594ac.jar" />
+    </item>
+    <item
+        jar="/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/exploded-aar/ffff/social_sdk_library_project/unspecified/jars/libs/httpmime-4.1.3.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="e70d34d98f7f7f3b2b92105b9f2fe2a7a7184461">
+        <dex dex="/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/pre-dexed/debug/httpmime-4.1.3-c367ec500db89543ed7323b5fa8dffc4c97e24cc.jar" />
+    </item>
+    <item
+        jar="/Users/jijunjie/StudioProjectNews/ffff/News/libs/universal-image-loader-1.9.3.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="a85588bec3e2c4584d593d3f15df1677321bca72">
+        <dex dex="/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/pre-dexed/debug/universal-image-loader-1.9.3-e931fe86112ac4240caba376c4becb0d6d69f7ed.jar" />
+    </item>
+    <item
+        jar="/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/exploded-aar/ffff/social_sdk_library_project/unspecified/jars/libs/SocialSDK_QQZone_3.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="8962f50f03ab83787c2c3035d0c79fe79cb0f67d">
+        <dex dex="/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/pre-dexed/debug/SocialSDK_QQZone_3-5eeed945e9c9d551dd88eb0b7f2e93662f2ce66c.jar" />
+    </item>
+    <item
+        jar="/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/exploded-aar/ffff/SlidingMenu/unspecified/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="d5ff970cc053bd59adb4903e0bda100ee9380b48">
+        <dex dex="/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/pre-dexed/debug/classes-d59de23cb73ba8b2f790912780f025111cc5de8f.jar" />
+    </item>
+    <item
+        jar="/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/exploded-aar/ffff/SwipeMenuListView/unspecified/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="8ae1fd2501692b2c89ed654a414bca076bf3a6b0">
+        <dex dex="/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/pre-dexed/debug/classes-e409a715cd22ee79f503bfa7e1a1c582912dc298.jar" />
+    </item>
+    <item
+        jar="/Users/jijunjie/StudioProjectNews/ffff/News/libs/Volley.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="77faa9ffd189160d1e22c58fdf5eed0a9a08b816">
+        <dex dex="/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/pre-dexed/debug/Volley-e34da47d584778a5e879fe59e465c707e716f53e.jar" />
+    </item>
+    <item
+        jar="/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/exploded-aar/ffff/WaterDropListView/unspecified/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="5daa422df135309913e20694abdc2503ff55c42f">
+        <dex dex="/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/pre-dexed/debug/classes-00fb4dac45d94050ececdc6df88cb90ae5b6f42f.jar" />
+    </item>
+    <item
+        jar="/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/exploded-aar/ffff/social_sdk_library_project/unspecified/jars/libs/SocialSDK_Sina.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="f11202cb71112f923a80c75d42e029fc53257e9c">
+        <dex dex="/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/pre-dexed/debug/SocialSDK_Sina-28eb3c146c27525296cd188bbbfb64b324579bbc.jar" />
     </item>
 
 </items>

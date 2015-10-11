@@ -125,7 +125,7 @@ public class FragmentSettingsMain extends Fragment implements OnClickListener {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        String cacheText = ClearCache.getFormatSize(imageCacheSize + packageCacheSize);
+        String cacheText = ClearCache.getFormatSize(imageCacheSize);
         if (null != cacheText) {
             tvCache.setText(cacheText);
         }

@@ -85,4 +85,4 @@
 	<TextView 
 	    style="@style/umeng_socialize_divider"
 	    android:layout_alignParentBottom="true"/>
-</RelativeLayout><!-- From: file:/C:/Users/123456/ffff/social_sdk_library_project/res/layout/umeng_socialize_titile_bar_comment.xml --><!-- From: file:/C:/Users/123456/ffff/News/build/intermediates/exploded-aar/ffff/social_sdk_library_project/unspecified/res/layout/umeng_socialize_titile_bar_comment.xml -->
+</RelativeLayout><!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/social_sdk_library_project/res/layout/umeng_socialize_titile_bar_comment.xml --><!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/exploded-aar/ffff/social_sdk_library_project/unspecified/res/layout/umeng_socialize_titile_bar_comment.xml -->

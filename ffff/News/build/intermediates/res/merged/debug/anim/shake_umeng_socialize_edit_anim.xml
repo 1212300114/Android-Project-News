@@ -4,4 +4,4 @@
     android:fromXDelta="0"
     android:interpolator="@anim/shake_umeng_socialize_cycle_5"
     android:toXDelta="10" />
-<!-- From: file:/C:/Users/123456/ffff/social_sdk_library_project/res/anim/shake_umeng_socialize_edit_anim.xml --><!-- From: file:/C:/Users/123456/ffff/News/build/intermediates/exploded-aar/ffff/social_sdk_library_project/unspecified/res/anim/shake_umeng_socialize_edit_anim.xml -->
+<!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/social_sdk_library_project/res/anim/shake_umeng_socialize_edit_anim.xml --><!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/exploded-aar/ffff/social_sdk_library_project/unspecified/res/anim/shake_umeng_socialize_edit_anim.xml -->

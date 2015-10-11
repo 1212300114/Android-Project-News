@@ -5,4 +5,4 @@
     <item android:id="@+id/action_settings" android:title="@string/action_settings"
         android:orderInCategory="100"  />
 </menu>
-<!-- From: file:/C:/Users/123456/ffff/WaterDropListView/src/main/res/menu/menu_second.xml --><!-- From: file:/C:/Users/123456/ffff/News/build/intermediates/exploded-aar/ffff/WaterDropListView/unspecified/res/menu/menu_second.xml -->
+<!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/WaterDropListView/src/main/res/menu/menu_second.xml --><!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/exploded-aar/ffff/WaterDropListView/unspecified/res/menu/menu_second.xml -->

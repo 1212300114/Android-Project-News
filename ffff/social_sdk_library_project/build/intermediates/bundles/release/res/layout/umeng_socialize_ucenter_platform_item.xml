@@ -41,4 +41,4 @@
          style="@style/umeng_socialize_divider"
         android:layout_below="@id/umeng_socialize_msg"/>
 
-</RelativeLayout><!-- From: file:/C:/Users/123456/ffff/social_sdk_library_project/res/layout/umeng_socialize_ucenter_platform_item.xml -->
+</RelativeLayout><!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/social_sdk_library_project/res/layout/umeng_socialize_ucenter_platform_item.xml -->
