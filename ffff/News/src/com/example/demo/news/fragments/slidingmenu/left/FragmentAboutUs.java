@@ -48,7 +48,7 @@ public class FragmentAboutUs extends Fragment implements OnClickListener {
         root.findViewById(R.id.btnShowRight).setOnClickListener(this);
         WebView webView = (WebView) root.findViewById(R.id.wb);
         if (NetworkRequest.isNetworkConnected(getActivity())) {
-            webView.loadUrl(Constants.ABURL);
+            webView.loadUrl(Constants.ABOUT_URL);
             webView.getSettings().setSupportZoom(true);
             webView.getSettings().setBuiltInZoomControls(true);
             webView.getSettings().setBlockNetworkImage(false);

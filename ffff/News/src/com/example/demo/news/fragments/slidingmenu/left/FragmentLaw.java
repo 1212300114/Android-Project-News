@@ -67,7 +67,7 @@ public class FragmentLaw extends Fragment implements OnClickListener, WaterDropL
 
         page = 1;
         if (NetworkRequest.isNetworkConnected(mainActivity)) {
-            NetworkRequest.get(Constants.LAWURL + "&page=" + page, new TextHttpResponseHandler() {
+            NetworkRequest.get(Constants.LAW_URL + "&page=" + page, new TextHttpResponseHandler() {
                 @Override
                 public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
 
@@ -99,7 +99,7 @@ public class FragmentLaw extends Fragment implements OnClickListener, WaterDropL
         Log.e("", page + "---------" + pageCount);
         if (page <= pageCount) {
             if (NetworkRequest.isNetworkConnected(mainActivity)) {
-                NetworkRequest.get(Constants.LAWURL + "&page=" + page, new TextHttpResponseHandler() {
+                NetworkRequest.get(Constants.LAW_URL + "&page=" + page, new TextHttpResponseHandler() {
                     @Override
                     public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
 

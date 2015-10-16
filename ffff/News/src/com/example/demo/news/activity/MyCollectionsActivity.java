@@ -33,10 +33,10 @@ import java.util.ArrayList;
 
 public class MyCollectionsActivity extends Activity implements OnClickListener {
     //收藏页
-    private SwipeMenuListView mListView;// 可横向滑动删除item的listview
-    private CollectionListAdapter adapter;//  listview的适配器
+    private SwipeMenuListView mListView;// 可横向滑动删除item的listView
+    private CollectionListAdapter adapter;//  listView的适配器
     private ArrayList<Integer> collection;//收藏的news的id的数组
-    private String urlString = Constants.CLTNURL;// 收藏接口地址
+    private String urlString = Constants.COLLECTION_URL;// 收藏接口地址
     private ArrayList<String> times = new ArrayList<>();//收藏内容时间
     private DataBaseHelper db;//数据库helper
     private TextView textView;// 显示无收藏内容时的tv
@@ -128,7 +128,7 @@ public class MyCollectionsActivity extends Activity implements OnClickListener {
 
             @Override
             public void create(SwipeMenu menu) {
-                // ����menu�����ÿ����������ֻ�����һ����ťɾ��
+                //
                 SwipeMenuItem delete = new SwipeMenuItem(
                         getApplicationContext());
                 delete.setBackground(new ColorDrawable(Color.rgb(0xff, 0x00,

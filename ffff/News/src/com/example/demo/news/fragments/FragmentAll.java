@@ -70,7 +70,7 @@ public class FragmentAll extends Fragment implements Banner.OnItemClickListener,
             }
         }
         if (link != null) {
-            link = Constants.COLUMNLISTURL + link;
+            link = Constants.COLUMN_LIST_URL + link;
         }
 
     }

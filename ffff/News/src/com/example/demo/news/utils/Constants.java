@@ -5,16 +5,16 @@ package com.example.demo.news.utils;
  */
 //各种静态常量
 public class Constants {
-    public static final String COLUMNINDICATORURL = "http://api.jjjc.yn.gov.cn/jwapp/?service=Category.index";
-    public static final String COLUMNLISTURL = "http://api.jjjc.yn.gov.cn/jwapp/?service=";
-    public static final String CONTENTURL = "http://api.jjjc.yn.gov.cn/jwapp/?service=Info.index&cid=18&id=";
-    public static final String MOURL = "http://api.jjjc.yn.gov.cn//jwapp//?service=Page.index&pid=1";
-    public static final String DYURL = "http://api.jjjc.yn.gov.cn//jwapp//?service=Dynamic.index";
-    public static final String LAWURL = "http://api.jjjc.yn.gov.cn//jwapp//?service=List.index&cid=43";
-    public static final String ABURL = "http://220.163.128.41/mpage-12.html";
-    public static final String CLTNURL = "http://api.jjjc.yn.gov.cn/jwapp/?service=Favorites.index&content_ids=";
-    public static final String SEARCHURL = "http://api.jjjc.yn.gov.cn/jwapp/?service=Search.index&title=";
-    public static final String TITLE = "栏目";
+    public static final String COLUMN_INDICATOR_URL = "http://api.jjjc.yn.gov.cn/jwapp/?service=Category.index";
+    public static final String COLUMN_LIST_URL = "http://api.jjjc.yn.gov.cn/jwapp/?service=";
+    public static final String CONTENT_URL = "http://api.jjjc.yn.gov.cn/jwapp/?service=Info.index&cid=18&id=";
+    public static final String MESSAGE_OPEN_URL = "http://api.jjjc.yn.gov.cn//jwapp//?service=Page.index&pid=1";
+    public static final String DYNAMIC_URL = "http://api.jjjc.yn.gov.cn//jwapp//?service=Dynamic.index";
+    public static final String LAW_URL = "http://api.jjjc.yn.gov.cn//jwapp//?service=List.index&cid=43";
+    public static final String ABOUT_URL = "http://220.163.128.41/mpage-12.html";
+    public static final String COLLECTION_URL = "http://api.jjjc.yn.gov.cn/jwapp/?service=Favorites.index&content_ids=";
+    public static final String SEARCH_URL = "http://api.jjjc.yn.gov.cn/jwapp/?service=Search.index&title=";
+    public static final String COLUMN_TITLE = "栏目";
     public static final String FIRST = "首页";
     public static final String IMPORTANT = "要闻";
     public static final String WIND = "党风";

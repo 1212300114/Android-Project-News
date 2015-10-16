@@ -87,7 +87,7 @@ public class FragmentMain extends Fragment implements OnClickListener {
         names = new ArrayList<>();
 
         if (NetworkRequest.isNetworkConnected(context)) {
-            NetworkRequest.get(Constants.COLUMNINDICATORURL, new TextHttpResponseHandler() {
+            NetworkRequest.get(Constants.COLUMN_INDICATOR_URL, new TextHttpResponseHandler() {
                 @Override
                 public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 }
@@ -207,7 +207,7 @@ public class FragmentMain extends Fragment implements OnClickListener {
                 textView.setVisibility(View.GONE);
                 barMain.setVisibility(View.VISIBLE);
                 if (NetworkRequest.isNetworkConnected(context)) {
-                    NetworkRequest.get(Constants.COLUMNINDICATORURL, new TextHttpResponseHandler() {
+                    NetworkRequest.get(Constants.COLUMN_INDICATOR_URL, new TextHttpResponseHandler() {
                         @Override
                         public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                             barMain.setVisibility(View.GONE);

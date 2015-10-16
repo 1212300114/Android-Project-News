@@ -41,7 +41,7 @@ public class FragmentDynamic extends Fragment implements OnClickListener {
         root = inflater.inflate(R.layout.fragment_dynamic, container, false);
         initView();
         if (NetworkRequest.isNetworkConnected(activity)) {
-            NetworkRequest.get(Constants.DYURL, new TextHttpResponseHandler() {
+            NetworkRequest.get(Constants.DYNAMIC_URL, new TextHttpResponseHandler() {
                 @Override
                 public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
 

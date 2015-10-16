@@ -43,7 +43,7 @@ public class SubjectDetailsActivity extends Activity implements IXListViewListen
         String link = getIntent().getExtras().getString("link");
         String name = getIntent().getExtras().getString("name");
         //生成link
-        urlString = Constants.COLUMNLISTURL + link + "&page=";
+        urlString = Constants.COLUMN_LIST_URL + link + "&page=";
         setContentView(R.layout.activity_subject_details);
         //页标题设置
         TextView tv = (TextView) findViewById(R.id.tv);

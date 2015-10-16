@@ -89,6 +89,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
     public void onClick(View v) {
 
         switch (v.getId()) {
+            //left menu
             case R.id.btnFP:
                 getSupportFragmentManager().beginTransaction().replace(R.id.container,
                         main).addToBackStack(null).commit();
@@ -114,6 +115,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
                         fragmentAboutUs).addToBackStack(null).commit();
                 slidingMenu.toggle();
                 break;
+            //right menu
             case R.id.btnSA:
                 startActivity(new Intent(MainActivity.this, SearchActivity.class));
                 break;

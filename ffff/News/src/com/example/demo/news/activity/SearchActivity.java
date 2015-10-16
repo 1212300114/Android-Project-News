@@ -23,7 +23,8 @@ import org.apache.http.Header;
 
 import medusa.theone.waterdroplistview.view.WaterDropListView;
 
-public class SearchActivity extends Activity implements OnClickListener, WaterDropListView.IWaterDropListViewListener {
+public class SearchActivity extends Activity implements OnClickListener,
+        WaterDropListView.IWaterDropListViewListener {
     // 搜索页的内容
     private EditText search;
     private ProgressBar pb;
@@ -46,9 +47,9 @@ public class SearchActivity extends Activity implements OnClickListener, WaterDr
     private void initView() {
         //初始化view
         pb = (ProgressBar) findViewById(R.id.pb);
-        findViewById(R.id.btnBack).setOnClickListener(this);
-        findViewById(R.id.btnSearch).setOnClickListener(this);
-        findViewById(R.id.btnDelete).setOnClickListener(this);
+        this.findViewById(R.id.btnBack).setOnClickListener(this);
+        this.findViewById(R.id.btnSearch).setOnClickListener(this);
+        this.findViewById(R.id.btnDelete).setOnClickListener(this);
         search = (EditText) findViewById(R.id.etSearch);
         lv = (WaterDropListView) findViewById(R.id.lvSearch);
         lv.setVisibility(View.GONE);
@@ -73,7 +74,7 @@ public class SearchActivity extends Activity implements OnClickListener, WaterDr
                     Toast.makeText(SearchActivity.this, "请输入搜索内容", Toast.LENGTH_SHORT).show();
                 } else {
                     pb.setVisibility(View.VISIBLE);
-                    link = Constants.SEARCHURL + searchText;
+                    link = Constants.SEARCH_URL + searchText;
                     onRefresh();
                 }
 
@@ -115,13 +116,12 @@ public class SearchActivity extends Activity implements OnClickListener, WaterDr
     }
 
     private void parseFirstJson(String response) {
-       //加载第一次获取到数据
+        //加载第一次获取到数据
 
-        ColumnEntity entity = null;
+        ColumnEntity entity;
         Log.e("", response);
         if (null != response) {
             entity = new Gson().fromJson(response, ColumnEntity.class);
-            Log.e("", new Gson().toJson(entity));
             pageCount = entity.getData().getPagecount();
             adapter.setData(entity, true);
             pb.setVisibility(View.GONE);
@@ -158,6 +158,7 @@ public class SearchActivity extends Activity implements OnClickListener, WaterDr
                 lv.stopLoadMore();
             }
         } else {
+
             Toast.makeText(this, "请检查您的网络", Toast.LENGTH_SHORT).show();
             lv.stopLoadMore();
         }

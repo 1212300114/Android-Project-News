@@ -56,7 +56,7 @@ public class FragmentMessageOpen extends Fragment implements OnClickListener,
 
         initView();
         if (NetworkRequest.isNetworkConnected(getActivity())) {
-            NetworkRequest.get(Constants.MOURL, new TextHttpResponseHandler() {
+            NetworkRequest.get(Constants.MESSAGE_OPEN_URL, new TextHttpResponseHandler() {
                 @Override
                 public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
 

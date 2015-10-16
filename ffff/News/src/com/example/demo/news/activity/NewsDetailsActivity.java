@@ -1,5 +1,6 @@
 package com.example.demo.news.activity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -60,7 +61,7 @@ public class NewsDetailsActivity extends Activity implements OnClickListener {
         //详情内容的link构造
         Log.e("", contentId);
         final StringBuilder builder = new StringBuilder();
-        builder.append(Constants.CONTENTURL);
+        builder.append(Constants.CONTENT_URL);
         builder.append(contentId);
         overridePendingTransition(0, 0);
 
@@ -222,9 +223,11 @@ public class NewsDetailsActivity extends Activity implements OnClickListener {
 
     private void doSql() {
         //更新收藏内容
+        @SuppressLint("SimpleDateFormat")
         SimpleDateFormat formatter = new SimpleDateFormat(
                 "yyyy-MM-dd    HH:mm:ss     ");
-        Date curDate = new Date(System.currentTimeMillis());//获取到收藏被按下的时间
+        Date curDate = new Date(System.currentTimeMillis());
+        //获取到收藏被按下的时间
         String str = formatter.format(curDate);
         DataBaseHelper dataBaseHelper = new DataBaseHelper(this);
         SQLiteDatabase dbWriteDatabase = dataBaseHelper.getWritableDatabase();
