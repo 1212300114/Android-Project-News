@@ -29,7 +29,7 @@ public class FragmentAboutUs extends Fragment implements OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         MainActivity activity = (MainActivity) getActivity();
-        slidingMenu = activity.getSlidingMenu1();
+        slidingMenu = activity.getSlidingMenu();
         super.onCreate(savedInstanceState);
     }
 

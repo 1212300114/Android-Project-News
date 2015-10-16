@@ -31,7 +31,7 @@ public class FragmentDynamic extends Fragment implements OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         activity = (MainActivity) getActivity();
-        slidingMenu1 = activity.getSlidingMenu1();
+        slidingMenu1 = activity.getSlidingMenu();
         super.onCreate(savedInstanceState);
     }
 

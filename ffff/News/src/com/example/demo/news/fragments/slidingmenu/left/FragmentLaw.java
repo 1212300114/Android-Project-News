@@ -49,7 +49,7 @@ public class FragmentLaw extends Fragment implements OnClickListener, WaterDropL
     public void onCreate(Bundle savedInstanceState) {
         mHandler = new Handler();
         mainActivity = (MainActivity) getActivity();
-        menu = mainActivity.getSlidingMenu1();
+        menu = mainActivity.getSlidingMenu();
         super.onCreate(savedInstanceState);
     }
 

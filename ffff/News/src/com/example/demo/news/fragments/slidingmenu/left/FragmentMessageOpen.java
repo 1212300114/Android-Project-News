@@ -43,7 +43,7 @@ public class FragmentMessageOpen extends Fragment implements OnClickListener,
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        slidingMenu1 = ((MainActivity) getActivity()).getSlidingMenu1();
+        slidingMenu1 = ((MainActivity) getActivity()).getSlidingMenu();
 
 
     }

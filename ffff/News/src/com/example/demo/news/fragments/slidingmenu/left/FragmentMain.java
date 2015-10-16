@@ -74,7 +74,7 @@ public class FragmentMain extends Fragment implements OnClickListener {
         sharedPreferences = getActivity().getSharedPreferences("settings", Context.MODE_PRIVATE);
         context = getActivity().getApplicationContext();
         mainActivity = (MainActivity) getActivity();
-        slidingMenu1 = mainActivity.getSlidingMenu1();
+        slidingMenu1 = mainActivity.getSlidingMenu();
     }
 
     @Override

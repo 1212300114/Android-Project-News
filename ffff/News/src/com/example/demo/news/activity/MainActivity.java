@@ -18,7 +18,7 @@ import net.xinhuamm.d0403.R;
 
 public class MainActivity extends FragmentActivity implements OnClickListener {
 
-    private SlidingMenu slidingMenu1;//侧边栏
+    private SlidingMenu slidingMenu;//侧边栏
     private FragmentMain main;// 主页
     private FragmentMessageOpen fragmentMessageOpen;//信息公开栏
     private FragmentDynamic fragmentDynamic;//州市动态栏
@@ -27,8 +27,8 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
     private long firstTime;//记录第一次点下返回键的时间
 
 
-    public SlidingMenu getSlidingMenu1() {
-        return slidingMenu1;//返回slidingmenu 用于各页按钮操作
+    public SlidingMenu getSlidingMenu() {
+        return slidingMenu;//返回slidingmenu 用于各页按钮操作
     }
 
 
@@ -57,29 +57,29 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
     }
     //初始化侧边栏
     private void initSlidingMenu() {
-        slidingMenu1 = new SlidingMenu(this);
-        slidingMenu1.setMenu(R.layout.slidingmenu_left);
-        slidingMenu1.setMode(SlidingMenu.LEFT_RIGHT);
-        slidingMenu1.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
-        slidingMenu1.setBehindOffsetRes(R.dimen.sliding_menu_offset);
-        slidingMenu1.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
-        slidingMenu1.setSecondaryMenu(R.layout.slidingmenu_right);
+        slidingMenu = new SlidingMenu(this);
+        slidingMenu.setMenu(R.layout.slidingmenu_left);
+        slidingMenu.setMode(SlidingMenu.LEFT_RIGHT);
+        slidingMenu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
+        slidingMenu.setBehindOffsetRes(R.dimen.sliding_menu_offset);
+        slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
+        slidingMenu.setSecondaryMenu(R.layout.slidingmenu_right);
         // 左侧menu的按钮设置
-        slidingMenu1.findViewById(R.id.btnFP).setOnClickListener(
+        slidingMenu.findViewById(R.id.btnFP).setOnClickListener(
                 this);
-        slidingMenu1.findViewById(R.id.btnMO).setOnClickListener(
+        slidingMenu.findViewById(R.id.btnMO).setOnClickListener(
                 this);
-        slidingMenu1.findViewById(R.id.btnDY).setOnClickListener(
+        slidingMenu.findViewById(R.id.btnDY).setOnClickListener(
                 this);
-        slidingMenu1.findViewById(R.id.btnLA).setOnClickListener(
+        slidingMenu.findViewById(R.id.btnLA).setOnClickListener(
                 this);
-        slidingMenu1.findViewById(R.id.btnAB).setOnClickListener(
+        slidingMenu.findViewById(R.id.btnAB).setOnClickListener(
                 this);
-        slidingMenu1.findViewById(R.id.btnSA).setOnClickListener(
+        slidingMenu.findViewById(R.id.btnSA).setOnClickListener(
                 this);
-        slidingMenu1.findViewById(R.id.btnCO).setOnClickListener(
+        slidingMenu.findViewById(R.id.btnCO).setOnClickListener(
                 this);
-        slidingMenu1.findViewById(R.id.btnSE).setOnClickListener(
+        slidingMenu.findViewById(R.id.btnSE).setOnClickListener(
                 this);
 
     }
@@ -90,24 +90,29 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 
         switch (v.getId()) {
             case R.id.btnFP:
-                getSupportFragmentManager().beginTransaction().replace(R.id.container, main).addToBackStack(null).commit();
-                slidingMenu1.toggle();
+                getSupportFragmentManager().beginTransaction().replace(R.id.container,
+                        main).addToBackStack(null).commit();
+                slidingMenu.toggle();
                 break;
             case R.id.btnMO:
-                getSupportFragmentManager().beginTransaction().replace(R.id.container, fragmentMessageOpen).addToBackStack(null).commit();
-                slidingMenu1.toggle();
+                getSupportFragmentManager().beginTransaction().replace(R.id.container,
+                        fragmentMessageOpen).addToBackStack(null).commit();
+                slidingMenu.toggle();
                 break;
             case R.id.btnDY:
-                getSupportFragmentManager().beginTransaction().replace(R.id.container, fragmentDynamic).addToBackStack(null).commit();
-                slidingMenu1.toggle();
+                getSupportFragmentManager().beginTransaction().replace(R.id.container,
+                        fragmentDynamic).addToBackStack(null).commit();
+                slidingMenu.toggle();
                 break;
             case R.id.btnLA:
-                getSupportFragmentManager().beginTransaction().replace(R.id.container, fragmentLaw).addToBackStack(null).commit();
-                slidingMenu1.toggle();
+                getSupportFragmentManager().beginTransaction().replace(R.id.container,
+                        fragmentLaw).addToBackStack(null).commit();
+                slidingMenu.toggle();
                 break;
             case R.id.btnAB:
-                getSupportFragmentManager().beginTransaction().replace(R.id.container, fragmentAboutUs).addToBackStack(null).commit();
-                slidingMenu1.toggle();
+                getSupportFragmentManager().beginTransaction().replace(R.id.container,
+                        fragmentAboutUs).addToBackStack(null).commit();
+                slidingMenu.toggle();
                 break;
             case R.id.btnSA:
                 startActivity(new Intent(MainActivity.this, SearchActivity.class));
@@ -127,8 +132,8 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
     @Override
     public void onBackPressed() {
         long secondTime = System.currentTimeMillis();
-        if (slidingMenu1.isMenuShowing()) {
-            slidingMenu1.toggle();
+        if (slidingMenu.isMenuShowing()) {
+            slidingMenu.toggle();
         } else {
 
             if (secondTime - firstTime > 2000) {

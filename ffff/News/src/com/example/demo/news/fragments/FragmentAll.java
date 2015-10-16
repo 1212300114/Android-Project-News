@@ -178,7 +178,7 @@ public class FragmentAll extends Fragment implements Banner.OnItemClickListener,
             if (entity.getData().getBanner().size() != 0 && !vpOn) {
                 banner.setTopEntities(entity.getData().getBanner());
                 lv.addHeaderView(header);
-                activity.getSlidingMenu1().addIgnoredView(banner);
+                activity.getSlidingMenu().addIgnoredView(banner);
                 vpOn = true;
             }
             if (entity.getData().getList().size() < 10) {
