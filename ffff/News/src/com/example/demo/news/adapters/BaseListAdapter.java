@@ -15,6 +15,15 @@ public class BaseListAdapter<T> extends BaseAdapter {
 
     protected List<T> listData = new ArrayList<>();
 
+    private  BaseListAdapter sharedInstance;
+
+    public BaseListAdapter getSharedInstance() {
+        if (sharedInstance == null) {
+            sharedInstance = new BaseListAdapter();
+        }
+        return sharedInstance;
+    }
+
     @Override
     public int getCount() {
         return listData.size();

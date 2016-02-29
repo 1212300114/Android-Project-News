@@ -4,4 +4,4 @@
     <item android:id="@+id/action_settings" android:title="@string/action_settings"
         android:orderInCategory="100" />
 </menu>
-<!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/WaterDropListView/src/main/res/menu/menu_main.xml -->
+<!-- From: file:/Users/jijunjie/Desktop/AndroidProjects/StudioProjectNews/ffff/WaterDropListView/src/main/res/menu/menu_main.xml -->

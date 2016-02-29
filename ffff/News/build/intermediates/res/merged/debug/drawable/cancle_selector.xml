@@ -4,4 +4,4 @@
     <item android:drawable="@drawable/search_cancle_pressed" android:state_pressed="true"></item>
     <item android:drawable="@drawable/search_cancle_nomal" android:state_pressed="false"></item>
 
-</selector><!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/News/res/drawable/cancle_selector.xml -->
+</selector><!-- From: file:/Users/jijunjie/Desktop/AndroidProjects/StudioProjectNews/ffff/News/res/drawable/cancle_selector.xml -->

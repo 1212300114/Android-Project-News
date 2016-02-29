@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:drawable="@drawable/dot_focused" />
-</selector><!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/News/res/drawable/gridview_item_bg.xml -->
+</selector><!-- From: file:/Users/jijunjie/Desktop/AndroidProjects/StudioProjectNews/ffff/News/res/drawable/gridview_item_bg.xml -->

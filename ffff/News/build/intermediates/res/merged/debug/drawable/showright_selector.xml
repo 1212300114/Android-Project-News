@@ -4,4 +4,4 @@
     <item android:drawable="@drawable/showright_pressed" android:state_pressed="true"></item>
     <item android:drawable="@drawable/showright_nomal" android:state_pressed="false"></item>
 
-</selector><!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/News/res/drawable/showright_selector.xml -->
+</selector><!-- From: file:/Users/jijunjie/Desktop/AndroidProjects/StudioProjectNews/ffff/News/res/drawable/showright_selector.xml -->

@@ -16,4 +16,4 @@
         android:layout_height="fill_parent"
         android:layout_below="@+id/title"
         android:divider="@null" />
-</RelativeLayout><!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/News/res/layout/fragment_dynamic.xml -->
+</RelativeLayout><!-- From: file:/Users/jijunjie/Desktop/AndroidProjects/StudioProjectNews/ffff/News/res/layout/fragment_dynamic.xml -->

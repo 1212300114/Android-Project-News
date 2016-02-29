@@ -28,33 +28,21 @@ public class MyApplication extends Application {
         // 初始化imageloader的选项
         File cacheDir = StorageUtils.getOwnCacheDirectory(context,
                 "JW/Cache");
-        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
-                context)
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
                 .memoryCacheExtraOptions(480, 800)
-                        // max width, max height���������ÿ�������ļ�����󳤿�
                 .threadPoolSize(2)
-                        // �̳߳����̵߳�����
                 .threadPriority(Thread.NORM_PRIORITY - 2)
                 .denyCacheImageMultipleSizesInMemory()
                 .diskCacheFileNameGenerator(new Md5FileNameGenerator())
-                        // �������ʱ���URI������MD5 ����
-                .memoryCache(new UsingFreqLimitedMemoryCache(1 * 1024 *
-                        1024))
-                .memoryCacheSize(1024 * 1024) // �ڴ滺������ֵ
-                .diskCacheSize(50 * 1024 * 1024) // SD����������ֵ
+                .memoryCache(new UsingFreqLimitedMemoryCache(1024 * 1024))
+                .memoryCacheSize(1024 * 1024)
+                .diskCacheSize(50 * 1024 * 1024)
                 .tasksProcessingOrder(QueueProcessingType.LIFO)
-                        // ��ԭ�ȵ�discCache -> diskCache
-                .diskCache(new UnlimitedDiscCache(cacheDir))// �Զ��建��·��
+                .diskCache(new UnlimitedDiscCache(cacheDir))
                 .imageDownloader(
-                        new BaseImageDownloader(context, 5 * 1000, 30 * 1000)) // connectTimeout
-                        // (5
-                        // s),
-                        // readTimeout
-                        // (30
-                        // s)��ʱʱ��
-                .writeDebugLogs() // Remove for release app
+                        new BaseImageDownloader(context, 5 * 1000, 30 * 1000))
                 .build();
-        // ȫ�ֳ�ʼ��������
+        //单例
         ImageLoader.getInstance().init(config);
     }
 }

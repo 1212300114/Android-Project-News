@@ -1,13 +1,18 @@
 package com.example.demo.news.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.demo.news.adapters.ColumnListAdapter;
@@ -28,13 +33,14 @@ public class SearchActivity extends Activity implements OnClickListener,
     // 搜索页的内容
     private EditText search;
     private ProgressBar pb;
+    private TextView tvPrompt;
     private WaterDropListView lv;
     private ColumnListAdapter adapter;
     private String link;
     private Handler mHandler;
     private int page = 1;
     private int pageCount = 0;
-
+    private RelativeLayout rlContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +63,17 @@ public class SearchActivity extends Activity implements OnClickListener,
         lv.setPullLoadEnable(true);
         adapter = new ColumnListAdapter(this, false);
         lv.setAdapter(adapter);
+        tvPrompt = (TextView) findViewById(R.id.tvPrompt);
+        tvPrompt.setVisibility(View.GONE);
+        rlContainer = (RelativeLayout) findViewById(R.id.rlContainer);
+        rlContainer.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                InputMethodManager manager = (InputMethodManager) SearchActivity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
+                manager.hideSoftInputFromWindow(search.getWindowToken(), 0);
+                return false;
+            }
+        });
     }
 
 
@@ -69,6 +86,9 @@ public class SearchActivity extends Activity implements OnClickListener,
             case R.id.btnSearch:
                 //搜索内容获取并显示到listview
                 String searchText = search.getText().toString();
+                InputMethodManager manager = (InputMethodManager) SearchActivity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
+                manager.hideSoftInputFromWindow(search.getWindowToken(), 0);
+                tvPrompt.setVisibility(View.GONE);
                 System.out.println(searchText);
                 if (searchText.equals("")) {
                     Toast.makeText(SearchActivity.this, "请输入搜索内容", Toast.LENGTH_SHORT).show();
@@ -97,6 +117,9 @@ public class SearchActivity extends Activity implements OnClickListener,
                 public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                     Toast.makeText(SearchActivity.this, "查询无结果", Toast.LENGTH_SHORT).show();
                     pb.setVisibility(View.GONE);
+                    lv.setVisibility(View.GONE);
+                    tvPrompt.setVisibility(View.VISIBLE);
+                    tvPrompt.setText("查询无结果");
                     adapter.clearData();
                 }
 
@@ -108,6 +131,7 @@ public class SearchActivity extends Activity implements OnClickListener,
                             parseFirstJson(responseString);
                             Log.e("----------------", "+++++++++++++++++++++++++++");
                             lv.stopRefresh();
+                            lv.setVisibility(View.VISIBLE);
                         }
                     }, 500);
                 }

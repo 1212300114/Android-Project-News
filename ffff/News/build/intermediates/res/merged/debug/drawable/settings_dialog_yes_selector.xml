@@ -4,4 +4,4 @@
     <item android:drawable="@drawable/settings_dialog_yes_pressed" android:state_pressed="true"></item>
     <item android:drawable="@drawable/settings_dialog_yes_normal" android:state_pressed="false"></item>
 
-</selector><!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/News/res/drawable/settings_dialog_yes_selector.xml -->
+</selector><!-- From: file:/Users/jijunjie/Desktop/AndroidProjects/StudioProjectNews/ffff/News/res/drawable/settings_dialog_yes_selector.xml -->

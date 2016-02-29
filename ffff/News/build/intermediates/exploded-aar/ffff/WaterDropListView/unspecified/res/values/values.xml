@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="WaterDropView"><attr format="dimension" name="max_circle_radius"/><attr format="dimension" name="min_circle_radius"/><attr format="color" name="waterdrop_color"/><attr format="dimension" name="topcircle_x"/><attr format="dimension" name="topcircle_y"/><attr format="dimension" name="bottomcircle_x"/><attr format="dimension" name="bottomcircle_y"/></declare-styleable>
-    <!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/WaterDropListView/src/main/res/values/dimens.xml -->
+    <!-- From: file:/Users/jijunjie/Desktop/AndroidProjects/StudioProjectNews/ffff/WaterDropListView/src/main/res/values/dimens.xml -->
     <eat-comment/>
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-    <!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/WaterDropListView/src/main/res/values/strings.xml -->
+    <!-- From: file:/Users/jijunjie/Desktop/AndroidProjects/StudioProjectNews/ffff/WaterDropListView/src/main/res/values/strings.xml -->
     <eat-comment/>
     <string name="action_settings">Settings</string>
     <string name="app_name">WaterDropListView</string>

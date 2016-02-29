@@ -4,4 +4,4 @@
     <item android:state_selected="true" android:drawable="@drawable/perm_group_location_selected" />
     <item android:drawable="@drawable/perm_group_location_normal" />
 </selector>
-<!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/News/res/drawable/perm_group_location.xml -->
+<!-- From: file:/Users/jijunjie/Desktop/AndroidProjects/StudioProjectNews/ffff/News/res/drawable/perm_group_location.xml -->

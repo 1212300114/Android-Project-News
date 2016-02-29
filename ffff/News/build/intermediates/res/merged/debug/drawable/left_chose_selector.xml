@@ -4,4 +4,4 @@
     <item android:drawable="@drawable/left_chosed" android:state_pressed="true"></item>
     <item android:drawable="@drawable/left_chosed" android:state_focused="true"></item>
 
-</selector><!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/News/res/drawable/left_chose_selector.xml -->
+</selector><!-- From: file:/Users/jijunjie/Desktop/AndroidProjects/StudioProjectNews/ffff/News/res/drawable/left_chose_selector.xml -->

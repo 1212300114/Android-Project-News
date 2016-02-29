@@ -1,7 +1,6 @@
 package com.example.demo.news.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +8,6 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.demo.news.activity.NewsDetailsActivity;
 import com.example.demo.news.databeans.ColumnEntity;
 import com.example.demo.news.utils.ImageLoaderInition;
 
@@ -82,15 +80,15 @@ public class CollectionListAdapter extends BaseAdapter {
         ImageLoaderInition.imageLoader.displayImage(entity.getData().getList().get(position).getImage(), viewHolder.iv
                 , ImageLoaderInition.options);
         //view被创建时就添加事件侦听。启动详情页
-        convertView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, NewsDetailsActivity.class);
-                intent.putExtra("content_id", String.valueOf(entity.getData().getList().get(position).getContent_id()));
-                intent.putExtra("link", entity.getData().getList().get(position).getInfo_link());
-                context.startActivity(intent);
-            }
-        });
+//        convertView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(context, NewsDetailsActivity.class);
+//                intent.putExtra("content_id", String.valueOf(entity.getData().getList().get(position).getContent_id()));
+//                intent.putExtra("link", enti  ty.getData().getList().get(position).getInfo_link());
+//                context.startActivity(intent);
+//            }
+//        });
         return convertView;
     }
 

@@ -2,4 +2,4 @@
 	<solid android:color="#77000000"/>
 	<corners android:radius="15dp"/>
 	<padding android:bottom="5dp"  android:top="5dp"/>
-</shape><!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/social_sdk_library_project/res/drawable/umeng_socialize_sidebar_selected.xml --><!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/News/build/intermediates/exploded-aar/ffff/social_sdk_library_project/unspecified/res/drawable/umeng_socialize_sidebar_selected.xml -->
+</shape><!-- From: file:/Users/jijunjie/Desktop/AndroidProjects/StudioProjectNews/ffff/social_sdk_library_project/res/drawable/umeng_socialize_sidebar_selected.xml --><!-- From: file:/Users/jijunjie/Desktop/AndroidProjects/StudioProjectNews/ffff/News/build/intermediates/exploded-aar/ffff/social_sdk_library_project/unspecified/res/drawable/umeng_socialize_sidebar_selected.xml -->

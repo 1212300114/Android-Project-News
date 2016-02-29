@@ -82,6 +82,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
         slidingMenu.findViewById(R.id.btnSE).setOnClickListener(
                 this);
 
+
     }
 
 

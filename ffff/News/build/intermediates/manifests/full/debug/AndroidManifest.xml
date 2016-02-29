@@ -72,7 +72,8 @@
             android:theme="@style/MyTheme" />
         <activity
             android:name="com.example.demo.news.activity.SearchActivity"
-            android:theme="@style/MyTheme" />
+            android:theme="@style/MyTheme"
+            android:windowSoftInputMode="adjustResize|stateVisible" />
         <activity
             android:name="com.example.demo.news.activity.MyCollectionsActivity"
             android:theme="@style/MyTheme" />

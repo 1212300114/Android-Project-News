@@ -10,7 +10,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:background="#99000000">
 
@@ -21,8 +21,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:horizontalSpacing="0dp"
             android:columnWidth="6dp"
+            android:horizontalSpacing="0dp"
             android:listSelector="#00000000"
             android:numColumns="auto_fit" />
 
@@ -30,14 +30,11 @@
             android:id="@+id/tv_title"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
             android:layout_toLeftOf="@id/dots"
             android:ellipsize="end"
-            android:gravity="center_vertical"
-            android:padding="10dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
+            android:gravity="left"
             android:singleLine="true"
             android:text="标题"
             android:textColor="@android:color/white"

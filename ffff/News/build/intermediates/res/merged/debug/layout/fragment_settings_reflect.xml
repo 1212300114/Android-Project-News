@@ -23,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:background="#FFFFFF"
+        android:background="@color/transparent"
         android:text="提交"
         android:textColor="#FF0000" />
 
@@ -45,8 +45,11 @@
         android:layout_below="@+id/line"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="30sp"
+        android:layout_marginTop="10dp"
         android:background="#FFFFFF"
-        android:text="请将您宝贵的意见告诉我们……"
+        android:gravity="left|top"
+        android:hint="请将您宝贵的意见告诉我们……"
+        android:minHeight="200dp"
         android:textColor="#999999" />
 
-</RelativeLayout><!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/News/res/layout/fragment_settings_reflect.xml -->
+</RelativeLayout><!-- From: file:/Users/jijunjie/Desktop/AndroidProjects/StudioProjectNews/ffff/News/res/layout/fragment_settings_reflect.xml -->

@@ -9,4 +9,4 @@
         android:layout_height="5dp"
         android:layout_gravity="center"
         android:src="@drawable/dot_focused" />
-</RelativeLayout><!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/News/res/layout/item_dots.xml -->
+</RelativeLayout><!-- From: file:/Users/jijunjie/Desktop/AndroidProjects/StudioProjectNews/ffff/News/res/layout/item_dots.xml -->

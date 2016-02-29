@@ -2,13 +2,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.demo.news.activity.Search">
+    tools:context="com.example.demo.news.activity.SearchActivity">
 
     <ImageButton
-        android:layout_marginTop="5dp"
         android:id="@+id/btnBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:background="@drawable/back_state_selector"
         android:contentDescription="@null" />
 
@@ -48,13 +48,14 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_alignParentLeft="true"
+            android:layout_marginLeft="5dp"
             android:contentDescription="@null"
             android:scaleType="fitXY"
             android:src="@drawable/search_glass" />
 
         <EditText
             android:id="@+id/etSearch"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
@@ -69,23 +70,25 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_centerVertical="true"
-            android:layout_marginRight="10sp"
+            android:layout_marginRight="10dp"
             android:layout_toLeftOf="@+id/btnSearch"
             android:background="@drawable/search_delete_selector"
             android:contentDescription="@null" />
 
         <Button
             android:id="@+id/btnSearch"
-            android:layout_width="40dip"
-            android:layout_height="30dip"
+            android:layout_width="60dp"
+            android:layout_height="30dp"
             android:layout_alignParentRight="true"
             android:layout_marginRight="10sp"
             android:background="@drawable/search_yes"
+            android:minWidth="60px"
             android:scaleType="fitXY"
             android:text="@string/search_button" />
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/rlContainer"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_below="@+id/linear">
@@ -101,7 +104,13 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tvPrompt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
     </RelativeLayout>
 
 
-</RelativeLayout><!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/News/res/layout/activity_search.xml -->
+</RelativeLayout><!-- From: file:/Users/jijunjie/Desktop/AndroidProjects/StudioProjectNews/ffff/News/res/layout/activity_search.xml -->

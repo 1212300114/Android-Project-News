@@ -1,7 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     tools:context="com.example.demo.news.activity.MyCollectionsActivity">
 
     <ImageButton
@@ -47,4 +47,4 @@
         android:layout_centerInParent="true"
         android:text="@string/no_collections"
         android:visibility="gone" />
-</RelativeLayout><!-- From: file:/Users/jijunjie/StudioProjectNews/ffff/News/res/layout/activity_my_collections.xml -->
+</RelativeLayout><!-- From: file:/Users/jijunjie/Desktop/AndroidProjects/StudioProjectNews/ffff/News/res/layout/activity_my_collections.xml -->

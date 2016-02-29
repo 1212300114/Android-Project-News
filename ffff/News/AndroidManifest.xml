@@ -21,7 +21,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- QQ、QQ空间所需权限 -->
     <uses-permission android:name="android.permission.GET_TASKS" />
-
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
@@ -73,7 +72,8 @@
             android:theme="@style/MyTheme" />
         <activity
             android:name="com.example.demo.news.activity.SearchActivity"
-            android:theme="@style/MyTheme" />
+            android:theme="@style/MyTheme"
+            android:windowSoftInputMode="adjustResize|stateVisible" />
         <activity
             android:name="com.example.demo.news.activity.MyCollectionsActivity"
             android:theme="@style/MyTheme" />

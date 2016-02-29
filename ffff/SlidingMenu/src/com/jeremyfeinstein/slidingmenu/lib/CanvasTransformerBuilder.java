@@ -5,6 +5,7 @@ import android.view.animation.Interpolator;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.CanvasTransformer;
 
+@SuppressWarnings("unused")
 public class CanvasTransformerBuilder {
 
 	private CanvasTransformer mTrans;

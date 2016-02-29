@@ -24,14 +24,14 @@ public final class R {
 		public static final int refresh_arrow = 0x7f02006f;
 	}
 	public static final class id {
-		public static final int action_settings = 0x7f0b013d;
-		public static final int progresslayout = 0x7f0b012e;
-		public static final int txt_progresstext = 0x7f0b0130;
-		public static final int waterdroplist_header_progressbar = 0x7f0b0133;
-		public static final int waterdroplist_waterdrop = 0x7f0b0132;
-		public static final int waterdroplistview_footer_content = 0x7f0b012d;
-		public static final int waterdroplistview_footer_hint_textview = 0x7f0b0131;
-		public static final int waterdroplistview_footer_progressbar = 0x7f0b012f;
+		public static final int action_settings = 0x7f0b013f;
+		public static final int progresslayout = 0x7f0b0130;
+		public static final int txt_progresstext = 0x7f0b0132;
+		public static final int waterdroplist_header_progressbar = 0x7f0b0135;
+		public static final int waterdroplist_waterdrop = 0x7f0b0134;
+		public static final int waterdroplistview_footer_content = 0x7f0b012f;
+		public static final int waterdroplistview_footer_hint_textview = 0x7f0b0133;
+		public static final int waterdroplistview_footer_progressbar = 0x7f0b0131;
 	}
 	public static final class layout {
 		public static final int activity_main = 0x7f040001;
@@ -48,10 +48,10 @@ public final class R {
 	public static final class string {
 		public static final int action_settings = 0x7f0d0004;
 		public static final int app_name = 0x7f0d0005;
-		public static final int listfooterview_normal = 0x7f0d003a;
-		public static final int listfooterview_ready = 0x7f0d003b;
-		public static final int onLoad = 0x7f0d0040;
-		public static final int title_activity_second = 0x7f0d0056;
+		public static final int listfooterview_normal = 0x7f0d003b;
+		public static final int listfooterview_ready = 0x7f0d003c;
+		public static final int onLoad = 0x7f0d0041;
+		public static final int title_activity_second = 0x7f0d0058;
 	}
 	public static final class styleable {
 		public static final int[] WaterDropView = { 0x7f01002d, 0x7f01002e, 0x7f01002f, 0x7f010030, 0x7f010031, 0x7f010032, 0x7f010033 };

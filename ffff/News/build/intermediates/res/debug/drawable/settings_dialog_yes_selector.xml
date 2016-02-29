@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <item android:drawable="@drawable/settings_dialog_yes_pressed" android:state_pressed="true"></item>
-    <item android:drawable="@drawable/settings_dialog_yes_normal" android:state_pressed="false"></item>
-
-</selector><!-- From: file:/C:/Users/123456/ffff/News/res/drawable/settings_dialog_yes_selector.xml -->
